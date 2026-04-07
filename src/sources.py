@@ -68,15 +68,24 @@ def fetch_all_rss() -> list[Article]:
 
 
 def fetch_hackernews() -> list[Article]:
-    """Fetch AI-related stories from HackerNews Algolia API."""
+    """Fetch AI-related stories from HackerNews Algolia API (recent only)."""
     all_articles = []
     seen_ids: set[str] = set()
+
+    # Only fetch stories from the last 48 hours
+    import time
+    two_days_ago = int(time.time()) - (48 * 3600)
 
     for query in HN_QUERIES:
         try:
             resp = requests.get(
                 HN_API_URL,
-                params={"query": query, "tags": "story", "hitsPerPage": HN_HITS_PER_PAGE},
+                params={
+                    "query": query,
+                    "tags": "story",
+                    "hitsPerPage": HN_HITS_PER_PAGE,
+                    "numericFilters": f"created_at_i>{two_days_ago}",
+                },
                 timeout=REQUEST_TIMEOUT,
                 headers={"User-Agent": USER_AGENT},
             )

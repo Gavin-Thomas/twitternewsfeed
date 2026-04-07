@@ -25,7 +25,7 @@ class TestScoreArticle(unittest.TestCase):
             title="GPT-5 Released by OpenAI",
             summary="OpenAI releases GPT-5 with breakthrough reasoning capabilities",
         )
-        self.assertGreaterEqual(score, 6)
+        self.assertGreaterEqual(score, 5)
 
     def test_score_capped_at_max(self):
         score = score_article(

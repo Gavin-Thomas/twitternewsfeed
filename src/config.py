@@ -22,53 +22,100 @@ DB_PATH = PROJECT_DIR / "data" / "articles.db"
 LOG_DIR = PROJECT_DIR / "logs"
 
 # --- RSS Feeds ---
+# Practical AI automation, tools, and implementation — not generic news
 RSS_FEEDS = {
+    # Tier 1: Practical AI builders & automation
+    "Simon Willison": "https://simonwillison.net/atom/everything/",
+    "Hugging Face": "https://huggingface.co/blog/feed.xml",
+    "LangChain Blog": "https://blog.langchain.dev/rss/",
+    "Anthropic Blog": "https://raw.githubusercontent.com/taobojlen/anthropic-rss-feed/main/anthropic_news_rss.xml",
+
+    # Tier 2: Major AI news (filtered by scoring to practical stuff)
     "TechCrunch AI": "https://techcrunch.com/category/artificial-intelligence/feed/",
     "The Verge AI": "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml",
     "Ars Technica AI": "https://arstechnica.com/ai/feed/",
-    "Anthropic Blog": "https://raw.githubusercontent.com/taobojlen/anthropic-rss-feed/main/anthropic_news_rss.xml",
+
+    # Tier 3: Google/Gemini ecosystem
+    "Google AI Blog": "https://blog.google/technology/ai/rss/",
 }
 
 # --- HackerNews ---
-HN_API_URL = "https://hn.algolia.com/api/v1/search"
-HN_QUERIES = ["AI LLM", "artificial intelligence", "Claude Anthropic", "GPT OpenAI"]
-HN_HITS_PER_PAGE = 30
-HN_MIN_POINTS = 50
+HN_API_URL = "https://hn.algolia.com/api/v1/search_by_date"  # search_by_date = recent first
+HN_QUERIES = [
+    "Claude Code",
+    "MCP server",
+    "AI automation",
+    "AI agent workflow",
+    "NotebookLM",
+    "Gemini API",
+    "LLM tool",
+]
+HN_HITS_PER_PAGE = 20
+HN_MIN_POINTS = 20  # Lower bar since we're filtering by recency now
 
 # --- GitHub Trending ---
 GITHUB_TRENDING_URL = "https://github.com/trending?since=daily"
 
 # --- Scoring Keywords ---
+# Weighted for "can I make a video showing how to DO this?"
+
 IMPACT_KEYWORDS = {
-    "launches": 3, "releases": 3, "open-source": 3, "open source": 3,
-    "billion": 2, "funding": 2, "raises": 2, "acquisition": 2,
-    "breakthrough": 3, "state-of-the-art": 2, "sota": 2,
-    "api": 1, "sdk": 1, "benchmark": 1,
+    # Product launches & releases
+    "launches": 3, "releases": 3, "announces": 2, "introduces": 2,
+    "open-source": 3, "open source": 3, "now available": 2,
+    # Practical automation signals
+    "mcp": 4, "mcp server": 4, "claude code": 4, "notebooklm": 4,
+    "n8n": 3, "make.com": 3, "zapier": 2, "shortcuts": 2,
+    "api": 2, "sdk": 2, "integration": 2, "connector": 2,
 }
 
 DEMO_KEYWORDS = {
-    "tool": 2, "build": 1, "workflow": 2, "automation": 2,
-    "agent": 2, "no-code": 2, "tutorial": 1, "how to": 1,
-    "framework": 2, "library": 1, "plugin": 1, "extension": 1,
+    # "Can I show this on screen?"
+    "tutorial": 3, "how to": 3, "step by step": 3, "walkthrough": 3,
+    "build": 2, "built": 2, "automate": 3, "automation": 3,
+    "workflow": 3, "pipeline": 2, "template": 2,
+    "tool": 2, "agent": 3, "no-code": 3, "low-code": 2,
+    "framework": 2, "library": 2, "plugin": 2, "extension": 2,
+    "prompt": 2, "chain": 2, "rag": 2, "fine-tune": 2,
 }
 
 MODEL_KEYWORDS = {
-    "gpt": 1, "gpt-4": 2, "gpt-5": 3, "o1": 2, "o3": 2,
-    "claude": 2, "opus": 2, "sonnet": 1, "haiku": 1,
-    "gemini": 2, "llama": 2, "mistral": 1, "deepseek": 2,
-    "phi": 1, "qwen": 1,
+    # New models = instant video topic
+    "gpt-4o": 2, "gpt-5": 3, "o1": 2, "o3": 2, "o4": 3,
+    "claude": 2, "claude 4": 3, "opus": 2, "sonnet": 2, "haiku": 1,
+    "gemini": 2, "gemini 2": 3, "gemini flash": 2,
+    "llama": 2, "llama 4": 3, "mistral": 1, "deepseek": 2,
+    "cursor": 3, "windsurf": 2, "copilot": 2, "devin": 2,
 }
 
 MAX_SCORE = 10
 
-MIN_SCORE_TOP = 6
+MIN_SCORE_TOP = 5      # Lowered — more practical content hits top
 MIN_SCORE_NOTABLE = 3
 
 # --- Categories ---
 CATEGORIES = {
-    "AI-AUTO": ["automation", "workflow", "agent", "tool", "api", "no-code", "sdk", "framework", "mcp"],
-    "CLAUDE": ["claude", "anthropic", "mcp", "claude code", "sonnet", "opus", "haiku"],
-    "HEALTH": ["healthcare", "biotech", "fda", "clinical", "medical", "health tech", "drug", "alphafold"],
+    "AI-AUTO": [
+        "automation", "workflow", "agent", "tool", "api", "no-code", "sdk",
+        "framework", "mcp", "n8n", "make.com", "zapier", "pipeline",
+        "langchain", "llamaindex", "crewai", "autogen",
+    ],
+    "CLAUDE": [
+        "claude", "anthropic", "mcp", "claude code", "sonnet", "opus", "haiku",
+        "artifacts", "projects", "claude api",
+    ],
+    "TOOLS": [
+        "cursor", "windsurf", "copilot", "notebooklm", "notebook lm",
+        "replit", "v0", "bolt", "lovable", "devin",
+    ],
+    "MODELS": [
+        "gpt", "gemini", "llama", "mistral", "deepseek", "phi", "qwen",
+        "open-source model", "fine-tune", "weights", "benchmark",
+    ],
+    "HEALTH": [
+        "healthcare", "biotech", "fda", "clinical", "medical",
+        "health tech", "drug", "alphafold", "health ai",
+    ],
 }
 
 # --- Dedup ---
