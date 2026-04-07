@@ -35,6 +35,8 @@ jobs:
 
       - name: Run digest pipeline
         env:
-          ULTRAPLAN_NTFY_TOPIC: ${{ secrets.ULTRAPLAN_NTFY_TOPIC }}
-          ULTRAPLAN_DELIVERY: ntfy
+          ULTRAPLAN_GMAIL_USER: ${{ secrets.ULTRAPLAN_GMAIL_USER }}
+          ULTRAPLAN_GMAIL_APP_PASSWORD: ${{ secrets.ULTRAPLAN_GMAIL_APP_PASSWORD }}
+          ULTRAPLAN_EMAIL: ${{ secrets.ULTRAPLAN_EMAIL }}
+          ULTRAPLAN_DELIVERY: email
         run: python -m src.main

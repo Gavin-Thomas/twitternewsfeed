@@ -7,14 +7,14 @@ from pathlib import Path
 from typing import Optional
 
 from src.config import (
-    DB_PATH, RECIPIENTS, NTFY_TOPIC, LOG_DIR, RETENTION_DAYS,
+    DB_PATH, RECIPIENTS, NTFY_TOPIC, FALLBACK_EMAIL, LOG_DIR, RETENTION_DAYS,
     MIN_SCORE_NOTABLE, DELIVERY_MODE,
 )
 from src.sources import fetch_all_sources
 from src.scorer import score_article, categorize, generate_video_hook
 from src.store import Article, ArticleStore
 from src.formatter import format_digest
-from src.notify import send_ntfy_long
+from src.notify import send_ntfy_long, send_email
 
 
 def setup_logging() -> None:
@@ -121,13 +121,23 @@ def run_digest(
         # Deliver
         success = True
 
+        # Email (works from anywhere — GitHub Actions, local Mac, etc.)
+        if delivery in ("email", "both"):
+            email_to = FALLBACK_EMAIL
+            if email_to:
+                logger.info("Sending via email to %s...", email_to)
+                now_str = datetime.now().strftime("%a %b %-d")
+                if not send_email(full_message, email_to, subject=f"AI Digest — {now_str}"):
+                    # Email failed but not fatal — try other methods
+                    logger.warning("Email delivery failed, trying other methods")
+
+        # ntfy (optional backup)
         if delivery in ("ntfy", "both") and ntfy_topic:
             logger.info("Sending via ntfy...")
-            if not _send_ntfy(full_message, ntfy_topic, logger):
-                success = False
+            _send_ntfy(full_message, ntfy_topic, logger)
 
+        # iMessage (local Mac only)
         if delivery in ("imessage", "both") and recipients:
-            # Only attempt iMessage if not in GitHub Actions (no Mac GUI there)
             if os.environ.get("GITHUB_ACTIONS"):
                 logger.info("Skipping iMessage (running in GitHub Actions)")
             else:
