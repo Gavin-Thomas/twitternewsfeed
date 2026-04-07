@@ -101,7 +101,7 @@ class TestRunDigest(unittest.TestCase):
 
     @patch("src.main.send_ntfy_long")
     @patch("src.main.fetch_all_sources")
-    def test_video_scripts_included(self, mock_fetch, mock_ntfy):
+    def test_no_video_scripts_in_digest(self, mock_fetch, mock_ntfy):
         mock_fetch.return_value = [
             Article(url="https://a.com/1", title="New MCP Server for Claude Code Automation",
                     summary="Build AI automations with this open-source MCP tool",
@@ -119,9 +119,11 @@ class TestRunDigest(unittest.TestCase):
                 delivery="ntfy",
             )
             sent_msg = mock_ntfy.call_args[0][0]
-            self.assertIn("VIDEO SCRIPTS", sent_msg)
-            self.assertIn("HOOK", sent_msg)
-            self.assertIn("DEMO", sent_msg)
+            # Digest should NOT contain video scripts
+            self.assertNotIn("VIDEO SCRIPTS", sent_msg)
+            self.assertNotIn("HOOK", sent_msg)
+            # But should still have the digest header
+            self.assertIn("AI DIGEST", sent_msg)
         finally:
             os.unlink(db_path)
 

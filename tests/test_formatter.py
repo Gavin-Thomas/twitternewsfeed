@@ -16,14 +16,12 @@ class TestFormatArticleLine(unittest.TestCase):
             source="TechCrunch",
             score=9,
             category="AI-AUTO",
-            video_hook='"I built a full agent in 5 mins with this new SDK"',
         )
-        line = _format_article_line(a, include_hook=True)
+        line = _format_article_line(a)
         self.assertIn("[9/10]", line)
         self.assertIn("🔥", line)
         self.assertIn("[AI-AUTO]", line)
         self.assertIn("Anthropic Launches Agent SDK", line)
-        self.assertIn("I built a full agent", line)
 
     def test_notable_story_no_hook(self):
         a = Article(

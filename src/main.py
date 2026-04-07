@@ -8,13 +8,12 @@ from typing import Optional
 
 from src.config import (
     DB_PATH, RECIPIENTS, NTFY_TOPIC, LOG_DIR, RETENTION_DAYS,
-    MIN_SCORE_NOTABLE, DELIVERY_MODE, MAX_VIDEO_SCRIPTS,
+    MIN_SCORE_NOTABLE, DELIVERY_MODE,
 )
 from src.sources import fetch_all_sources
 from src.scorer import score_article, categorize, generate_video_hook
 from src.store import Article, ArticleStore
 from src.formatter import format_digest
-from src.scripts import generate_scripts_for_digest
 from src.notify import send_ntfy_long
 
 
@@ -113,17 +112,9 @@ def run_digest(
         unsent = store.get_unsent(min_score=MIN_SCORE_NOTABLE)
         logger.info("Unsent above threshold: %d", len(unsent))
 
-        # Format digest
+        # Format digest (clean news only — no video ideas)
         now = datetime.now()
-        digest = format_digest(unsent, now=now)
-
-        # Generate video scripts for top stories
-        scripts = generate_scripts_for_digest(unsent, max_scripts=MAX_VIDEO_SCRIPTS)
-
-        # Combine digest + scripts
-        full_message = digest
-        if scripts:
-            full_message += "\n" + scripts
+        full_message = format_digest(unsent, now=now)
 
         logger.info("Full message: %d chars", len(full_message))
 
