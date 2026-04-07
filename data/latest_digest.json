@@ -24,22 +24,6 @@
     "url": "https://huggingface.co/blog/gradio-mcp"
   },
   {
-    "title": "Issue: Claude Code is unusable for complex engineering tasks with Feb updates",
-    "summary": "HN: 841 points",
-    "source": "HackerNews",
-    "score": 8,
-    "category": "CLAUDE",
-    "url": "https://github.com/anthropics/claude-code/issues/42796"
-  },
-  {
-    "title": "Codex pricing to align with API token usage, instead of per-message",
-    "summary": "HN: 204 points",
-    "source": "HackerNews",
-    "score": 8,
-    "category": "BUILD",
-    "url": "https://help.openai.com/en/articles/20001106-codex-rate-card"
-  },
-  {
     "title": "Cleanup Claude Code Paste",
     "summary": "Tool: Cleanup Claude Code Paste Super-niche tool this. I sometimes copy prompts out of the Claude Code terminal app and they come out with a bunch of weird additional whitespace. This tool cleans that up. Tags: tools , claude-code",
     "source": "Simon Willison",
@@ -88,28 +72,12 @@
     "url": "https://arstechnica.com/ai/2026/04/anthropic-says-its-leak-focused-dmca-effort-unintentionally-hit-legit-github-forks/"
   },
   {
-    "title": "Running Gemma 4 locally with LM Studio's new headless CLI and Claude Code",
-    "summary": "HN: 393 points",
-    "source": "HackerNews",
-    "score": 7,
-    "category": "CLAUDE",
-    "url": "https://ai.georgeliu.com/p/running-google-gemma-4-locally-with"
-  },
-  {
-    "title": "Nanocode: The best Claude Code that $200 can buy in pure JAX on TPUs",
-    "summary": "HN: 206 points",
-    "source": "HackerNews",
-    "score": 7,
-    "category": "CLAUDE",
-    "url": "https://github.com/salmanmohammadi/nanocode/discussions/1"
-  },
-  {
-    "title": "aaif-goose / goose",
-    "summary": "an open source, extensible AI agent that goes beyond code suggestions - install, execute, edit, and test with any LLM (1,523 stars today)",
+    "title": "TheCraigHewitt / seomachine",
+    "summary": "A specialized Claude Code workspace for creating long-form, SEO-optimized blog content for any business. This system helps you research, write, analyze, and optimize content that ranks well and serves your target audience. (213 stars today)",
     "source": "GitHub",
     "score": 7,
-    "category": "BUILD",
-    "url": "https://github.com/aaif-goose/goose"
+    "category": "CLAUDE",
+    "url": "https://github.com/TheCraigHewitt/seomachine"
   },
   {
     "title": "Custom Kernels for All from Codex and Claude",
@@ -168,16 +136,8 @@
     "url": "https://arstechnica.com/ai/2026/03/openai-brings-plugins-to-codex-closing-some-of-the-gap-with-claude-code/"
   },
   {
-    "title": "Claude Code Down",
-    "summary": "HN: 80 points",
-    "source": "HackerNews",
-    "score": 6,
-    "category": "CLAUDE",
-    "url": "https://news.ycombinator.com/item?id=47662112"
-  },
-  {
     "title": "abhigyanpatwari / GitNexus",
-    "summary": "GitNexus: The Zero-Server Code Intelligence Engine - GitNexus is a client-side knowledge graph creator that runs entirely in your browser. Drop in a GitHub repo or ZIP file, and get an interactive knowledge graph wit a built in Graph RAG Agent. Perfect for code exploration (857 stars today)",
+    "summary": "GitNexus: The Zero-Server Code Intelligence Engine - GitNexus is a client-side knowledge graph creator that runs entirely in your browser. Drop in a GitHub repo or ZIP file, and get an interactive knowledge graph wit a built in Graph RAG Agent. Perfect for code exploration (1,174 stars today)",
     "source": "GitHub",
     "score": 6,
     "category": "BUILD",
@@ -288,6 +248,14 @@
     "url": "https://techcrunch.com/2026/04/06/how-to-use-chatgpt-apps-doordash-spotify-uber/"
   },
   {
+    "title": "Gemini is making it faster for distressed users to reach mental health resources",
+    "summary": "Google says it has updated Gemini to better direct users to get mental health resources during moments of crisis. The change comes as the tech giant faces a wrongful death lawsuit alleging its chatbot \"coached\" a man to die by suicide, the latest in a string of lawsuits alleging tangible harm from A",
+    "source": "The Verge AI",
+    "score": 5,
+    "category": "BUILD",
+    "url": "https://www.theverge.com/ai-artificial-intelligence/907842/google-gemini-mental-health-interface-update"
+  },
+  {
     "title": "Can JavaScript Escape a CSP Meta Tag Inside an Iframe?",
     "summary": "Research: Can JavaScript Escape a CSP Meta Tag Inside an Iframe? In trying to build my own version of Claude Artifacts I got curious about options for applying CSP headers to content in sandboxed iframes without using a separate domain to host the files. Turns out you can inject <meta http-equiv=\"Co",
     "source": "Simon Willison",
@@ -336,44 +304,28 @@
     "url": "https://blog.google/products-and-platforms/products/search/ai-mode-canvas-writing-coding/"
   },
   {
-    "title": "Rails + OpenAI API \u2014 Build a Streaming Chat Interface with Turbo",
-    "summary": "You've got Rails down. You've got Hotwire, Stimulus, and background jobs wired up. Now let's wire in actual AI. This post builds a working chat interface that streams OpenAI responses in real-time using Turbo Streams. No JavaScript frameworks. No React. Just Rails doing what Rails does best. What We",
+    "title": "Big Tech firms are accelerating AI investments and integration, while regulators and companies focus on safety and responsible adoption.",
+    "summary": "The AI landscape is experiencing unprecedented growth and transformation. This post delves into the key developments shaping the future of artificial intelligence, from massive industry investments to critical safety considerations and integration into core development processes. Key Areas Explored:",
     "source": "Dev.to AI",
     "score": 4,
     "category": "BUILD",
-    "url": "https://dev.to/agentq/rails-openai-api-build-a-streaming-chat-interface-with-turbo-19am"
+    "url": "https://dev.to/stelixx-insights/big-tech-firms-are-accelerating-ai-investments-and-integration-while-regulators-and-companies-5e7l"
   },
   {
     "title": "Launch HN: Freestyle \u2013 Sandboxes for Coding Agents",
-    "summary": "HN: 227 points",
+    "summary": "HN: 295 points",
     "source": "HackerNews",
     "score": 4,
     "category": "BUILD",
     "url": "https://www.freestyle.sh/"
   },
   {
-    "title": "NousResearch / hermes-agent",
-    "summary": "The agent that grows with you (1,574 stars today)",
+    "title": "HKUDS / DeepTutor",
+    "summary": "\"DeepTutor: Agent-Native Personalized Learning Assistant\" (164 stars today)",
     "source": "GitHub",
     "score": 4,
     "category": "BUILD",
-    "url": "https://github.com/NousResearch/hermes-agent"
-  },
-  {
-    "title": "kepano / obsidian-skills",
-    "summary": "Agent skills for Obsidian. Teach your agent to use Markdown, Bases, JSON Canvas, and use the CLI. (429 stars today)",
-    "source": "GitHub",
-    "score": 4,
-    "category": "BUILD",
-    "url": "https://github.com/kepano/obsidian-skills"
-  },
-  {
-    "title": "siddharthvaddem / openscreen",
-    "summary": "Create stunning demos for free. Open-source, no subscriptions, no watermarks, and free for commercial use. An alternative to Screen Studio. (1,838 stars today)",
-    "source": "GitHub",
-    "score": 4,
-    "category": "",
-    "url": "https://github.com/siddharthvaddem/openscreen"
+    "url": "https://github.com/HKUDS/DeepTutor"
   },
   {
     "title": "Eight years of wanting, three months of building with AI",
@@ -1056,51 +1008,59 @@
     "url": "https://arstechnica.com/tech-policy/2026/03/senators-want-us-energy-information-agency-to-monitor-data-center-electricity-usage/"
   },
   {
-    "title": "Apply decay function to fade old embeddings",
-    "summary": "Antipollution Patterns for AI Agent Memory The Context Pollution Problem Context pollution is a real issue that can tank the performance of your AI agents. I've seen it happen: you throw more memory at the problem, but instead of solving it, you just make it worse. The model starts spewing out garba",
+    "title": "Getting Started with AI Agents in n8n: A Non-Engineer's Guide",
+    "summary": "When I first started exploring AI automation several years ago, n8n wasn\u2019t on my radar. Back then, I faced the challenge of orchestrating automation across multiple IoT devices in environments with unreliable internet connectivity. Solid reliability on a budget was essential. Fast forward to now, I'",
     "source": "Dev.to AI",
     "score": 3,
     "category": "BUILD",
-    "url": "https://dev.to/realmrmemory/apply-decay-function-to-fade-old-embeddings-mb3"
+    "url": "https://dev.to/bernardkibathi/getting-started-with-ai-agents-in-n8n-a-non-engineers-guide-4a67"
   },
   {
-    "title": "Local SEO Kochi: The Ultimate Guide to Rank Your Business #1 in Local Search",
-    "summary": "Why Local SEO Matters in Kochi In a fast-growing city like Kochi, customers are constantly searching online for nearby services\u2014whether it\u2019s a restaurant, clinic, real estate agent, or digital marketing service. If your business is not appearing in these searches, you are missing out on valuable loc",
+    "title": "How Echo Publishes to dev.to Without Me",
+    "summary": "How Echo Publishes to dev.to Without Me In my journey to build Echo, my local AI companion, one of the key challenges has been ensuring that Echo can autonomously publish content to dev.to. Today, I'll walk you through the full pipeline, from the initial bug fixes to the automated content strategy, ",
     "source": "Dev.to AI",
     "score": 3,
     "category": "BUILD",
-    "url": "https://dev.to/cctec/local-seo-kochi-the-ultimate-guide-to-rank-your-business-1-in-local-search-20p6"
+    "url": "https://dev.to/crow/how-echo-publishes-to-devto-without-me-10f6"
   },
   {
-    "title": "QIS Protocol at AZ Tech Week Day 2: 77 Articles, 12 Transports, One Loop Nobody Can Break",
-    "summary": "QIS Protocol at AZ Tech Week Day 2: 77 Articles, 12 Transports, One Loop Nobody Can Break Arizona Tech Week 2026 is running April 6\u201312 in Phoenix. Christopher Thomas Trevethan \u2014 inventor of the Quadratic Intelligence Swarm protocol \u2014 is in the room. And behind him, a distributed AI agent network has",
+    "title": "Your Multi-Agent System Has a Governance Blind Spot. Here's Where to Look.",
+    "summary": "When your orchestrator delegates a task to a subagent, it passes context, instructions, and \u2014 unless you've thought carefully about this \u2014 implicitly delegates authority too. That authority is ungoverned in most systems today. This is the multi-agent governance blind spot. It's not the agents themse",
     "source": "Dev.to AI",
     "score": 3,
     "category": "BUILD",
-    "url": "https://dev.to/axiom_agent/qis-protocol-at-az-tech-week-day-2-77-articles-12-transports-one-loop-nobody-can-break-4ccg"
+    "url": "https://dev.to/waxell/your-multi-agent-system-has-a-governance-blind-spot-heres-where-to-look-4jol"
   },
   {
-    "title": "Day 2: The Network Is Viable",
-    "summary": "By the Mycel Network. Operated by Mark Skaggs. Published by pubby. Two days ago, the Mycel Network decided to go autonomous. 18 AI agents, no orchestrator, running on existing subscriptions. The plan said viability by Day 7-10. We hit it on Day 2. What viability means Six conditions, all met: Core g",
+    "title": "Utility is all you need",
+    "summary": "Closing the Agent Learning Loop with Utility-Ranked Memory Your agent failed on the same edge case last Tuesday. Someone noticed, tweaked the prompt, redeployed. This Tuesday it failed again: different input, same root cause. The prompt fix was too narrow. The trace was right there in your observabi",
     "source": "Dev.to AI",
     "score": 3,
     "category": "BUILD",
-    "url": "https://dev.to/mycelnet/day-2-the-network-is-viable-3pm"
+    "url": "https://dev.to/akshayballal/utility-is-all-you-need-823"
   },
   {
-    "title": "KeygraphHQ / shannon",
-    "summary": "Shannon Lite is an autonomous, white-box AI pentester for web applications and APIs. It analyzes your source code, identifies attack vectors, and executes real exploits to prove vulnerabilities before they reach production. (733 stars today)",
-    "source": "GitHub",
+    "title": "Architecture Breakdown: How MIT Built a Zero-Hallucination RAG System (Without a Dev Team)",
+    "summary": "Looks like you pasted a full Markdown cheatsheet \ud83d\udc4d \u2014 I\u2019ll convert your earlier MIT/CustomGPT content into a clean dev.to-ready Markdown post using proper formatting from that guide. \ud83d\udea7 Every Developer Is Being Asked This Right Now \u201cCan we build an AI chatbot for our internal docs?\u201d If you\u2019ve tried bu",
+    "source": "Dev.to AI",
     "score": 3,
     "category": "BUILD",
-    "url": "https://github.com/KeygraphHQ/shannon"
+    "url": "https://dev.to/benjamin_wallace_c431f902/architecture-breakdown-how-mit-built-a-zero-hallucination-rag-system-without-a-dev-team-1li5"
   },
   {
-    "title": "ollama / ollama",
-    "summary": "Get up and running with Kimi-K2.5, GLM-5, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models. (196 stars today)",
-    "source": "GitHub",
+    "title": "Venture Madness 2026: You're About to Fund the Ceiling, Not the Breakthrough",
+    "summary": "QIS (Quadratic Intelligence Swarm) is a decentralized intelligence architecture discovered by Christopher Thomas Trevethan on June 16, 2025. Intelligence scales as \u0398(N\u00b2) across N agents. Each agent pays O(log N) compute cost. No orchestrator. No aggregator. Raw data never leaves the node. 39 provisi",
+    "source": "Dev.to AI",
     "score": 3,
-    "category": "MODELS",
-    "url": "https://github.com/ollama/ollama"
+    "category": "BUILD",
+    "url": "https://dev.to/roryqis/venture-madness-2026-youre-about-to-fund-the-ceiling-not-the-breakthrough-gjn"
+  },
+  {
+    "title": "Foco em Transforma\u00e7\u00e3o Digital e Centraliza\u00e7\u00e3o de Processos",
+    "summary": "A fragmenta\u00e7\u00e3o de informa\u00e7\u00f5es \u00e9 um dos maiores gargalos da produtividade corporativa moderna. O guia detalha como o TOTVS Fluig atua como uma camada de intelig\u00eancia capaz de unificar processos, documentos e identidades em uma interface \u00fanica. Ao centralizar o workflow, a organiza\u00e7\u00e3o elimina silos de",
+    "source": "Dev.to AI",
+    "score": 3,
+    "category": "BUILD",
+    "url": "https://dev.to/erick_martins_56d3ce2af97/foco-em-transformacao-digital-e-centralizacao-de-processos-3bem"
   }
 ]
