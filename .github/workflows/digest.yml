@@ -1,0 +1,40 @@
+name: Daily AI Digest
+
+on:
+  schedule:
+    # Once daily at 1:00 PM UTC = 7:00 AM Mountain Time
+    - cron: '0 13 * * *'
+  workflow_dispatch: # Manual trigger from GitHub UI
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Restore article database
+        uses: actions/cache@v4
+        with:
+          path: data/articles.db
+          key: articles-db-${{ github.run_number }}
+          restore-keys: |
+            articles-db-
+
+      - name: Create data directory
+        run: mkdir -p data logs
+
+      - name: Run digest pipeline
+        env:
+          ULTRAPLAN_NTFY_TOPIC: ${{ secrets.ULTRAPLAN_NTFY_TOPIC }}
+          ULTRAPLAN_DELIVERY: ntfy
+        run: python -m src.main

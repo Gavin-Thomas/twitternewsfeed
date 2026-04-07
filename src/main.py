@@ -1,19 +1,21 @@
 """Main orchestrator: fetch -> dedup -> score -> format -> send."""
 import logging
+import os
 import sys
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
 
 from src.config import (
-    DB_PATH, RECIPIENTS, LOG_DIR, RETENTION_DAYS,
-    MIN_SCORE_TOP, MIN_SCORE_NOTABLE,
+    DB_PATH, RECIPIENTS, NTFY_TOPIC, LOG_DIR, RETENTION_DAYS,
+    MIN_SCORE_NOTABLE, DELIVERY_MODE, MAX_VIDEO_SCRIPTS,
 )
 from src.sources import fetch_all_sources
 from src.scorer import score_article, categorize, generate_video_hook
 from src.store import Article, ArticleStore
 from src.formatter import format_digest
-from src.imessage import send_imessage
+from src.scripts import generate_scripts_for_digest
+from src.notify import send_ntfy_long
 
 
 def setup_logging() -> None:
@@ -59,62 +61,102 @@ def process_articles(raw_articles: list[Article], store: ArticleStore) -> list[A
     return processed
 
 
+def _send_imessage(message: str, recipients: list[str], logger: logging.Logger) -> bool:
+    """Send via iMessage (local Mac only)."""
+    from src.imessage import send_imessage
+    all_ok = True
+    for recipient in recipients:
+        logger.info("iMessage -> %s", recipient)
+        if not send_imessage(message, recipient):
+            logger.error("iMessage failed for %s", recipient)
+            all_ok = False
+    return all_ok
+
+
+def _send_ntfy(message: str, topic: str, logger: logging.Logger) -> bool:
+    """Send via ntfy.sh (works from anywhere)."""
+    now = datetime.now().strftime("%a %b %-d, %-I:%M %p")
+    return send_ntfy_long(message, topic, title=f"AI Digest — {now}")
+
+
 def run_digest(
     db_path: Optional[Path] = None,
     recipients: Optional[list[str]] = None,
+    ntfy_topic: Optional[str] = None,
+    delivery: Optional[str] = None,
 ) -> bool:
-    """Run the full digest pipeline. Returns True if digest was sent to all recipients."""
+    """Run the full digest pipeline."""
     logger = logging.getLogger(__name__)
 
     if db_path is None:
         db_path = DB_PATH
     if recipients is None:
         recipients = RECIPIENTS
-
-    if not recipients:
-        logger.error("No recipients configured. Set ULTRAPLAN_PHONE and/or ULTRAPLAN_EMAIL in .env")
-        return False
+    if ntfy_topic is None:
+        ntfy_topic = NTFY_TOPIC
+    if delivery is None:
+        delivery = DELIVERY_MODE
 
     store = ArticleStore(db_path)
 
     try:
+        # Fetch
         logger.info("Fetching articles from all sources...")
         raw_articles = fetch_all_sources()
         logger.info("Fetched %d raw articles", len(raw_articles))
 
+        # Process
         new_articles = process_articles(raw_articles, store)
         logger.info("After dedup: %d new articles", len(new_articles))
 
+        # Get unsent
         unsent = store.get_unsent(min_score=MIN_SCORE_NOTABLE)
-        logger.info("Total unsent articles above threshold: %d", len(unsent))
+        logger.info("Unsent above threshold: %d", len(unsent))
 
+        # Format digest
         now = datetime.now()
         digest = format_digest(unsent, now=now)
-        logger.info("Digest formatted (%d chars)", len(digest))
 
-        # Send to ALL recipients
-        all_success = True
-        for recipient in recipients:
-            logger.info("Sending to %s...", recipient)
-            ok = send_imessage(digest, recipient)
-            if ok:
-                logger.info("Sent to %s", recipient)
+        # Generate video scripts for top stories
+        scripts = generate_scripts_for_digest(unsent, max_scripts=MAX_VIDEO_SCRIPTS)
+
+        # Combine digest + scripts
+        full_message = digest
+        if scripts:
+            full_message += "\n" + scripts
+
+        logger.info("Full message: %d chars", len(full_message))
+
+        # Deliver
+        success = True
+
+        if delivery in ("ntfy", "both") and ntfy_topic:
+            logger.info("Sending via ntfy...")
+            if not _send_ntfy(full_message, ntfy_topic, logger):
+                success = False
+
+        if delivery in ("imessage", "both") and recipients:
+            # Only attempt iMessage if not in GitHub Actions (no Mac GUI there)
+            if os.environ.get("GITHUB_ACTIONS"):
+                logger.info("Skipping iMessage (running in GitHub Actions)")
             else:
-                logger.error("Failed to send to %s", recipient)
-                all_success = False
+                logger.info("Sending via iMessage...")
+                if not _send_imessage(full_message, recipients, logger):
+                    success = False
 
-        if all_success:
+        if success:
             urls = [a.url for a in unsent]
             store.mark_sent(urls)
-            logger.info("Digest sent to %d recipients, %d articles marked as sent", len(recipients), len(urls))
+            logger.info("Delivered, %d articles marked as sent", len(urls))
         else:
-            logger.error("Some recipients failed — articles NOT marked as sent (will retry next run)")
+            logger.error("Delivery failed — articles NOT marked as sent (will retry)")
 
+        # Cleanup
         removed = store.cleanup(days=RETENTION_DAYS)
         if removed:
             logger.info("Cleaned up %d old articles", removed)
 
-        return all_success
+        return success
 
     except Exception as e:
         logger.exception("Digest pipeline failed: %s", e)

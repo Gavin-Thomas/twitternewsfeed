@@ -14,22 +14,29 @@ if _env_path.exists():
             key, _, value = line.partition("=")
             os.environ.setdefault(key.strip(), value.strip())
 
-# --- User Configuration (from .env) ---
+# --- User Configuration (from .env or GitHub Secrets) ---
 PHONE_NUMBER = os.environ.get("ULTRAPLAN_PHONE", "")
 FALLBACK_EMAIL = os.environ.get("ULTRAPLAN_EMAIL", "")
+NTFY_TOPIC = os.environ.get("ULTRAPLAN_NTFY_TOPIC", "")
 RECIPIENTS = [r for r in [PHONE_NUMBER, FALLBACK_EMAIL] if r]
 DB_PATH = PROJECT_DIR / "data" / "articles.db"
 LOG_DIR = PROJECT_DIR / "logs"
 
+# --- Delivery Mode ---
+# "ntfy" = push notification (works from cloud / GitHub Actions)
+# "imessage" = local Mac only (requires Messages.app)
+# "both" = try both
+DELIVERY_MODE = os.environ.get("ULTRAPLAN_DELIVERY", "both")
+
 # --- RSS Feeds ---
-# Niche: practical AI automation & tool building (Nate Herk / Liam Ottley / Nick Saraev style)
+# Niche: practical AI automation & tool building (Nate Herk style)
 RSS_FEEDS = {
-    # Tier 1: Practical builders who actually ship AI automations
+    # Tier 1: Practical builders who ship AI automations
     "Simon Willison": "https://simonwillison.net/atom/everything/",
     "LangChain Blog": "https://blog.langchain.dev/rss/",
     "Anthropic Blog": "https://raw.githubusercontent.com/taobojlen/anthropic-rss-feed/main/anthropic_news_rss.xml",
 
-    # Tier 2: Tool & model launches (filtered by scoring)
+    # Tier 2: Tool & model launches
     "Hugging Face": "https://huggingface.co/blog/feed.xml",
     "Google AI Blog": "https://blog.google/technology/ai/rss/",
 
@@ -46,15 +53,15 @@ RSS_FEEDS = {
 HN_API_URL = "https://hn.algolia.com/api/v1/search_by_date"
 HN_QUERIES = [
     "Claude Code",
+    "Codex CLI",
     "MCP server",
     "AI automation",
-    "AI agent",
-    "n8n AI",
-    "Make.com AI",
-    "Vapi voice",
-    "AI chatbot build",
+    "AI agent build",
+    "Vapi voice agent",
+    "AI chatbot",
     "NotebookLM",
     "Cursor AI",
+    "open source LLM tool",
 ]
 HN_HITS_PER_PAGE = 20
 HN_MIN_POINTS = 15
@@ -63,34 +70,31 @@ HN_MIN_POINTS = 15
 GITHUB_TRENDING_URL = "https://github.com/trending?since=daily"
 
 # --- Scoring Keywords ---
-# Weighted for: "Would Nate Herk / Liam Ottley / Nick Saraev make a video about this?"
+# Weighted for: "Would Nate Herk make a video about this? Can I demo it on screen?"
 
 IMPACT_KEYWORDS = {
     # Product launches people build with
     "launches": 2, "releases": 2, "open-source": 3, "open source": 3,
     "now available": 2, "announces": 1,
     # THE tools — instant high score
-    "mcp": 4, "mcp server": 4, "claude code": 4,
-    "n8n": 4, "make.com": 4, "zapier": 3,
+    "mcp": 4, "mcp server": 4, "claude code": 4, "codex": 4,
     "vapi": 4, "voiceflow": 4, "bland ai": 4,
-    "gohighlevel": 3, "highlevel": 3,
     "notebooklm": 3, "notebook lm": 3,
     # Integration / API signals
     "api": 2, "sdk": 2, "integration": 2, "webhook": 2, "connector": 2,
     # Business automation
     "saas": 2, "client": 2, "agency": 3, "ai agency": 4,
-    "revenue": 2, "monetize": 2, "productize": 2,
 }
 
 DEMO_KEYWORDS = {
     # "Can I screen-record myself building this?"
     "tutorial": 3, "how to": 3, "step by step": 3, "walkthrough": 3,
     "build": 2, "built": 2, "automate": 3, "automation": 3,
-    "workflow": 3, "pipeline": 2, "template": 2, "blueprint": 2,
+    "workflow": 3, "pipeline": 2, "template": 2,
     "agent": 3, "chatbot": 3, "voice agent": 4, "voice ai": 3,
-    "no-code": 3, "low-code": 2, "drag and drop": 2,
+    "no-code": 3, "low-code": 2,
     "scrape": 2, "scraping": 2, "lead gen": 3, "outreach": 2,
-    "prompt": 1, "chain": 2, "rag": 2,
+    "prompt": 1, "rag": 2,
 }
 
 MODEL_KEYWORDS = {
@@ -100,8 +104,7 @@ MODEL_KEYWORDS = {
     "gemini": 2, "gemini 2": 3, "gemini flash": 2,
     "llama": 1, "deepseek": 2,
     # Coding/building tools
-    "cursor": 3, "windsurf": 2, "copilot": 2, "devin": 2,
-    "replit": 2, "bolt": 2, "lovable": 2, "v0": 2,
+    "cursor": 3, "windsurf": 2, "copilot": 2, "codex": 3,
 }
 
 MAX_SCORE = 10
@@ -113,7 +116,7 @@ MIN_SCORE_NOTABLE = 3
 CATEGORIES = {
     "BUILD": [
         "automation", "workflow", "agent", "chatbot", "voice agent",
-        "n8n", "make.com", "zapier", "vapi", "voiceflow", "bland ai",
+        "vapi", "voiceflow", "bland ai", "zapier", "make.com",
         "mcp", "api", "webhook", "integration", "scrape", "pipeline",
         "langchain", "llamaindex", "crewai", "autogen",
     ],
@@ -122,8 +125,8 @@ CATEGORIES = {
         "artifacts", "projects", "claude api",
     ],
     "TOOLS": [
-        "cursor", "windsurf", "copilot", "notebooklm", "notebook lm",
-        "replit", "v0", "bolt", "lovable", "devin", "gohighlevel",
+        "cursor", "windsurf", "copilot", "codex", "notebooklm", "notebook lm",
+        "devin", "github copilot", "aider", "continue",
     ],
     "BIZ": [
         "agency", "ai agency", "client", "saas", "revenue", "pricing",
@@ -146,6 +149,7 @@ RETENTION_DAYS = 30
 # --- Digest ---
 MAX_TOP_STORIES = 5
 MAX_NOTABLE_STORIES = 5
+MAX_VIDEO_SCRIPTS = 3
 
 # --- HTTP ---
 REQUEST_TIMEOUT = 15

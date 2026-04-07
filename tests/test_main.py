@@ -1,7 +1,6 @@
 """Tests for the main orchestrator."""
 import unittest
 from unittest.mock import patch
-from datetime import datetime
 import tempfile
 import os
 from pathlib import Path
@@ -53,67 +52,76 @@ class TestProcessArticles(unittest.TestCase):
 
 class TestRunDigest(unittest.TestCase):
 
-    @patch("src.main.send_imessage")
+    @patch("src.main.send_ntfy_long")
     @patch("src.main.fetch_all_sources")
-    def test_multi_recipient(self, mock_fetch, mock_send):
+    def test_ntfy_delivery(self, mock_fetch, mock_ntfy):
         mock_fetch.return_value = [
-            Article(url="https://a.com/1", title="Anthropic Launches New SDK",
-                    summary="Open-source agent SDK", source="TC"),
+            Article(url="https://a.com/1", title="New MCP Server for Claude Code",
+                    summary="Build automations with Claude", source="TC"),
         ]
-        mock_send.return_value = True
+        mock_ntfy.return_value = True
 
         with tempfile.NamedTemporaryFile(suffix=".db", delete=False) as f:
             db_path = Path(f.name)
 
         try:
-            result = run_digest(db_path=db_path, recipients=["+15551234567", "test@example.com"])
+            result = run_digest(
+                db_path=db_path,
+                recipients=[],
+                ntfy_topic="test-topic",
+                delivery="ntfy",
+            )
             self.assertTrue(result)
-            self.assertEqual(mock_send.call_count, 2)
-            sent_msg = mock_send.call_args_list[0][0][0]
+            mock_ntfy.assert_called_once()
+            sent_msg = mock_ntfy.call_args[0][0]
             self.assertIn("AI DIGEST", sent_msg)
         finally:
             os.unlink(db_path)
 
-    @patch("src.main.send_imessage")
+    @patch("src.main.send_ntfy_long")
     @patch("src.main.fetch_all_sources")
-    def test_no_stories_still_sends(self, mock_fetch, mock_send):
+    def test_no_stories_still_sends(self, mock_fetch, mock_ntfy):
         mock_fetch.return_value = []
-        mock_send.return_value = True
+        mock_ntfy.return_value = True
 
         with tempfile.NamedTemporaryFile(suffix=".db", delete=False) as f:
             db_path = Path(f.name)
 
         try:
-            result = run_digest(db_path=db_path, recipients=["+15551234567"])
+            result = run_digest(
+                db_path=db_path,
+                ntfy_topic="test-topic",
+                delivery="ntfy",
+            )
             self.assertTrue(result)
-            sent_msg = mock_send.call_args[0][0]
+            sent_msg = mock_ntfy.call_args[0][0]
             self.assertIn("No notable stories", sent_msg)
         finally:
             os.unlink(db_path)
 
-    @patch("src.main.send_imessage")
+    @patch("src.main.send_ntfy_long")
     @patch("src.main.fetch_all_sources")
-    def test_send_failure_keeps_unsent(self, mock_fetch, mock_send):
+    def test_video_scripts_included(self, mock_fetch, mock_ntfy):
         mock_fetch.return_value = [
-            Article(url="https://a.com/1", title="Story", summary="S", source="TC"),
+            Article(url="https://a.com/1", title="New MCP Server for Claude Code Automation",
+                    summary="Build AI automations with this open-source MCP tool",
+                    source="HuggingFace"),
         ]
-        mock_send.return_value = False
+        mock_ntfy.return_value = True
 
         with tempfile.NamedTemporaryFile(suffix=".db", delete=False) as f:
             db_path = Path(f.name)
 
         try:
-            result = run_digest(db_path=db_path, recipients=["+15551234567"])
-            self.assertFalse(result)
-        finally:
-            os.unlink(db_path)
-
-    def test_no_recipients_fails(self):
-        with tempfile.NamedTemporaryFile(suffix=".db", delete=False) as f:
-            db_path = Path(f.name)
-        try:
-            result = run_digest(db_path=db_path, recipients=[])
-            self.assertFalse(result)
+            run_digest(
+                db_path=db_path,
+                ntfy_topic="test-topic",
+                delivery="ntfy",
+            )
+            sent_msg = mock_ntfy.call_args[0][0]
+            self.assertIn("VIDEO SCRIPTS", sent_msg)
+            self.assertIn("HOOK", sent_msg)
+            self.assertIn("DEMO", sent_msg)
         finally:
             os.unlink(db_path)
 
