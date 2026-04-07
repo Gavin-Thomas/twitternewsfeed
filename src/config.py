@@ -22,82 +22,99 @@ DB_PATH = PROJECT_DIR / "data" / "articles.db"
 LOG_DIR = PROJECT_DIR / "logs"
 
 # --- RSS Feeds ---
-# Practical AI automation, tools, and implementation — not generic news
+# Niche: practical AI automation & tool building (Nate Herk / Liam Ottley / Nick Saraev style)
 RSS_FEEDS = {
-    # Tier 1: Practical AI builders & automation
+    # Tier 1: Practical builders who actually ship AI automations
     "Simon Willison": "https://simonwillison.net/atom/everything/",
-    "Hugging Face": "https://huggingface.co/blog/feed.xml",
     "LangChain Blog": "https://blog.langchain.dev/rss/",
     "Anthropic Blog": "https://raw.githubusercontent.com/taobojlen/anthropic-rss-feed/main/anthropic_news_rss.xml",
 
-    # Tier 2: Major AI news (filtered by scoring to practical stuff)
+    # Tier 2: Tool & model launches (filtered by scoring)
+    "Hugging Face": "https://huggingface.co/blog/feed.xml",
+    "Google AI Blog": "https://blog.google/technology/ai/rss/",
+
+    # Tier 3: Broad AI news (scoring filters out fluff)
     "TechCrunch AI": "https://techcrunch.com/category/artificial-intelligence/feed/",
     "The Verge AI": "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml",
     "Ars Technica AI": "https://arstechnica.com/ai/feed/",
 
-    # Tier 3: Google/Gemini ecosystem
-    "Google AI Blog": "https://blog.google/technology/ai/rss/",
+    # Tier 4: Dev community tutorials
+    "Dev.to AI": "https://dev.to/feed/tag/ai",
 }
 
 # --- HackerNews ---
-HN_API_URL = "https://hn.algolia.com/api/v1/search_by_date"  # search_by_date = recent first
+HN_API_URL = "https://hn.algolia.com/api/v1/search_by_date"
 HN_QUERIES = [
     "Claude Code",
     "MCP server",
     "AI automation",
-    "AI agent workflow",
+    "AI agent",
+    "n8n AI",
+    "Make.com AI",
+    "Vapi voice",
+    "AI chatbot build",
     "NotebookLM",
-    "Gemini API",
-    "LLM tool",
+    "Cursor AI",
 ]
 HN_HITS_PER_PAGE = 20
-HN_MIN_POINTS = 20  # Lower bar since we're filtering by recency now
+HN_MIN_POINTS = 15
 
 # --- GitHub Trending ---
 GITHUB_TRENDING_URL = "https://github.com/trending?since=daily"
 
 # --- Scoring Keywords ---
-# Weighted for "can I make a video showing how to DO this?"
+# Weighted for: "Would Nate Herk / Liam Ottley / Nick Saraev make a video about this?"
 
 IMPACT_KEYWORDS = {
-    # Product launches & releases
-    "launches": 3, "releases": 3, "announces": 2, "introduces": 2,
-    "open-source": 3, "open source": 3, "now available": 2,
-    # Practical automation signals
-    "mcp": 4, "mcp server": 4, "claude code": 4, "notebooklm": 4,
-    "n8n": 3, "make.com": 3, "zapier": 2, "shortcuts": 2,
-    "api": 2, "sdk": 2, "integration": 2, "connector": 2,
+    # Product launches people build with
+    "launches": 2, "releases": 2, "open-source": 3, "open source": 3,
+    "now available": 2, "announces": 1,
+    # THE tools — instant high score
+    "mcp": 4, "mcp server": 4, "claude code": 4,
+    "n8n": 4, "make.com": 4, "zapier": 3,
+    "vapi": 4, "voiceflow": 4, "bland ai": 4,
+    "gohighlevel": 3, "highlevel": 3,
+    "notebooklm": 3, "notebook lm": 3,
+    # Integration / API signals
+    "api": 2, "sdk": 2, "integration": 2, "webhook": 2, "connector": 2,
+    # Business automation
+    "saas": 2, "client": 2, "agency": 3, "ai agency": 4,
+    "revenue": 2, "monetize": 2, "productize": 2,
 }
 
 DEMO_KEYWORDS = {
-    # "Can I show this on screen?"
+    # "Can I screen-record myself building this?"
     "tutorial": 3, "how to": 3, "step by step": 3, "walkthrough": 3,
     "build": 2, "built": 2, "automate": 3, "automation": 3,
-    "workflow": 3, "pipeline": 2, "template": 2,
-    "tool": 2, "agent": 3, "no-code": 3, "low-code": 2,
-    "framework": 2, "library": 2, "plugin": 2, "extension": 2,
-    "prompt": 2, "chain": 2, "rag": 2, "fine-tune": 2,
+    "workflow": 3, "pipeline": 2, "template": 2, "blueprint": 2,
+    "agent": 3, "chatbot": 3, "voice agent": 4, "voice ai": 3,
+    "no-code": 3, "low-code": 2, "drag and drop": 2,
+    "scrape": 2, "scraping": 2, "lead gen": 3, "outreach": 2,
+    "prompt": 1, "chain": 2, "rag": 2,
 }
 
 MODEL_KEYWORDS = {
-    # New models = instant video topic
+    # New models = new capabilities to demo
     "gpt-4o": 2, "gpt-5": 3, "o1": 2, "o3": 2, "o4": 3,
-    "claude": 2, "claude 4": 3, "opus": 2, "sonnet": 2, "haiku": 1,
+    "claude": 2, "claude 4": 3, "opus": 2, "sonnet": 2,
     "gemini": 2, "gemini 2": 3, "gemini flash": 2,
-    "llama": 2, "llama 4": 3, "mistral": 1, "deepseek": 2,
+    "llama": 1, "deepseek": 2,
+    # Coding/building tools
     "cursor": 3, "windsurf": 2, "copilot": 2, "devin": 2,
+    "replit": 2, "bolt": 2, "lovable": 2, "v0": 2,
 }
 
 MAX_SCORE = 10
 
-MIN_SCORE_TOP = 5      # Lowered — more practical content hits top
+MIN_SCORE_TOP = 5
 MIN_SCORE_NOTABLE = 3
 
 # --- Categories ---
 CATEGORIES = {
-    "AI-AUTO": [
-        "automation", "workflow", "agent", "tool", "api", "no-code", "sdk",
-        "framework", "mcp", "n8n", "make.com", "zapier", "pipeline",
+    "BUILD": [
+        "automation", "workflow", "agent", "chatbot", "voice agent",
+        "n8n", "make.com", "zapier", "vapi", "voiceflow", "bland ai",
+        "mcp", "api", "webhook", "integration", "scrape", "pipeline",
         "langchain", "llamaindex", "crewai", "autogen",
     ],
     "CLAUDE": [
@@ -106,15 +123,19 @@ CATEGORIES = {
     ],
     "TOOLS": [
         "cursor", "windsurf", "copilot", "notebooklm", "notebook lm",
-        "replit", "v0", "bolt", "lovable", "devin",
+        "replit", "v0", "bolt", "lovable", "devin", "gohighlevel",
+    ],
+    "BIZ": [
+        "agency", "ai agency", "client", "saas", "revenue", "pricing",
+        "monetize", "productize", "lead gen", "outreach", "freelance",
     ],
     "MODELS": [
-        "gpt", "gemini", "llama", "mistral", "deepseek", "phi", "qwen",
-        "open-source model", "fine-tune", "weights", "benchmark",
+        "gpt", "gemini", "llama", "mistral", "deepseek",
+        "open-source model", "fine-tune", "weights",
     ],
     "HEALTH": [
         "healthcare", "biotech", "fda", "clinical", "medical",
-        "health tech", "drug", "alphafold", "health ai",
+        "health tech", "drug", "health ai",
     ],
 }
 

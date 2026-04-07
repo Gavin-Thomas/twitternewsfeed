@@ -6,10 +6,10 @@ from src.scorer import score_article, categorize, generate_video_hook
 
 class TestScoreArticle(unittest.TestCase):
 
-    def test_high_impact_story(self):
+    def test_high_impact_automation_story(self):
         score = score_article(
-            title="Anthropic Launches Open-Source Agent SDK",
-            summary="New SDK enables developers to build Claude-powered agents with full API access",
+            title="New MCP Server Lets Claude Code Connect to n8n Workflows",
+            summary="Build AI automations with this open-source MCP integration",
         )
         self.assertGreaterEqual(score, 7)
 
@@ -23,14 +23,14 @@ class TestScoreArticle(unittest.TestCase):
     def test_model_release(self):
         score = score_article(
             title="GPT-5 Released by OpenAI",
-            summary="OpenAI releases GPT-5 with breakthrough reasoning capabilities",
+            summary="OpenAI releases GPT-5 with new API capabilities",
         )
-        self.assertGreaterEqual(score, 5)
+        self.assertGreaterEqual(score, 4)
 
     def test_score_capped_at_max(self):
         score = score_article(
-            title="OpenAI Launches GPT-5 Open-Source Breakthrough API SDK Agent Tool",
-            summary="Billion dollar funding breakthrough releases automation workflow",
+            title="Launch: Claude Code MCP n8n Vapi Voice Agent Automation Tool",
+            summary="Open-source SDK API workflow chatbot integration",
         )
         self.assertLessEqual(score, 10)
 
@@ -48,6 +48,13 @@ class TestScoreArticle(unittest.TestCase):
         score_high = score_article(title="Some AI Thing", summary="Details", hn_points=500)
         self.assertGreater(score_high, score_low)
 
+    def test_voice_agent_scores_high(self):
+        score = score_article(
+            title="Build a Vapi Voice Agent for Client Intake",
+            summary="Step by step tutorial for building voice AI automation",
+        )
+        self.assertGreaterEqual(score, 6)
+
 
 class TestCategorize(unittest.TestCase):
 
@@ -59,20 +66,21 @@ class TestCategorize(unittest.TestCase):
         cat = categorize("AlphaFold Drug Discovery", "FDA approves AI clinical trial tool")
         self.assertEqual(cat, "HEALTH")
 
-    def test_automation_category(self):
+    def test_build_category(self):
         cat = categorize("New AI Workflow Tool", "Automate your workflow with this agent SDK")
-        self.assertEqual(cat, "AI-AUTO")
+        self.assertEqual(cat, "BUILD")
 
     def test_no_category(self):
         cat = categorize("Random News About Nothing", "This is unrelated content")
         self.assertEqual(cat, "")
 
-    def test_first_match_priority(self):
-        cat = categorize(
-            "Claude Code Agent Automation",
-            "Anthropic workflow tool for developers",
-        )
-        self.assertIn(cat, ["CLAUDE", "AI-AUTO"])
+    def test_tools_category(self):
+        cat = categorize("Cursor Gets AI Code Completion", "NotebookLM integration for developers")
+        self.assertEqual(cat, "TOOLS")
+
+    def test_biz_category(self):
+        cat = categorize("How to Start an AI Agency", "Client acquisition and pricing strategies")
+        self.assertEqual(cat, "BIZ")
 
 
 class TestVideoHook(unittest.TestCase):
@@ -86,13 +94,17 @@ class TestVideoHook(unittest.TestCase):
         hook = generate_video_hook("Boring Update", "Minor patch notes", score=2)
         self.assertEqual(hook, "")
 
-    def test_tool_hook(self):
-        hook = generate_video_hook("New AI Framework Drops", "Build agents with this SDK")
-        self.assertIn("built something", hook)
+    def test_automation_hook(self):
+        hook = generate_video_hook("New n8n AI Automation Template", "Workflow for lead gen")
+        self.assertIn("automation", hook.lower())
 
-    def test_model_hook(self):
-        hook = generate_video_hook("Claude Gets Major Update", "New capabilities")
-        self.assertIn("model", hook)
+    def test_voice_agent_hook(self):
+        hook = generate_video_hook("Vapi Voice Agent Tutorial", "Build a voice AI for clients")
+        self.assertIn("voice agent", hook.lower())
+
+    def test_mcp_hook(self):
+        hook = generate_video_hook("New MCP Server for Databases", "Connect Claude Code to SQL")
+        self.assertIn("connected", hook.lower())
 
 
 if __name__ == "__main__":

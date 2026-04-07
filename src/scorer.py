@@ -73,7 +73,7 @@ def categorize(title: str, summary: str) -> str:
 
 
 def generate_video_hook(title: str, summary: str, score: int = 5) -> str:
-    """Generate a short video hook suggestion for high-scoring stories.
+    """Generate a short video hook for AI automation YouTube content.
 
     Returns empty string for stories scoring below 4.
     """
@@ -82,27 +82,39 @@ def generate_video_hook(title: str, summary: str, score: int = 5) -> str:
 
     text = f"{title} {summary}".lower()
 
-    if any(kw in text for kw in ["launch", "release", "announce"]):
+    if any(kw in text for kw in ["vapi", "voiceflow", "bland ai", "voice agent", "voice ai"]):
+        name = _extract_product_name(title)
+        return f'"I built an AI voice agent with {name} — full walkthrough"'
+
+    if any(kw in text for kw in ["n8n", "make.com", "zapier", "automation", "workflow"]):
+        name = _extract_product_name(title)
+        return f'"This AI automation makes money while you sleep"'
+
+    if any(kw in text for kw in ["mcp", "claude code"]):
+        name = _extract_product_name(title)
+        return f'"I connected {name} to everything — here\'s how"'
+
+    if any(kw in text for kw in ["chatbot", "agent", "assistant"]):
+        return '"Build this AI agent in 15 minutes (no code)"'
+
+    if any(kw in text for kw in ["launch", "release", "announce", "new"]):
         name = _extract_product_name(title)
         return f'"I tested {name} so you don\'t have to"'
 
-    if any(kw in text for kw in ["tool", "sdk", "framework", "library"]):
-        name = _extract_product_name(title)
-        return f'"I built something with {name} in 10 minutes"'
-
     if any(kw in text for kw in ["open-source", "open source", "free"]):
-        return '"This free AI tool changes everything"'
+        return '"This free AI tool replaces a $500/mo subscription"'
 
-    if any(kw in text for kw in ["agent", "automation", "workflow"]):
-        return '"I automated this with AI agents"'
+    if any(kw in text for kw in ["agency", "client", "saas", "revenue"]):
+        return '"How to sell this AI automation to clients"'
 
-    if any(kw in text for kw in ["gpt", "claude", "gemini", "llama"]):
-        return '"The new model everyone is talking about"'
+    if any(kw in text for kw in ["cursor", "bolt", "lovable", "v0", "replit"]):
+        name = _extract_product_name(title)
+        return f'"I built a full app with {name} in one sitting"'
 
-    if any(kw in text for kw in ["breakthrough", "state-of-the-art", "sota"]):
-        return '"This AI breakthrough is insane"'
+    if any(kw in text for kw in ["gpt", "claude", "gemini"]):
+        return '"The new model changes everything for automations"'
 
-    return f'"{title[:50]}... here\'s what you need to know"'
+    return f'"How to use {title[:40]} for AI automation"'
 
 
 def _extract_product_name(title: str) -> str:
