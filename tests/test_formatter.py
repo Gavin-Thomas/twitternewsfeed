@@ -22,6 +22,7 @@ class TestFormatArticleLine(unittest.TestCase):
         self.assertIn("NEW", line)
         self.assertIn("CLAUDE", line)
         self.assertIn("Anthropic Launches Agent SDK", line)
+        self.assertIn("https://example.com/1", line)
 
     def test_non_launch_no_new_tag(self):
         a = Article(

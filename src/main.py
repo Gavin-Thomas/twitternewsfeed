@@ -211,8 +211,103 @@ def _export_articles(articles: list[Article], path: Path, logger: logging.Logger
     logger.info("Exported %d articles to %s", len(data), path)
 
 
+def _generate_video_breakdown(article: Article) -> str:
+    """Generate a detailed video breakdown for a single article."""
+    hook = generate_video_hook(article.title, article.summary, article.score)
+    text = f"{article.title} {article.summary}".lower()
+
+    # Determine video format
+    if any(kw in text for kw in ["tutorial", "how to", "build", "walkthrough", "step by step"]):
+        video_format = "Tutorial / Walkthrough"
+        structure = (
+            "1. Show the problem this solves (30s)\n"
+            "2. Quick demo of the end result (30s)\n"
+            "3. Step-by-step build from scratch (5-8 min)\n"
+            "4. Show it working live (1 min)\n"
+            "5. Ideas for extending it / making money with it (1 min)"
+        )
+    elif any(kw in text for kw in ["launch", "release", "introducing", "announcing", "just shipped", "now available"]):
+        video_format = "First Look / Review"
+        structure = (
+            "1. What just launched and why it matters (30s)\n"
+            "2. Live demo — show the new features on screen (3-5 min)\n"
+            "3. Compare to what existed before (1 min)\n"
+            "4. Who should use this and how to get started (1 min)\n"
+            "5. Your verdict — is it worth switching to? (30s)"
+        )
+    elif any(kw in text for kw in ["open-source", "open source", "free", "github"]):
+        video_format = "Tool Showcase"
+        structure = (
+            "1. What this tool does in one sentence (15s)\n"
+            "2. Install and setup on screen (1-2 min)\n"
+            "3. Build something real with it (5-7 min)\n"
+            "4. Pros, cons, and who it's for (1 min)\n"
+            "5. Link in description + what to build next (30s)"
+        )
+    elif any(kw in text for kw in ["agent", "automation", "workflow", "voice agent"]):
+        video_format = "Build & Ship"
+        structure = (
+            "1. Hook: show the automation running (15s)\n"
+            "2. The business case — who pays for this (30s)\n"
+            "3. Full build walkthrough on screen (5-8 min)\n"
+            "4. Test it live with real data (1-2 min)\n"
+            "5. How to sell this to clients / productize (1 min)"
+        )
+    else:
+        video_format = "News Breakdown"
+        structure = (
+            "1. What happened and why you should care (30s)\n"
+            "2. Show the product/tool/model on screen (2-3 min)\n"
+            "3. How this affects AI builders and automators (1 min)\n"
+            "4. What you can build or do differently now (1-2 min)\n"
+            "5. Your take and call to action (30s)"
+        )
+
+    # Target audience
+    if any(kw in text for kw in ["agency", "client", "saas", "revenue", "monetize"]):
+        audience = "AI agency owners, freelancers selling AI services"
+    elif any(kw in text for kw in ["developer", "api", "sdk", "code", "build"]):
+        audience = "AI builders, developers, technical creators"
+    else:
+        audience = "AI enthusiasts, automation builders, tech creators"
+
+    # Thumbnail idea
+    if any(kw in text for kw in ["free", "open-source", "open source"]):
+        thumbnail = "Split screen: expensive tool logo with price crossed out vs. this free tool"
+    elif any(kw in text for kw in ["launch", "release", "introducing", "new"]):
+        thumbnail = "Product logo + 'JUST DROPPED' text + your surprised face"
+    elif any(kw in text for kw in ["money", "revenue", "client", "agency"]):
+        thumbnail = "Dollar signs + the tool logo + 'I charge $X for this'"
+    else:
+        thumbnail = "Tool/product screenshot + bold text summarizing the value prop"
+
+    lines = []
+    lines.append(f"YOUTUBE TITLE: {hook}" if hook else f"YOUTUBE TITLE: \"{article.title}\"")
+    lines.append(f"FORMAT: {video_format}")
+    lines.append(f"AUDIENCE: {audience}")
+    lines.append(f"THUMBNAIL IDEA: {thumbnail}")
+    lines.append("")
+    lines.append(f"SOURCE: {article.title}")
+    lines.append(f"  {article.source} | Score: {article.score}/10 | {article.category or 'General'}")
+    lines.append(f"  {article.url}")
+    lines.append("")
+    lines.append(f"WHAT IT IS:")
+    lines.append(f"  {article.summary[:300]}" if article.summary else "  (no summary)")
+    lines.append("")
+    lines.append(f"VIDEO STRUCTURE:")
+    lines.append(structure)
+    lines.append("")
+    lines.append(f"KEY TALKING POINTS:")
+    lines.append(f"  - What makes this different from existing solutions?")
+    lines.append(f"  - Can you demo this live on screen in under 10 minutes?")
+    lines.append(f"  - What's the business angle — who would pay for this?")
+    lines.append(f"  - What's the 'wow moment' viewers will share?")
+
+    return "\n".join(lines)
+
+
 def _send_video_ideas(articles: list[Article], logger: logging.Logger) -> None:
-    """Generate and email video ideas for high-scoring articles."""
+    """Generate and email detailed video ideas for high-scoring articles."""
     top = [a for a in articles if a.score >= 4]
     if not top:
         logger.info("No articles scored 4+ for video ideas")
@@ -223,23 +318,19 @@ def _send_video_ideas(articles: list[Article], logger: logging.Logger) -> None:
         return
 
     now_str = datetime.now().strftime("%a %b %-d")
-    lines = [f"VIDEO IDEAS — {now_str}", ""]
-    lines.append(f"{len(top)} articles scored 4+ for video potential:")
+    lines = [f"AI VIDEO IDEAS — {now_str}", ""]
+    lines.append(f"{len(top)} articles scored 4+ for video potential.")
+    lines.append("Each idea includes a title, structure, and talking points.")
     lines.append("")
+    lines.append("=" * 60)
 
     for i, a in enumerate(top, 1):
-        hook = generate_video_hook(a.title, a.summary, a.score)
-        cat = f" [{a.category}]" if a.category else ""
-        lines.append(f"--- IDEA #{i} (Score: {a.score}/10){cat} ---")
-        lines.append(f"Title: {a.title}")
-        lines.append(f"Source: {a.source}")
-        if hook:
-            lines.append(f"Video Hook: {hook}")
-        lines.append(f"Link: {a.url}")
-        summary = (a.summary or "")[:200]
-        if summary:
-            lines.append(f"Summary: {summary}")
         lines.append("")
+        lines.append(f"IDEA #{i}")
+        lines.append("-" * 40)
+        lines.append(_generate_video_breakdown(a))
+        lines.append("")
+        lines.append("=" * 60)
 
     message = "\n".join(lines)
     if send_email(message, email_to, subject=f"AI Video Ideas — {now_str}"):

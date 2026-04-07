@@ -1,4 +1,4 @@
-"""Format scored articles into an iMessage digest."""
+"""Format scored articles into a digest with clickable links."""
 from datetime import datetime, timezone
 from typing import Optional
 
@@ -49,7 +49,7 @@ def _is_launch(title: str, summary: str) -> bool:
 
 
 def _format_article_line(article: Article) -> str:
-    """Format a single article into digest lines."""
+    """Format a single article into digest lines with link."""
     tags = []
 
     # NEW tag for launches
@@ -69,6 +69,7 @@ def _format_article_line(article: Article) -> str:
     lines = [f"[{article.score}/10]{tag_str} {article.title}{fresh_str}"]
     if article.summary:
         lines.append(f"  {_truncate(article.summary)}")
+    lines.append(f"  {article.url}")
     return "\n".join(lines)
 
 
