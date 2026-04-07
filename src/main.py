@@ -2,6 +2,7 @@
 import json
 import logging
 import os
+import re
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -12,7 +13,7 @@ from src.config import (
     MIN_SCORE_NOTABLE, DELIVERY_MODE,
 )
 from src.sources import fetch_all_sources
-from src.scorer import score_article, categorize
+from src.scorer import score_article, categorize, generate_video_hook
 from src.store import Article, ArticleStore
 from src.formatter import format_digest
 from src.notify import send_ntfy_long, send_email
@@ -37,7 +38,8 @@ def process_articles(raw_articles: list[Article], store: ArticleStore) -> list[A
     """Score, categorize, and deduplicate articles."""
     processed = []
     for article in raw_articles:
-        source_type = "github" if article.source == "GitHub" else "rss"
+        source_type = "github" if article.source in ("GitHub", "GitHub Release") else "rss"
+
         hn_points = 0
         if article.source == "HackerNews" and article.summary.startswith("HN:"):
             try:
@@ -45,11 +47,24 @@ def process_articles(raw_articles: list[Article], store: ArticleStore) -> list[A
             except (IndexError, ValueError):
                 pass
 
+        reddit_score = 0
+        if article.source == "Reddit":
+            try:
+                # Extract score from "r/sub (123 pts)" format
+                match = re.search(r"\((\d+) pts\)", article.summary)
+                if match:
+                    reddit_score = int(match.group(1))
+            except (ValueError, AttributeError):
+                pass
+
         article.score = score_article(
             title=article.title,
             summary=article.summary,
+            source_name=article.source,
             source_type=source_type,
             hn_points=hn_points,
+            reddit_score=reddit_score,
+            published=article.published,
         )
 
         article.category = categorize(article.title, article.summary)
@@ -132,8 +147,8 @@ def run_digest(
                 else:
                     logger.warning("Email delivery failed")
 
-        # ntfy (optional)
-        if delivery in ("ntfy",) and ntfy_topic:
+        # ntfy (works from anywhere — GitHub Actions, local Mac, etc.)
+        if delivery in ("ntfy", "both") and ntfy_topic:
             logger.info("Sending via ntfy...")
             if _send_ntfy(full_message, ntfy_topic, logger):
                 any_delivered = True
@@ -157,6 +172,9 @@ def run_digest(
             # Export scored articles for the video ideas trigger to consume
             export_path = db_path.parent / "latest_digest.json"
             _export_articles(unsent, export_path, logger)
+
+            # Send video ideas email for high-scoring articles
+            _send_video_ideas(unsent, logger)
         else:
             logger.error("Delivery failed — articles NOT marked as sent (will retry)")
 
@@ -191,6 +209,43 @@ def _export_articles(articles: list[Article], path: Path, logger: logging.Logger
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(data, indent=2))
     logger.info("Exported %d articles to %s", len(data), path)
+
+
+def _send_video_ideas(articles: list[Article], logger: logging.Logger) -> None:
+    """Generate and email video ideas for high-scoring articles."""
+    top = [a for a in articles if a.score >= 4]
+    if not top:
+        logger.info("No articles scored 4+ for video ideas")
+        return
+
+    email_to = FALLBACK_EMAIL
+    if not email_to:
+        return
+
+    now_str = datetime.now().strftime("%a %b %-d")
+    lines = [f"VIDEO IDEAS — {now_str}", ""]
+    lines.append(f"{len(top)} articles scored 4+ for video potential:")
+    lines.append("")
+
+    for i, a in enumerate(top, 1):
+        hook = generate_video_hook(a.title, a.summary, a.score)
+        cat = f" [{a.category}]" if a.category else ""
+        lines.append(f"--- IDEA #{i} (Score: {a.score}/10){cat} ---")
+        lines.append(f"Title: {a.title}")
+        lines.append(f"Source: {a.source}")
+        if hook:
+            lines.append(f"Video Hook: {hook}")
+        lines.append(f"Link: {a.url}")
+        summary = (a.summary or "")[:200]
+        if summary:
+            lines.append(f"Summary: {summary}")
+        lines.append("")
+
+    message = "\n".join(lines)
+    if send_email(message, email_to, subject=f"AI Video Ideas — {now_str}"):
+        logger.info("Video ideas email sent (%d ideas)", len(top))
+    else:
+        logger.warning("Video ideas email failed")
 
 
 def main() -> None:

@@ -24,9 +24,9 @@ class TestProcessArticles(unittest.TestCase):
     def test_processes_and_deduplicates(self):
         raw = [
             Article(url="https://a.com/1", title="Anthropic Launches Agent SDK",
-                    summary="Open-source SDK for agents", source="TC"),
+                    summary="Open-source SDK for agents", source="Anthropic Blog"),
             Article(url="https://b.com/1", title="Anthropic Launches Agent SDK Today",
-                    summary="Same story different source", source="Verge"),
+                    summary="Same story different source", source="Simon Willison"),
             Article(url="https://c.com/1", title="Local Weather Update",
                     summary="Rain expected", source="Other"),
         ]
@@ -49,6 +49,15 @@ class TestProcessArticles(unittest.TestCase):
         self.assertEqual(len(processed), 1)
         self.assertGreater(processed[0].score, 0)
 
+    def test_reddit_score_extracted(self):
+        raw = [
+            Article(url="https://reddit.com/1", title="New MCP Server launches",
+                    summary="r/ClaudeAI (350 pts): Amazing new tool", source="Reddit"),
+        ]
+        processed = process_articles(raw, self.store)
+        self.assertEqual(len(processed), 1)
+        self.assertGreater(processed[0].score, 0)
+
 
 class TestRunDigest(unittest.TestCase):
 
@@ -57,7 +66,7 @@ class TestRunDigest(unittest.TestCase):
     def test_ntfy_delivery(self, mock_fetch, mock_ntfy):
         mock_fetch.return_value = [
             Article(url="https://a.com/1", title="New MCP Server for Claude Code",
-                    summary="Build automations with Claude", source="TC"),
+                    summary="Build automations with Claude", source="Anthropic Blog"),
         ]
         mock_ntfy.return_value = True
 
@@ -105,7 +114,7 @@ class TestRunDigest(unittest.TestCase):
         mock_fetch.return_value = [
             Article(url="https://a.com/1", title="New MCP Server for Claude Code Automation",
                     summary="Build AI automations with this open-source MCP tool",
-                    source="HuggingFace"),
+                    source="LangChain Blog"),
         ]
         mock_ntfy.return_value = True
 

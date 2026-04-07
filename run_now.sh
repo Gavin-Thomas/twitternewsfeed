@@ -2,7 +2,7 @@
 # Manual trigger for testing the digest pipeline
 set -euo pipefail
 
-PROJECT_DIR="/Users/gavin/Desktop/ultraplan"
+PROJECT_DIR="/Users/gavin/Desktop/Organized/projects/business/twitter-email-bot"
 cd "$PROJECT_DIR"
 
 echo "Running AI Digest manually..."

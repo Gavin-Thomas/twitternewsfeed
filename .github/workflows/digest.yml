@@ -41,7 +41,8 @@ jobs:
           ULTRAPLAN_GMAIL_USER: ${{ secrets.ULTRAPLAN_GMAIL_USER }}
           ULTRAPLAN_GMAIL_APP_PASSWORD: ${{ secrets.ULTRAPLAN_GMAIL_APP_PASSWORD }}
           ULTRAPLAN_EMAIL: ${{ secrets.ULTRAPLAN_EMAIL }}
-          ULTRAPLAN_DELIVERY: email
+          ULTRAPLAN_NTFY_TOPIC: ${{ secrets.ULTRAPLAN_NTFY_TOPIC }}
+          ULTRAPLAN_DELIVERY: both
         run: python -m src.main
 
       - name: Commit scored articles for ideas trigger

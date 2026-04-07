@@ -8,29 +8,29 @@
     <array>
         <string>/usr/bin/caffeinate</string>
         <string>-s</string>
-        <string>/Users/gavin/Desktop/ultraplan/.venv/bin/python</string>
+        <string>/Users/gavin/Desktop/Organized/projects/business/twitter-email-bot/.venv/bin/python</string>
         <string>-m</string>
         <string>src.main</string>
     </array>
     <key>WorkingDirectory</key>
-    <string>/Users/gavin/Desktop/ultraplan</string>
+    <string>/Users/gavin/Desktop/Organized/projects/business/twitter-email-bot</string>
     <key>StartCalendarInterval</key>
     <dict>
         <key>Hour</key>
-        <integer>8</integer>
+        <integer>10</integer>
         <key>Minute</key>
-        <integer>0</integer>
+        <integer>32</integer>
     </dict>
     <key>StandardOutPath</key>
-    <string>/Users/gavin/Desktop/ultraplan/logs/launchd-stdout.log</string>
+    <string>/Users/gavin/Desktop/Organized/projects/business/twitter-email-bot/logs/launchd-stdout.log</string>
     <key>StandardErrorPath</key>
-    <string>/Users/gavin/Desktop/ultraplan/logs/launchd-stderr.log</string>
+    <string>/Users/gavin/Desktop/Organized/projects/business/twitter-email-bot/logs/launchd-stderr.log</string>
     <key>EnvironmentVariables</key>
     <dict>
         <key>PATH</key>
         <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
         <key>PYTHONPATH</key>
-        <string>/Users/gavin/Desktop/ultraplan</string>
+        <string>/Users/gavin/Desktop/Organized/projects/business/twitter-email-bot</string>
     </dict>
     <key>SessionCreate</key>
     <true/>
