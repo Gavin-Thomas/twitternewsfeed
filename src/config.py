@@ -1,12 +1,23 @@
 """All configuration for the AI News Digest system."""
+import os
 from pathlib import Path
-
-# --- User Configuration ---
-PHONE_NUMBER = "REDACTED"
-FALLBACK_EMAIL = "REDACTED"
 
 # --- Paths ---
 PROJECT_DIR = Path(__file__).resolve().parent.parent
+
+# Load .env file if present (no external dependency)
+_env_path = PROJECT_DIR / ".env"
+if _env_path.exists():
+    for line in _env_path.read_text().splitlines():
+        line = line.strip()
+        if line and not line.startswith("#") and "=" in line:
+            key, _, value = line.partition("=")
+            os.environ.setdefault(key.strip(), value.strip())
+
+# --- User Configuration (from .env) ---
+PHONE_NUMBER = os.environ.get("ULTRAPLAN_PHONE", "")
+FALLBACK_EMAIL = os.environ.get("ULTRAPLAN_EMAIL", "")
+RECIPIENTS = [r for r in [PHONE_NUMBER, FALLBACK_EMAIL] if r]
 DB_PATH = PROJECT_DIR / "data" / "articles.db"
 LOG_DIR = PROJECT_DIR / "logs"
 

@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Optional
 
 from src.config import (
-    DB_PATH, PHONE_NUMBER, LOG_DIR, RETENTION_DAYS,
+    DB_PATH, RECIPIENTS, LOG_DIR, RETENTION_DAYS,
     MIN_SCORE_TOP, MIN_SCORE_NOTABLE,
 )
 from src.sources import fetch_all_sources
@@ -32,10 +32,7 @@ def setup_logging() -> None:
 
 
 def process_articles(raw_articles: list[Article], store: ArticleStore) -> list[Article]:
-    """Score, categorize, and deduplicate articles.
-
-    Returns the list of new (non-duplicate) articles with scores and categories set.
-    """
+    """Score, categorize, and deduplicate articles."""
     processed = []
     for article in raw_articles:
         source_type = "github" if article.source == "GitHub" else "rss"
@@ -54,7 +51,6 @@ def process_articles(raw_articles: list[Article], store: ArticleStore) -> list[A
         )
 
         article.category = categorize(article.title, article.summary)
-
         article.video_hook = generate_video_hook(article.title, article.summary, article.score)
 
         if store.add(article):
@@ -65,15 +61,19 @@ def process_articles(raw_articles: list[Article], store: ArticleStore) -> list[A
 
 def run_digest(
     db_path: Optional[Path] = None,
-    phone: Optional[str] = None,
+    recipients: Optional[list[str]] = None,
 ) -> bool:
-    """Run the full digest pipeline. Returns True if digest was sent successfully."""
+    """Run the full digest pipeline. Returns True if digest was sent to all recipients."""
     logger = logging.getLogger(__name__)
 
     if db_path is None:
         db_path = DB_PATH
-    if phone is None:
-        phone = PHONE_NUMBER
+    if recipients is None:
+        recipients = RECIPIENTS
+
+    if not recipients:
+        logger.error("No recipients configured. Set ULTRAPLAN_PHONE and/or ULTRAPLAN_EMAIL in .env")
+        return False
 
     store = ArticleStore(db_path)
 
@@ -92,19 +92,29 @@ def run_digest(
         digest = format_digest(unsent, now=now)
         logger.info("Digest formatted (%d chars)", len(digest))
 
-        success = send_imessage(digest, phone)
-        if success:
+        # Send to ALL recipients
+        all_success = True
+        for recipient in recipients:
+            logger.info("Sending to %s...", recipient)
+            ok = send_imessage(digest, recipient)
+            if ok:
+                logger.info("Sent to %s", recipient)
+            else:
+                logger.error("Failed to send to %s", recipient)
+                all_success = False
+
+        if all_success:
             urls = [a.url for a in unsent]
             store.mark_sent(urls)
-            logger.info("Digest sent and %d articles marked as sent", len(urls))
+            logger.info("Digest sent to %d recipients, %d articles marked as sent", len(recipients), len(urls))
         else:
-            logger.error("Failed to send digest")
+            logger.error("Some recipients failed — articles NOT marked as sent (will retry next run)")
 
         removed = store.cleanup(days=RETENTION_DAYS)
         if removed:
             logger.info("Cleaned up %d old articles", removed)
 
-        return success
+        return all_success
 
     except Exception as e:
         logger.exception("Digest pipeline failed: %s", e)
