@@ -211,105 +211,261 @@ def _export_articles(articles: list[Article], path: Path, logger: logging.Logger
     logger.info("Exported %d articles to %s", len(data), path)
 
 
+def _review_article(article: Article) -> dict:
+    """Adversarial review — assess whether an article is actually worth a video.
+
+    Returns a dict with verdict, strengths, risks, and quality tier.
+    """
+    text = f"{article.title} {article.summary}".lower()
+
+    strengths = []
+    risks = []
+
+    # --- Strengths ---
+    if any(kw in text for kw in ["launch", "release", "introducing", "announcing", "just shipped", "now available"]):
+        strengths.append("NEW RELEASE — time-sensitive, be first to cover it")
+    if any(kw in text for kw in ["open-source", "open source", "free"]):
+        strengths.append("FREE/OPEN SOURCE — viewers can follow along without paying")
+    if any(kw in text for kw in ["tutorial", "how to", "build", "walkthrough"]):
+        strengths.append("TUTORIAL ANGLE — high watch time, viewers stay for the full build")
+    if any(kw in text for kw in ["api", "sdk", "integration", "mcp", "webhook"]):
+        strengths.append("TECHNICAL DEMO — can show real code and real results on screen")
+    if any(kw in text for kw in ["agent", "automation", "workflow", "voice agent"]):
+        strengths.append("AUTOMATION — your core niche, audience expects this content")
+    if any(kw in text for kw in ["money", "revenue", "client", "agency", "saas", "monetize"]):
+        strengths.append("BUSINESS ANGLE — viewers love 'how to make money with AI' content")
+    if article.source in ("GitHub Release", "Anthropic Blog", "OpenAI News", "LangChain Blog"):
+        strengths.append(f"OFFICIAL SOURCE ({article.source}) — authoritative, not secondhand")
+    if article.source == "Reddit":
+        # Extract upvotes from summary
+        pts_match = re.search(r"\((\d+) pts\)", article.summary)
+        if pts_match and int(pts_match.group(1)) >= 200:
+            strengths.append(f"COMMUNITY VALIDATED — {pts_match.group(1)} upvotes, proven interest")
+
+    # --- Risks / Reasons to skip ---
+    if article.source == "Reddit" and not any(kw in text for kw in [
+        "launch", "release", "open source", "built", "build", "introducing", "tool", "api"
+    ]):
+        risks.append("REDDIT DISCUSSION ONLY — may be opinion/meme, not actionable content")
+    if not any(kw in text for kw in [
+        "build", "demo", "tutorial", "api", "tool", "launch", "release",
+        "open source", "code", "install", "setup", "automate"
+    ]):
+        risks.append("LOW DEMO POTENTIAL — hard to show on screen, may be talking-head only")
+    if any(kw in text for kw in ["rumor", "leaked", "reportedly", "might", "may", "could"]):
+        risks.append("UNCONFIRMED — speculation, could be wrong by the time you publish")
+    if article.score <= 4:
+        risks.append("BORDERLINE SCORE — only include if nothing better is available today")
+    if not article.url or "redd.it" in article.url:
+        risks.append("NO DIRECT LINK — source is an image/video post, hard to reference")
+
+    # Determine tier
+    if article.score >= 7 and len(strengths) >= 2 and len(risks) == 0:
+        tier = "STRONG — make this video"
+    elif article.score >= 5 and len(strengths) >= 1:
+        tier = "GOOD — worth covering if you have time"
+    elif len(risks) > len(strengths):
+        tier = "SKIP — risks outweigh the upside"
+    else:
+        tier = "MAYBE — only if nothing better today"
+
+    return {
+        "tier": tier,
+        "strengths": strengths or ["None identified — generic AI content"],
+        "risks": risks or ["None — looks solid"],
+    }
+
+
+def _extract_specific_details(article: Article) -> list[str]:
+    """Pull out specific details from the article for talking points."""
+    text = f"{article.title} {article.summary}"
+    points = []
+
+    # Extract product/tool names mentioned
+    tools_mentioned = []
+    known = ["Claude Code", "Claude", "GPT", "Gemini", "Gemma", "DeepSeek",
+             "Vapi", "n8n", "Cursor", "MCP", "Codex", "LangChain", "Ollama"]
+    for tool in known:
+        if tool.lower() in text.lower():
+            tools_mentioned.append(tool)
+    if tools_mentioned:
+        points.append(f"Tools/products mentioned: {', '.join(tools_mentioned)}")
+
+    # Extract version numbers
+    versions = re.findall(r'v\d+[\.\d]*', text)
+    if versions:
+        points.append(f"Version: {', '.join(set(versions))} — compare to previous version on screen")
+
+    # Extract star counts / points
+    stars = re.search(r'(\d+)\s*stars?\s*today', text.lower())
+    if stars:
+        points.append(f"Trending: {stars.group(1)} GitHub stars today — show the repo live")
+
+    pts = re.search(r'\((\d+)\s*pts\)', text)
+    if pts:
+        points.append(f"Reddit: {pts.group(1)} upvotes — read top comments for viewer hooks")
+
+    hn_pts = re.search(r'HN:\s*(\d+)\s*points', text)
+    if hn_pts:
+        points.append(f"HackerNews: {hn_pts.group(1)} points — developer audience validated this")
+
+    # Source-specific suggestions
+    if article.source == "GitHub Release":
+        points.append("Show the release notes on screen, then demo the new features")
+        points.append("Compare: install old version, show limitation, then upgrade and show fix")
+    elif article.source == "Reddit":
+        points.append("Pull up the Reddit thread — show top comments and reactions")
+        points.append("If there's a linked tool/repo, demo it live instead of just discussing")
+    elif article.source in ("Anthropic Blog", "OpenAI News", "LangChain Blog"):
+        points.append("Show the official blog post on screen, then switch to a live demo")
+        points.append("Check if there's a playground, API, or quickstart you can show immediately")
+
+    # Content-specific angles
+    if any(kw in text.lower() for kw in ["voice agent", "voice ai", "speech", "realtime"]):
+        points.append("DEMO IDEA: Call the voice agent live on camera — audiences love live voice demos")
+    if any(kw in text.lower() for kw in ["mcp", "mcp server"]):
+        points.append("DEMO IDEA: Connect MCP server to Claude Code and show a real workflow")
+    if any(kw in text.lower() for kw in ["open-source", "open source"]):
+        points.append("DEMO IDEA: Clone the repo, run it locally, show it working in under 5 min")
+    if any(kw in text.lower() for kw in ["api", "sdk"]):
+        points.append("DEMO IDEA: Write a quick script using the API, show input → output on screen")
+
+    return points
+
+
 def _generate_video_breakdown(article: Article) -> str:
-    """Generate a detailed video breakdown for a single article."""
+    """Generate a thorough, article-specific video breakdown with adversarial review."""
     hook = generate_video_hook(article.title, article.summary, article.score)
     text = f"{article.title} {article.summary}".lower()
+    review = _review_article(article)
+    details = _extract_specific_details(article)
 
     # Determine video format
     if any(kw in text for kw in ["tutorial", "how to", "build", "walkthrough", "step by step"]):
         video_format = "Tutorial / Walkthrough"
         structure = (
-            "1. Show the problem this solves (30s)\n"
-            "2. Quick demo of the end result (30s)\n"
-            "3. Step-by-step build from scratch (5-8 min)\n"
-            "4. Show it working live (1 min)\n"
-            "5. Ideas for extending it / making money with it (1 min)"
+            "1. Hook: show the finished result first (15s)\n"
+            "2. Why this matters for your audience (30s)\n"
+            "3. Setup & prerequisites on screen (1-2 min)\n"
+            "4. Full build — every step recorded (5-8 min)\n"
+            "5. Test it live with real data (1-2 min)\n"
+            "6. How to extend this / monetize it (1 min)\n"
+            "7. CTA: link in description, ask to subscribe (15s)"
         )
     elif any(kw in text for kw in ["launch", "release", "introducing", "announcing", "just shipped", "now available"]):
         video_format = "First Look / Review"
         structure = (
-            "1. What just launched and why it matters (30s)\n"
-            "2. Live demo — show the new features on screen (3-5 min)\n"
-            "3. Compare to what existed before (1 min)\n"
-            "4. Who should use this and how to get started (1 min)\n"
-            "5. Your verdict — is it worth switching to? (30s)"
+            "1. Hook: '[Tool] just dropped — here's what changed' (15s)\n"
+            "2. Show the announcement/release notes on screen (30s)\n"
+            "3. Live demo: walk through the new features one by one (3-5 min)\n"
+            "4. Before vs. after: what's actually different? (1-2 min)\n"
+            "5. Who should use this and who should wait (1 min)\n"
+            "6. Your honest take — hype or legit? (30s)\n"
+            "7. CTA: 'Try it yourself, link below' (15s)"
         )
     elif any(kw in text for kw in ["open-source", "open source", "free", "github"]):
         video_format = "Tool Showcase"
         structure = (
-            "1. What this tool does in one sentence (15s)\n"
-            "2. Install and setup on screen (1-2 min)\n"
-            "3. Build something real with it (5-7 min)\n"
-            "4. Pros, cons, and who it's for (1 min)\n"
-            "5. Link in description + what to build next (30s)"
+            "1. Hook: show the tool running, state what it replaces (15s)\n"
+            "2. What it does and why it exists (30s)\n"
+            "3. Install on screen — git clone, setup, first run (2-3 min)\n"
+            "4. Build something real with it, not a toy example (4-6 min)\n"
+            "5. Honest pros and cons (1 min)\n"
+            "6. Who this is for and what to build next (30s)\n"
+            "7. CTA: repo link in description (15s)"
         )
     elif any(kw in text for kw in ["agent", "automation", "workflow", "voice agent"]):
         video_format = "Build & Ship"
         structure = (
-            "1. Hook: show the automation running (15s)\n"
-            "2. The business case — who pays for this (30s)\n"
-            "3. Full build walkthrough on screen (5-8 min)\n"
-            "4. Test it live with real data (1-2 min)\n"
-            "5. How to sell this to clients / productize (1 min)"
+            "1. Hook: show the finished automation running (15s)\n"
+            "2. The business problem this solves + who pays (30s)\n"
+            "3. Architecture overview — what connects to what (1 min)\n"
+            "4. Full build on screen, explain each step (5-8 min)\n"
+            "5. Test with real data, show real output (1-2 min)\n"
+            "6. How to package and sell this to clients (1 min)\n"
+            "7. CTA: subscribe for more automation builds (15s)"
         )
     else:
         video_format = "News Breakdown"
         structure = (
-            "1. What happened and why you should care (30s)\n"
-            "2. Show the product/tool/model on screen (2-3 min)\n"
-            "3. How this affects AI builders and automators (1 min)\n"
-            "4. What you can build or do differently now (1-2 min)\n"
-            "5. Your take and call to action (30s)"
+            "1. Hook: one-sentence summary of why this matters (15s)\n"
+            "2. Show the source on screen, walk through key details (1-2 min)\n"
+            "3. Live demo or walkthrough of the product/tool (3-5 min)\n"
+            "4. What this means for AI builders specifically (1 min)\n"
+            "5. What you can build or change in your workflow now (1 min)\n"
+            "6. Your take — is this the real deal? (30s)\n"
+            "7. CTA: what video should I make next? (15s)"
         )
 
-    # Target audience
-    if any(kw in text for kw in ["agency", "client", "saas", "revenue", "monetize"]):
-        audience = "AI agency owners, freelancers selling AI services"
-    elif any(kw in text for kw in ["developer", "api", "sdk", "code", "build"]):
-        audience = "AI builders, developers, technical creators"
-    else:
-        audience = "AI enthusiasts, automation builders, tech creators"
-
-    # Thumbnail idea
-    if any(kw in text for kw in ["free", "open-source", "open source"]):
-        thumbnail = "Split screen: expensive tool logo with price crossed out vs. this free tool"
-    elif any(kw in text for kw in ["launch", "release", "introducing", "new"]):
-        thumbnail = "Product logo + 'JUST DROPPED' text + your surprised face"
-    elif any(kw in text for kw in ["money", "revenue", "client", "agency"]):
-        thumbnail = "Dollar signs + the tool logo + 'I charge $X for this'"
-    else:
-        thumbnail = "Tool/product screenshot + bold text summarizing the value prop"
-
+    # Build the breakdown
     lines = []
+
+    # Header with quality tier
+    lines.append(f"VERDICT: {review['tier']}")
+    lines.append("")
+
+    # Title options
     lines.append(f"YOUTUBE TITLE: {hook}" if hook else f"YOUTUBE TITLE: \"{article.title}\"")
     lines.append(f"FORMAT: {video_format}")
-    lines.append(f"AUDIENCE: {audience}")
-    lines.append(f"THUMBNAIL IDEA: {thumbnail}")
     lines.append("")
+
+    # Source with full link
     lines.append(f"SOURCE: {article.title}")
     lines.append(f"  {article.source} | Score: {article.score}/10 | {article.category or 'General'}")
     lines.append(f"  {article.url}")
     lines.append("")
-    lines.append(f"WHAT IT IS:")
-    lines.append(f"  {article.summary[:300]}" if article.summary else "  (no summary)")
+
+    # What it is — full summary
+    lines.append("WHAT IT IS:")
+    summary = article.summary[:500] if article.summary else "(no summary available)"
+    lines.append(f"  {summary}")
     lines.append("")
-    lines.append(f"VIDEO STRUCTURE:")
+
+    # Why cover this NOW
+    lines.append("WHY COVER THIS:")
+    for s in review["strengths"]:
+        lines.append(f"  + {s}")
+    lines.append("")
+
+    # Risks / reasons to skip
+    lines.append("WATCH OUT FOR:")
+    for r in review["risks"]:
+        lines.append(f"  ! {r}")
+    lines.append("")
+
+    # Video structure
+    lines.append("VIDEO STRUCTURE:")
     lines.append(structure)
     lines.append("")
-    lines.append(f"KEY TALKING POINTS:")
-    lines.append(f"  - What makes this different from existing solutions?")
-    lines.append(f"  - Can you demo this live on screen in under 10 minutes?")
-    lines.append(f"  - What's the business angle — who would pay for this?")
-    lines.append(f"  - What's the 'wow moment' viewers will share?")
+
+    # Article-specific talking points and demo ideas
+    if details:
+        lines.append("SPECIFIC TO THIS ARTICLE:")
+        for d in details:
+            lines.append(f"  - {d}")
+        lines.append("")
+
+    # Pre-production checklist
+    lines.append("BEFORE YOU RECORD:")
+    lines.append("  [ ] Search YouTube: has a bigger creator already covered this?")
+    lines.append("  [ ] Can you actually demo this on screen in under 10 minutes?")
+    lines.append("  [ ] Open the source link and verify the info is still current")
+    if article.source == "Reddit":
+        lines.append("  [ ] Read the top Reddit comments — best hooks are often there")
+    if any(kw in text for kw in ["launch", "release", "introducing"]):
+        lines.append("  [ ] Check the official docs/changelog for details the article missed")
+    lines.append("  [ ] Draft thumbnail text (3-5 words max) before recording")
 
     return "\n".join(lines)
 
 
 def _send_video_ideas(articles: list[Article], logger: logging.Logger) -> None:
-    """Generate and email detailed video ideas for high-scoring articles."""
-    top = [a for a in articles if a.score >= 4]
-    if not top:
+    """Generate and email video ideas with adversarial review.
+
+    Only STRONG and GOOD ideas are sent. SKIP/MAYBE are excluded.
+    """
+    candidates = [a for a in articles if a.score >= 4]
+    if not candidates:
         logger.info("No articles scored 4+ for video ideas")
         return
 
@@ -317,14 +473,31 @@ def _send_video_ideas(articles: list[Article], logger: logging.Logger) -> None:
     if not email_to:
         return
 
+    # Run adversarial review and filter
+    reviewed = []
+    skipped = []
+    for a in candidates:
+        review = _review_article(a)
+        if "SKIP" in review["tier"]:
+            skipped.append((a, review))
+        else:
+            reviewed.append((a, review))
+
+    if not reviewed:
+        logger.info("All %d candidates failed adversarial review", len(candidates))
+        return
+
     now_str = datetime.now().strftime("%a %b %-d")
     lines = [f"AI VIDEO IDEAS — {now_str}", ""]
-    lines.append(f"{len(top)} articles scored 4+ for video potential.")
-    lines.append("Each idea includes a title, structure, and talking points.")
+    lines.append(f"{len(reviewed)} ideas passed review (out of {len(candidates)} candidates).")
+    if skipped:
+        lines.append(f"{len(skipped)} filtered out:")
+        for a, r in skipped:
+            lines.append(f"  SKIP: {a.title[:60]} — {r['risks'][0] if r['risks'] else 'low quality'}")
     lines.append("")
     lines.append("=" * 60)
 
-    for i, a in enumerate(top, 1):
+    for i, (a, _review) in enumerate(reviewed, 1):
         lines.append("")
         lines.append(f"IDEA #{i}")
         lines.append("-" * 40)
@@ -334,7 +507,7 @@ def _send_video_ideas(articles: list[Article], logger: logging.Logger) -> None:
 
     message = "\n".join(lines)
     if send_email(message, email_to, subject=f"AI Video Ideas — {now_str}"):
-        logger.info("Video ideas email sent (%d ideas)", len(top))
+        logger.info("Video ideas email sent (%d ideas, %d skipped)", len(reviewed), len(skipped))
     else:
         logger.warning("Video ideas email failed")
 
