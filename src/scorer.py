@@ -1,69 +1,118 @@
-"""Keyword-based scoring engine and category assignment for articles."""
-
-from dataclasses import replace
+"""Video-worthiness scoring and topic categorization."""
+import re
 
 from src.config import (
-    CATEGORIES,
-    DEMO_KEYWORDS,
-    IMPACT_KEYWORDS,
-    MAX_SCORE,
-    MODEL_KEYWORDS,
+    IMPACT_KEYWORDS, DEMO_KEYWORDS, MODEL_KEYWORDS,
+    CATEGORIES, MAX_SCORE,
 )
-from src.store import Article
 
 
-def keyword_score(text: str, keywords: dict[str, int]) -> int:
-    """Return the sum of weights for each keyword found in *text*.
+def score_article(
+    title: str = "",
+    summary: str = "",
+    source_type: str = "rss",
+    hn_points: int = 0,
+) -> int:
+    """Score an article 0-10 for video-worthiness.
 
-    Each keyword is counted at most once regardless of how many times it
-    appears.  Matching is case-insensitive.
+    Components:
+    - Impact keywords (max 5)
+    - Demo-ability keywords (max 3)
+    - Model keywords (max 2)
+    - HN points bonus (max 2)
+    - GitHub bonus (1 if source_type == 'github')
     """
-    if not text or not keywords:
-        return 0
-    text_lower = text.lower()
-    total = 0
-    for kw, weight in keywords.items():
-        if kw.lower() in text_lower:
-            total += weight
-    return total
+    text = f"{title} {summary}".lower()
+
+    impact = 0
+    for keyword, weight in IMPACT_KEYWORDS.items():
+        if keyword.lower() in text:
+            impact += weight
+    impact = min(impact, 5)
+
+    demo = 0
+    for keyword, weight in DEMO_KEYWORDS.items():
+        if keyword.lower() in text:
+            demo += weight
+    demo = min(demo, 3)
+
+    model = 0
+    for keyword, weight in MODEL_KEYWORDS.items():
+        if keyword.lower() in text:
+            model += weight
+    model = min(model, 2)
+
+    hn_bonus = 0
+    if hn_points >= 500:
+        hn_bonus = 2
+    elif hn_points >= 200:
+        hn_bonus = 1
+
+    gh_bonus = 1 if source_type == "github" else 0
+
+    total = impact + demo + model + hn_bonus + gh_bonus
+    return max(0, min(total, MAX_SCORE))
 
 
-def assign_category(text: str, categories: dict[str, list[str]] | None = None) -> str:
-    """Return the best-matching category name for *text*, or ``"GENERAL"``."""
-    if categories is None:
-        categories = CATEGORIES
-    if not text:
-        return "GENERAL"
+def categorize(title: str, summary: str) -> str:
+    """Assign the best-matching category to an article.
 
-    text_lower = text.lower()
-    best_cat = "GENERAL"
-    best_hits = 0
+    Returns the category with the most keyword hits, or "" if none match.
+    """
+    text = f"{title} {summary}".lower()
+    best_cat = ""
+    best_count = 0
 
-    for cat_name, cat_keywords in categories.items():
-        hits = sum(1 for kw in cat_keywords if kw.lower() in text_lower)
-        if hits > best_hits:
-            best_hits = hits
-            best_cat = cat_name
+    for cat, keywords in CATEGORIES.items():
+        count = sum(1 for kw in keywords if kw.lower() in text)
+        if count > best_count:
+            best_count = count
+            best_cat = cat
 
     return best_cat
 
 
-def score_article(article: Article) -> Article:
-    """Score and categorize an article, returning a **new** Article instance.
+def generate_video_hook(title: str, summary: str, score: int = 5) -> str:
+    """Generate a short video hook suggestion for high-scoring stories.
 
-    The combined text (title + summary) is matched against the three
-    keyword dictionaries (impact, demo, model).  The raw total is clamped
-    to ``MAX_SCORE``.  A category is assigned from ``CATEGORIES``.
+    Returns empty string for stories scoring below 4.
     """
-    combined = f"{article.title} {article.summary}"
+    if score < 4:
+        return ""
 
-    raw = (
-        keyword_score(combined, IMPACT_KEYWORDS)
-        + keyword_score(combined, DEMO_KEYWORDS)
-        + keyword_score(combined, MODEL_KEYWORDS)
-    )
-    clamped = min(raw, MAX_SCORE)
+    text = f"{title} {summary}".lower()
 
-    category = assign_category(combined)
+    if any(kw in text for kw in ["launch", "release", "announce"]):
+        name = _extract_product_name(title)
+        return f'"I tested {name} so you don\'t have to"'
 
-    return replace(article, score=clamped, category=category)
+    if any(kw in text for kw in ["tool", "sdk", "framework", "library"]):
+        name = _extract_product_name(title)
+        return f'"I built something with {name} in 10 minutes"'
+
+    if any(kw in text for kw in ["open-source", "open source", "free"]):
+        return '"This free AI tool changes everything"'
+
+    if any(kw in text for kw in ["agent", "automation", "workflow"]):
+        return '"I automated this with AI agents"'
+
+    if any(kw in text for kw in ["gpt", "claude", "gemini", "llama"]):
+        return '"The new model everyone is talking about"'
+
+    if any(kw in text for kw in ["breakthrough", "state-of-the-art", "sota"]):
+        return '"This AI breakthrough is insane"'
+
+    return f'"{title[:50]}... here\'s what you need to know"'
+
+
+def _extract_product_name(title: str) -> str:
+    """Extract a likely product/company name from the title."""
+    stopwords = {"the", "a", "an", "and", "or", "for", "in", "on", "at", "to", "is", "new", "with", "its"}
+    words = title.split()
+    name_parts = []
+    for w in words:
+        if w[0:1].isupper() and w.lower() not in stopwords:
+            name_parts.append(w)
+            if len(name_parts) >= 3:
+                break
+    return " ".join(name_parts) if name_parts else (words[0] if words else "this")
