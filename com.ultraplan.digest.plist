@@ -6,6 +6,8 @@
     <string>com.ultraplan.digest</string>
     <key>ProgramArguments</key>
     <array>
+        <string>/usr/bin/caffeinate</string>
+        <string>-s</string>
         <string>/Users/gavin/Desktop/ultraplan/.venv/bin/python</string>
         <string>-m</string>
         <string>src.main</string>
