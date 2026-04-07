@@ -1,4 +1,5 @@
-"""Main orchestrator: fetch -> dedup -> score -> format -> send."""
+"""Main orchestrator: fetch -> dedup -> score -> format -> send -> export."""
+import json
 import logging
 import os
 import sys
@@ -152,6 +153,10 @@ def run_digest(
             urls = [a.url for a in unsent]
             store.mark_sent(urls)
             logger.info("Delivered, %d articles marked as sent", len(urls))
+
+            # Export scored articles for the video ideas trigger to consume
+            export_path = db_path.parent / "latest_digest.json"
+            _export_articles(unsent, export_path, logger)
         else:
             logger.error("Delivery failed — articles NOT marked as sent (will retry)")
 
@@ -168,6 +173,24 @@ def run_digest(
 
     finally:
         store.close()
+
+
+def _export_articles(articles: list[Article], path: Path, logger: logging.Logger) -> None:
+    """Export scored articles to JSON for the video ideas trigger."""
+    data = [
+        {
+            "title": a.title,
+            "summary": a.summary,
+            "source": a.source,
+            "score": a.score,
+            "category": a.category,
+            "url": a.url,
+        }
+        for a in articles
+    ]
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(data, indent=2))
+    logger.info("Exported %d articles to %s", len(data), path)
 
 
 def main() -> None:

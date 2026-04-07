@@ -1,0 +1,52 @@
+name: Email Video Ideas
+
+on:
+  push:
+    paths:
+      - 'ideas/**'
+
+jobs:
+  email:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Find today's ideas file
+        id: find
+        run: |
+          FILE=$(ls -t ideas/*.md 2>/dev/null | head -1)
+          if [ -z "$FILE" ]; then
+            echo "No ideas file found"
+            exit 0
+          fi
+          echo "file=$FILE" >> "$GITHUB_OUTPUT"
+          echo "Found: $FILE"
+
+      - name: Email ideas
+        if: steps.find.outputs.file
+        env:
+          GMAIL_USER: ${{ secrets.ULTRAPLAN_GMAIL_USER }}
+          GMAIL_PASS: ${{ secrets.ULTRAPLAN_GMAIL_APP_PASSWORD }}
+          TO_EMAIL: ${{ secrets.ULTRAPLAN_EMAIL }}
+        run: |
+          python3 -c "
+          import smtplib, os
+          from email.mime.text import MIMEText
+          from datetime import datetime
+
+          ideas_file = '${{ steps.find.outputs.file }}'
+          with open(ideas_file) as f:
+              content = f.read()
+
+          msg = MIMEText(content, 'plain', 'utf-8')
+          msg['Subject'] = f'Video Ideas — {datetime.now().strftime(\"%b %-d\")}'
+          msg['From'] = os.environ['GMAIL_USER']
+          msg['To'] = os.environ['TO_EMAIL']
+
+          with smtplib.SMTP_SSL('smtp.gmail.com', 465, timeout=15) as s:
+              s.login(os.environ['GMAIL_USER'], os.environ['GMAIL_PASS'])
+              s.send_message(msg)
+          print(f'Emailed {len(content)} chars to {os.environ[\"TO_EMAIL\"]}')
+          "

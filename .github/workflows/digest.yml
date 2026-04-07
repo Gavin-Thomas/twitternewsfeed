@@ -6,6 +6,9 @@ on:
     - cron: '0 13 * * *'
   workflow_dispatch: # Manual trigger from GitHub UI
 
+permissions:
+  contents: write
+
 jobs:
   digest:
     runs-on: ubuntu-latest
@@ -30,7 +33,7 @@ jobs:
           restore-keys: |
             articles-db-
 
-      - name: Create data directory
+      - name: Create directories
         run: mkdir -p data logs
 
       - name: Run digest pipeline
@@ -40,3 +43,13 @@ jobs:
           ULTRAPLAN_EMAIL: ${{ secrets.ULTRAPLAN_EMAIL }}
           ULTRAPLAN_DELIVERY: email
         run: python -m src.main
+
+      - name: Commit scored articles for ideas trigger
+        run: |
+          git config user.name "UltraPlan Bot"
+          git config user.email "bot@ultraplan.local"
+          if [ -f data/latest_digest.json ]; then
+            git add data/latest_digest.json
+            git commit -m "data: scored articles $(date +%Y-%m-%d)" || true
+            git push || true
+          fi
