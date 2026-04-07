@@ -13,7 +13,7 @@ def _truncate(text: str, max_len: int = 80) -> str:
     return text[: max_len - 3] + "..."
 
 
-def _format_article_line(article: Article, include_hook: bool = False) -> str:
+def _format_article_line(article: Article) -> str:
     """Format a single article into digest lines."""
     fire = " 🔥" if article.score >= 8 else ""
     cat = f" [{article.category}]" if article.category else ""
@@ -57,7 +57,7 @@ def format_digest(
         parts.append("━━━ ALSO NOTABLE ━━━")
         parts.append("")
         for a in notable_stories:
-            parts.append(_format_article_line(a, include_hook=False))
+            parts.append(_format_article_line(a))
             parts.append("")
 
     all_articles = top_stories + notable_stories

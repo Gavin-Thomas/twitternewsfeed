@@ -32,23 +32,22 @@ class TestFormatArticleLine(unittest.TestCase):
             score=4,
             category="LLM",
         )
-        line = _format_article_line(a, include_hook=False)
+        line = _format_article_line(a)
         self.assertIn("[4/10]", line)
-        self.assertNotIn("📹", line)
 
     def test_fire_emoji_for_high_score(self):
         a = Article(url="u", title="T", summary="S", source="X", score=8, category="C")
-        line = _format_article_line(a, include_hook=False)
+        line = _format_article_line(a)
         self.assertIn("🔥", line)
 
     def test_no_fire_for_low_score(self):
         a = Article(url="u", title="T", summary="S", source="X", score=5, category="C")
-        line = _format_article_line(a, include_hook=False)
+        line = _format_article_line(a)
         self.assertNotIn("🔥", line)
 
     def test_no_category_bracket_when_empty(self):
         a = Article(url="u", title="T", summary="S", source="X", score=5, category="")
-        line = _format_article_line(a, include_hook=False)
+        line = _format_article_line(a)
         self.assertNotIn("[]", line)
 
 

@@ -11,7 +11,7 @@ from src.config import (
     MIN_SCORE_NOTABLE, DELIVERY_MODE,
 )
 from src.sources import fetch_all_sources
-from src.scorer import score_article, categorize, generate_video_hook
+from src.scorer import score_article, categorize
 from src.store import Article, ArticleStore
 from src.formatter import format_digest
 from src.notify import send_ntfy_long, send_email
@@ -52,7 +52,6 @@ def process_articles(raw_articles: list[Article], store: ArticleStore) -> list[A
         )
 
         article.category = categorize(article.title, article.summary)
-        article.video_hook = generate_video_hook(article.title, article.summary, article.score)
 
         if store.add(article):
             processed.append(article)
@@ -118,8 +117,8 @@ def run_digest(
 
         logger.info("Full message: %d chars", len(full_message))
 
-        # Deliver
-        success = True
+        # Deliver — at least one method must succeed
+        any_delivered = False
 
         # Email (works from anywhere — GitHub Actions, local Mac, etc.)
         if delivery in ("email", "both"):
@@ -127,14 +126,16 @@ def run_digest(
             if email_to:
                 logger.info("Sending via email to %s...", email_to)
                 now_str = datetime.now().strftime("%a %b %-d")
-                if not send_email(full_message, email_to, subject=f"AI Digest — {now_str}"):
-                    # Email failed but not fatal — try other methods
-                    logger.warning("Email delivery failed, trying other methods")
+                if send_email(full_message, email_to, subject=f"AI Digest — {now_str}"):
+                    any_delivered = True
+                else:
+                    logger.warning("Email delivery failed")
 
-        # ntfy (optional backup)
-        if delivery in ("ntfy", "both") and ntfy_topic:
+        # ntfy (optional)
+        if delivery in ("ntfy",) and ntfy_topic:
             logger.info("Sending via ntfy...")
-            _send_ntfy(full_message, ntfy_topic, logger)
+            if _send_ntfy(full_message, ntfy_topic, logger):
+                any_delivered = True
 
         # iMessage (local Mac only)
         if delivery in ("imessage", "both") and recipients:
@@ -142,8 +143,10 @@ def run_digest(
                 logger.info("Skipping iMessage (running in GitHub Actions)")
             else:
                 logger.info("Sending via iMessage...")
-                if not _send_imessage(full_message, recipients, logger):
-                    success = False
+                if _send_imessage(full_message, recipients, logger):
+                    any_delivered = True
+
+        success = any_delivered
 
         if success:
             urls = [a.url for a in unsent]
