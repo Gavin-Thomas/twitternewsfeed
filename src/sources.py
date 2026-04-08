@@ -1,4 +1,4 @@
-"""Fetch articles from RSS feeds, HackerNews, GitHub Trending, Reddit, and GitHub Releases."""
+"""Fetch articles from RSS, HackerNews, GitHub, Reddit, GitHub Releases, and X/Twitter."""
 import logging
 import re
 from datetime import datetime, timedelta, timezone
@@ -14,6 +14,7 @@ from src.config import (
     GITHUB_TRENDING_URL, REQUEST_TIMEOUT, USER_AGENT,
     REDDIT_SUBS, REDDIT_MIN_SCORE, REDDIT_MIN_UPVOTE_RATIO, REDDIT_LIMIT,
     GITHUB_RELEASE_REPOS, GITHUB_RELEASE_MAX_AGE_HOURS,
+    NITTER_BASE, X_ACCOUNTS,
 )
 from src.store import Article
 
@@ -374,6 +375,71 @@ def _parse_github_releases(
     return articles
 
 
+# --- X/Twitter via RSSHub ---
+
+def fetch_x_posts() -> list[Article]:
+    """Fetch recent posts from key X/Twitter accounts via Nitter RSS."""
+    all_articles = []
+    seen_urls: set[str] = set()
+
+    for account in X_ACCOUNTS:
+        try:
+            feed_url = f"{NITTER_BASE}/{account}/rss"
+            feed = feedparser.parse(feed_url)
+
+            if feed.bozo and not feed.entries:
+                logger.warning("RSSHub feed error for @%s: %s", account, getattr(feed, "bozo_exception", "unknown"))
+                continue
+
+            count = 0
+            for entry in feed.entries[:10]:  # Last 10 tweets per account
+                url = getattr(entry, "link", "")
+                if not url:
+                    continue
+                # Convert nitter URLs to real x.com URLs
+                url = url.replace("nitter.net", "x.com")
+                if url in seen_urls:
+                    continue
+                seen_urls.add(url)
+
+                title_raw = getattr(entry, "title", "").strip()
+                if not title_raw:
+                    continue
+
+                # Clean up tweet text for title (first 120 chars)
+                title = title_raw[:120]
+                if len(title_raw) > 120:
+                    title += "..."
+
+                summary_raw = getattr(entry, "summary", "") or ""
+                summary = BeautifulSoup(summary_raw, "html.parser").get_text(separator=" ", strip=True)[:300]
+
+                pub = None
+                if hasattr(entry, "published_parsed") and entry.published_parsed:
+                    try:
+                        pub = datetime.fromtimestamp(mktime(entry.published_parsed), tz=timezone.utc)
+                    except (TypeError, ValueError, OverflowError):
+                        pass
+
+                all_articles.append(Article(
+                    url=url,
+                    title=f"@{account}: {title}",
+                    summary=summary[:300] if summary else f"Post by @{account}",
+                    source="X/Twitter",
+                    published=pub,
+                ))
+                count += 1
+
+            if count:
+                logger.info("Fetched %d posts from @%s", count, account)
+
+        except Exception as e:
+            logger.error("RSSHub @%s failed: %s", account, e)
+
+    logger.info("Fetched %d total posts from X/Twitter", len(all_articles))
+    return all_articles
+
+
 def fetch_all_sources() -> list[Article]:
     """Fetch from all sources and return combined list."""
     articles = []
@@ -382,4 +448,5 @@ def fetch_all_sources() -> list[Article]:
     articles.extend(fetch_github_trending())
     articles.extend(fetch_reddit())
     articles.extend(fetch_github_releases())
+    articles.extend(fetch_x_posts())
     return articles

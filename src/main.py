@@ -17,6 +17,7 @@ from src.scorer import score_article, categorize, generate_video_hook
 from src.store import Article, ArticleStore
 from src.formatter import format_digest
 from src.notify import send_ntfy_long, send_email
+from src.trends import extract_search_terms, check_trend, format_trend_line
 
 
 def setup_logging() -> None:
@@ -319,6 +320,9 @@ def _extract_specific_details(article: Article) -> list[str]:
     elif article.source in ("Anthropic Blog", "OpenAI News", "LangChain Blog"):
         points.append("Show the official blog post on screen, then switch to a live demo")
         points.append("Check if there's a playground, API, or quickstart you can show immediately")
+    elif article.source == "X/Twitter":
+        points.append("Show the tweet on screen — screengrab the thread and quote-tweets")
+        points.append("If the tweet links to a tool/launch, demo THAT instead of just reading the tweet")
 
     # Content-specific angles
     if any(kw in text.lower() for kw in ["voice agent", "voice ai", "speech", "realtime"]):
@@ -333,7 +337,7 @@ def _extract_specific_details(article: Article) -> list[str]:
     return points
 
 
-def _generate_video_breakdown(article: Article) -> str:
+def _generate_video_breakdown(article: Article, trend: dict = None) -> str:
     """Generate a thorough, article-specific video breakdown with adversarial review."""
     hook = generate_video_hook(article.title, article.summary, article.score)
     text = f"{article.title} {article.summary}".lower()
@@ -415,6 +419,10 @@ def _generate_video_breakdown(article: Article) -> str:
     lines.append(f"  {article.url}")
     lines.append("")
 
+    # Google Trends — search demand validation
+    lines.append(format_trend_line(trend))
+    lines.append("")
+
     # What it is — full summary
     lines.append("WHAT IT IS:")
     summary = article.summary[:500] if article.summary else "(no summary available)"
@@ -487,6 +495,32 @@ def _send_video_ideas(articles: list[Article], logger: logging.Logger) -> None:
         logger.info("All %d candidates failed adversarial review", len(candidates))
         return
 
+    # Run Google Trends check on top ideas only (rate-limited to ~15 queries)
+    import time as _time
+    trends_data: dict[str, dict] = {}
+    # Only check top 15 ideas (score 5+) to stay under Google's rate limit
+    trends_candidates = [(a, r) for a, r in reviewed if a.score >= 5][:15]
+    if trends_candidates:
+        logger.info("Checking Google Trends for %d top ideas...", len(trends_candidates))
+        seen_terms: set[str] = set()
+        for a, _ in trends_candidates:
+            terms = extract_search_terms(a.title, a.summary)
+            # Skip if we already checked this term
+            term_key = terms[0] if terms else ""
+            if not terms or term_key in seen_terms:
+                continue
+            seen_terms.add(term_key)
+            trend = check_trend(terms, geo="US")
+            if trend:
+                # Apply trend result to all articles with the same term
+                for a2, _ in reviewed:
+                    t2 = extract_search_terms(a2.title, a2.summary)
+                    if t2 and t2[0] == term_key:
+                        trends_data[a2.url] = trend
+            _time.sleep(3)  # Rate limit: 1 query per 3s to avoid 429s
+        logger.info("Google Trends: checked %d unique terms, got data for %d ideas",
+                     len(seen_terms), len(trends_data))
+
     now_str = datetime.now().strftime("%a %b %-d")
     lines = [f"AI VIDEO IDEAS — {now_str}", ""]
     lines.append(f"{len(reviewed)} ideas passed review (out of {len(candidates)} candidates).")
@@ -498,10 +532,11 @@ def _send_video_ideas(articles: list[Article], logger: logging.Logger) -> None:
     lines.append("=" * 60)
 
     for i, (a, _review) in enumerate(reviewed, 1):
+        trend = trends_data.get(a.url)
         lines.append("")
         lines.append(f"IDEA #{i}")
         lines.append("-" * 40)
-        lines.append(_generate_video_breakdown(a))
+        lines.append(_generate_video_breakdown(a, trend=trend))
         lines.append("")
         lines.append("=" * 60)
 

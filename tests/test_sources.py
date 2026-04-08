@@ -247,12 +247,13 @@ class TestParseGitHubReleases(unittest.TestCase):
 
 class TestFetchAll(unittest.TestCase):
 
+    @patch("src.sources.fetch_x_posts")
     @patch("src.sources.fetch_github_releases")
     @patch("src.sources.fetch_reddit")
     @patch("src.sources.fetch_github_trending")
     @patch("src.sources.fetch_hackernews")
     @patch("src.sources.fetch_all_rss")
-    def test_aggregates_all_sources(self, mock_rss, mock_hn, mock_gh, mock_reddit, mock_releases):
+    def test_aggregates_all_sources(self, mock_rss, mock_hn, mock_gh, mock_reddit, mock_releases, mock_x):
         mock_rss.return_value = [
             Article(url="https://tc.com/1", title="RSS Story", summary="S", source="TC")
         ]
@@ -268,8 +269,11 @@ class TestFetchAll(unittest.TestCase):
         mock_releases.return_value = [
             Article(url="https://gh.com/rel/1", title="Release", summary="S", source="GitHub Release")
         ]
+        mock_x.return_value = [
+            Article(url="https://x.com/1", title="X Post", summary="S", source="X/Twitter")
+        ]
         all_articles = fetch_all_sources()
-        self.assertEqual(len(all_articles), 5)
+        self.assertEqual(len(all_articles), 6)
 
 
 if __name__ == "__main__":

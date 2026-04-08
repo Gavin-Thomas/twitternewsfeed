@@ -73,6 +73,20 @@ HN_MIN_POINTS = 100
 # --- GitHub Trending ---
 GITHUB_TRENDING_URL = "https://github.com/trending?since=daily"
 
+# --- X/Twitter via Nitter (free, no API key) ---
+# Key accounts in the AI automation / builder niche
+NITTER_BASE = "https://nitter.net"
+X_ACCOUNTS = [
+    "AnthropicAI",      # Claude announcements
+    "OpenAI",           # GPT / OpenAI announcements
+    "nateherk",         # Nate Herk — AI automation niche leader
+    "cursor_ai",        # Cursor editor
+    "n8n_io",           # n8n workflow automation
+    "LangChainAI",      # LangChain ecosystem
+    "huggingface",      # HuggingFace models
+    "GoogleDeepMind",   # Gemini / DeepMind
+]
+
 # --- Scoring: Launch Detection ---
 # Strong signals that something NEW just shipped
 LAUNCH_KEYWORDS = {
@@ -161,6 +175,7 @@ SOURCE_AUTHORITY = {
     "GitHub": 1.1,
     "HackerNews": 1.0,   # boosted separately by points
     "Reddit": 1.1,
+    "X/Twitter": 1.2,    # announcements from official accounts
 }
 SOURCE_AUTHORITY_DEFAULT = 1.0
 
