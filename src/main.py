@@ -13,7 +13,7 @@ from src.config import (
     MIN_SCORE_NOTABLE, DELIVERY_MODE,
 )
 from src.sources import fetch_all_sources
-from src.scorer import score_article, categorize, generate_video_hook
+from src.scorer import score_article, categorize, generate_video_hook, _extract_product_name
 from src.store import Article, ArticleStore
 from src.formatter import format_digest
 from src.notify import send_ntfy_long, send_email
@@ -337,6 +337,177 @@ def _extract_specific_details(article: Article) -> list[str]:
     return points
 
 
+def _generate_quick_outline(article: Article, text: str, video_format: str) -> str:
+    """Generate a quick video outline: titles, thumbnails, and description template.
+
+    Uses keyword matching on article title/summary — no LLM calls.
+    Returns a formatted string ready to be appended to the breakdown.
+    """
+    product = _extract_product_name(article.title)
+    product_upper = product.upper()
+
+    # --- Classify article type for template selection ---
+    is_launch = any(kw in text for kw in [
+        "launch", "release", "introducing", "announcing", "just shipped", "now available",
+    ])
+    is_tutorial = any(kw in text for kw in [
+        "tutorial", "how to", "build", "walkthrough", "step by step",
+    ])
+    is_tool = any(kw in text for kw in [
+        "open-source", "open source", "free", "github", "tool", "library", "framework",
+    ])
+    is_automation = any(kw in text for kw in [
+        "agent", "automation", "workflow", "voice agent",
+    ])
+
+    # --- YouTube title options (under 60 chars each) ---
+    title_pool = []
+    if is_launch:
+        title_pool.append(f"{product} Just Launched — First Look + Demo")
+        title_pool.append(f"I Tested {product} So You Don't Have To")
+        title_pool.append(f"{product} Is Here — Everything You Need to Know")
+    if is_tutorial:
+        title_pool.append(f"How to Use {product} for AI Automation")
+        title_pool.append(f"Build This with {product} in 10 Minutes")
+        title_pool.append(f"I Automated Everything with {product}")
+    if is_tool:
+        title_pool.append(f"This Free AI Tool Replaces {product}")
+        title_pool.append(f"I Tested {product} So You Don't Have To")
+        title_pool.append(f"{product} — Full Setup and Demo")
+    if is_automation:
+        title_pool.append(f"I Built an AI Agent with {product}")
+        title_pool.append(f"How to Use {product} for AI Automation")
+        title_pool.append(f"Automate This with {product} (Full Build)")
+    # Fallback if nothing matched
+    if not title_pool:
+        title_pool = [
+            f"I Tested {product} So You Don't Have To",
+            f"How to Use {product} for AI Automation",
+            f"{product} — Full Breakdown + Demo",
+        ]
+
+    # Deduplicate while preserving order, then take first 3
+    seen_titles: set[str] = set()
+    unique_titles: list[str] = []
+    for t in title_pool:
+        if t not in seen_titles and len(t) <= 60:
+            seen_titles.add(t)
+            unique_titles.append(t)
+    # If some were too long, add truncated fallbacks
+    if len(unique_titles) < 3:
+        for t in title_pool:
+            short = t[:57] + "..." if len(t) > 60 else t
+            if short not in seen_titles:
+                seen_titles.add(short)
+                unique_titles.append(short)
+    titles = unique_titles[:3]
+
+    # --- Thumbnail text options (2-4 words, ALL CAPS) ---
+    thumb_pool = []
+    if is_launch:
+        thumb_pool.append(f"{product_upper} IS HERE")
+        thumb_pool.append("JUST LAUNCHED")
+        thumb_pool.append(f"NEW {product_upper}")
+    if is_tutorial:
+        thumb_pool.append("I BUILT THIS")
+        thumb_pool.append(f"{product_upper} TUTORIAL")
+        thumb_pool.append("FULL BUILD")
+    if is_tool:
+        thumb_pool.append("FREE AI TOOL")
+        thumb_pool.append(f"TRY {product_upper}")
+        thumb_pool.append("OPEN SOURCE")
+    if is_automation:
+        thumb_pool.append("AI AUTOMATION")
+        thumb_pool.append("I BUILT THIS")
+        thumb_pool.append(f"{product_upper} AGENT")
+    if not thumb_pool:
+        thumb_pool = [
+            f"{product_upper} REVIEW",
+            "MUST SEE",
+            "AI TOOL",
+        ]
+
+    # Deduplicate and pick 3, enforce 2-4 words
+    seen_thumbs: set[str] = set()
+    unique_thumbs: list[str] = []
+    for t in thumb_pool:
+        word_count = len(t.split())
+        if t not in seen_thumbs and 2 <= word_count <= 4:
+            seen_thumbs.add(t)
+            unique_thumbs.append(t)
+    thumbs = unique_thumbs[:3]
+    # Pad if needed
+    fallbacks = [f"{product_upper} REVIEW", "MUST SEE", "AI TOOL"]
+    for fb in fallbacks:
+        if len(thumbs) >= 3:
+            break
+        if fb not in seen_thumbs and 2 <= len(fb.split()) <= 4:
+            thumbs.append(fb)
+            seen_thumbs.add(fb)
+
+    # --- Determine verb for description based on type ---
+    if is_tutorial:
+        verb = "build with"
+    elif is_launch:
+        verb = "review"
+    elif is_tool:
+        verb = "test"
+    elif is_automation:
+        verb = "break down"
+    else:
+        verb = "test"
+
+    # --- Determine main section label for timestamps ---
+    if "Tutorial" in video_format:
+        main_section = "Full Build"
+    elif "First Look" in video_format:
+        main_section = "Live Demo"
+    elif "Tool Showcase" in video_format:
+        main_section = "Setup + Demo"
+    elif "Build & Ship" in video_format:
+        main_section = "Full Build"
+    else:
+        main_section = "Deep Dive"
+
+    # --- One-line summary from article title ---
+    summary_line = article.title.rstrip(".")
+
+    # --- Build the hashtag from product name (alphanumeric only) ---
+    hashtag = re.sub(r'[^A-Za-z0-9]', '', product)
+
+    # --- Assemble the outline ---
+    out = []
+    out.append("QUICK VIDEO OUTLINE:")
+    out.append("")
+    out.append("  Title Options:")
+    for i, t in enumerate(titles, 1):
+        out.append(f"    {i}. {t}")
+    out.append("")
+    out.append("  Thumbnail Text Options:")
+    for i, t in enumerate(thumbs, 1):
+        out.append(f"    {i}. {t}")
+    out.append("")
+    out.append("  YouTube Description Template:")
+    out.append(f"    {summary_line}")
+    out.append("")
+    out.append(f"    In this video, I {verb} {product}.")
+    out.append("")
+    out.append("    TIMESTAMPS:")
+    out.append("    0:00 — Hook")
+    out.append("    0:15 — What this is")
+    out.append(f"    1:00 — {main_section}")
+    out.append("    7:00 — Testing it live")
+    out.append("    8:00 — My verdict + what's next")
+    out.append("")
+    out.append("    LINKS:")
+    out.append(f"    {article.url}")
+    out.append("")
+    out.append("    Subscribe for daily AI automation tutorials.")
+    out.append(f"    #AI #Automation #{hashtag}")
+
+    return "\n".join(out)
+
+
 def _generate_video_breakdown(article: Article, trend: dict = None) -> str:
     """Generate a thorough, article-specific video breakdown with adversarial review."""
     hook = generate_video_hook(article.title, article.summary, article.score)
@@ -452,6 +623,10 @@ def _generate_video_breakdown(article: Article, trend: dict = None) -> str:
         for d in details:
             lines.append(f"  - {d}")
         lines.append("")
+
+    # Quick video outline — titles, thumbnails, description template
+    lines.append(_generate_quick_outline(article, text, video_format))
+    lines.append("")
 
     # Pre-production checklist
     lines.append("BEFORE YOU RECORD:")
