@@ -238,21 +238,25 @@ def check_trend(search_terms: list[str], geo: str = "US") -> Optional[dict]:
     """Check Google Trends for the given search terms.
 
     Strategy:
-    1. Check BigQuery public dataset first (free, no rate limit)
-    2. Fall back to pytrends for specific interest data (rate-limited)
+    1. pytrends for specific niche term interest (best for AI automation niche)
+    2. BigQuery as bonus — only if credentials are available, catches mainstream breakouts
 
     Returns a dict with trend data or None if all checks fail.
     """
     if not search_terms:
         return None
 
-    # Try BigQuery first — instant, no rate limits
+    # pytrends first — works for niche terms like "Claude Code", "MCP", "Vapi"
+    result = _check_pytrends(search_terms, geo=geo)
+    if result and result["direction"] != "NO_DATA":
+        return result
+
+    # BigQuery bonus — catches when a niche term breaks into mainstream top 25
     bq_result = _match_in_bigquery(search_terms)
     if bq_result:
         return bq_result
 
-    # Fall back to pytrends for specific term interest
-    return _check_pytrends(search_terms, geo=geo)
+    return result  # Return NO_DATA result from pytrends if we got one
 
 
 def format_trend_line(trend: Optional[dict]) -> str:
