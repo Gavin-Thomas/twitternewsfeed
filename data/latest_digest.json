@@ -1,5 +1,13 @@
 [
   {
+    "title": "@huggingface: RT by @huggingface: Very cool open-source traces from @TheZachMueller @LambdaAPI: https://huggingface.co/datasets/lambda...",
+    "summary": "Very cool open-source traces from @TheZachMueller @LambdaAPI : huggingface.co/datasets/lamb\u2026 150M tokens for @NousResearch 's Hermes harness with Kimi-K2.5 & GLM 5.1 that was just released! clem \ud83e\udd17 (@ClementDelangue) We keep saying we want open-source frontier agents. Fine. Then let\u2019s build the datas",
+    "source": "X/Twitter",
+    "score": 10,
+    "category": "BUILD",
+    "url": "https://x.com/ClementDelangue/status/2041576063575212379#m"
+  },
+  {
     "title": "anthropics/claude-code: v2.1.94",
     "summary": "Release v2.1.94 \u2014 What's changed\n\nAdded support for Amazon Bedrock powered by Mantle, set CLAUDE_CODE_USE_MANTLE=1\nChanged default effort level from medium to high for API-key, Bedrock/Vertex/Foundry, Team, and Enterpr",
     "source": "GitHub Release",
@@ -8,51 +16,515 @@
     "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.94"
   },
   {
-    "title": "I made a USB-Claude who gets my attention when Claude Code finishes a response",
-    "summary": "r/ClaudeAI (1091 pts)",
-    "source": "Reddit",
-    "score": 7,
-    "category": "CLAUDE",
-    "url": "https://v.redd.it/m21ixq14zstg1"
+    "title": "@n8n_io: Etienne Lescot built n8n as Code, a tool that lets you create n8n workflows directly in Cursor, VS Code, Claude Code, or...",
+    "summary": "Etienne Lescot built n8n as Code, a tool that lets you create n8n workflows directly in Cursor, VS Code, Claude Code, or OpenClaw. Two way sync, local knowledge of every node and 7,000+ templates, and it runs well even on lightweight models. You get all the power of your coding agent while keeping t",
+    "source": "X/Twitter",
+    "score": 8,
+    "category": "BUILD",
+    "url": "https://x.com/n8n_io/status/2041569006444810633#m"
   },
   {
-    "title": "Every day I wake up and thank God for having me be born 23 minutes away from a MicroCenter",
-    "summary": "r/LocalLLaMA (279 pts)",
-    "source": "Reddit",
+    "title": "@n8n_io: In case you missed it: Notion 3.4 shipped with n8n MCP integration. \nYour custom Notion agents can now run n8n workflows...",
+    "summary": "In case you missed it: Notion 3.4 shipped with n8n MCP integration. Your custom Notion agents can now run n8n workflows through the n8n MCP server one click integration. \u26a1 Notion (@NotionHQ) Notion 3.4 is a big one! New building blocks. New AI. A lot shipped recently. Here\u2019s what's new: \u2192 Dashboard ",
+    "source": "X/Twitter",
+    "score": 8,
+    "category": "BUILD",
+    "url": "https://x.com/n8n_io/status/2041538301543239801#m"
+  },
+  {
+    "title": "@AnthropicAI: Introducing Project Glasswing: an urgent initiative to help secure the world\u2019s most critical software.\n\nIt\u2019s powered by ...",
+    "summary": "Introducing Project Glasswing: an urgent initiative to help secure the world\u2019s most critical software. It\u2019s powered by our newest frontier model, Claude Mythos Preview, which can find software vulnerabilities better than all but the most skilled humans. anthropic.com/glasswing",
+    "source": "X/Twitter",
+    "score": 6,
+    "category": "CLAUDE",
+    "url": "https://x.com/AnthropicAI/status/2041578392852517128#m"
+  },
+  {
+    "title": "@n8n_io: Automated product photography for Shopify, built as a single n8n workflow. The @deAPI_  community node handles it all. $...",
+    "summary": "Automated product photography for Shopify, built as a single n8n workflow. The @deAPI_ community node handles it all. $5 free credit to test the full pipeline. deAPI (@deAPI_) New product in Shopify \u2192 AI analyzes it \u2192 generates a hero image + transparent PNG \u2192 uploads both back to the store. The who",
+    "source": "X/Twitter",
+    "score": 6,
+    "category": "BUILD",
+    "url": "https://x.com/n8n_io/status/2041028597293420957#m"
+  },
+  {
+    "title": "@huggingface: RT by @huggingface: Another SOTA model drop! This time from the @Bing team: meet Harrier, a new open-source embedding mo...",
+    "summary": "Another SOTA model drop! This time from the @Bing team: meet Harrier, a new open-source embedding model with state-of-the-art performance and the #1 spot on the industry standard multilingual MTEB-v2 benchmark. (@) I\u2019m pleased to share that our search team has open sourced an embedding model called ",
+    "source": "X/Twitter",
+    "score": 6,
+    "category": "",
+    "url": "https://x.com/mustafasuleyman/status/2041552243019980929#m"
+  },
+  {
+    "title": "@huggingface: RT by @huggingface: Introducing GLM-5.1: The Next Level of Open Source\n\n- Top-Tier Performance: #1 in open source and #3...",
+    "summary": "Introducing GLM-5.1: The Next Level of Open Source - Top-Tier Performance: #1 in open source and #3 globally across SWE-Bench Pro, Terminal-Bench, and NL2Repo. - Built for Long-Horizon Tasks: Runs autonomously for 8 hours, refining strategies through thousands of iterations. Blog: z.ai/blog/glm-5.1 ",
+    "source": "X/Twitter",
+    "score": 6,
+    "category": "",
+    "url": "https://x.com/Zai_org/status/2041550153354519022#m"
+  },
+  {
+    "title": "Deep Agents v0.5",
+    "summary": "\ud83d\udca1 TL;DR: We\u2019ve released new minor versions of deepagents & deepagentsjs , featuring async (non-blocking) subagents, expanded multi-modal filesystem support, and more. See the changelog for details. Async subagents Deep Agents can now delegate work to remote agents that run in the background. As oppo",
+    "source": "LangChain Blog",
+    "score": 5,
+    "category": "BUILD",
+    "url": "https://blog.langchain.com/deep-agents-v0-5/"
+  },
+  {
+    "title": "Arcade.dev tools now in LangSmith Fleet",
+    "summary": "Arcade is the MCP runtime for production agents, delivering secure agent authorization, reliable tools, and governance. This integration gives your agents access to Arcade\u2019s collection of 7,500+ agent-optimized tools through a single secure gateway.",
+    "source": "LangChain Blog",
+    "score": 5,
+    "category": "BUILD",
+    "url": "https://blog.langchain.com/arcade-dev-tools-now-in-langsmith-fleet/"
+  },
+  {
+    "title": "@huggingface: RT by @huggingface: I\u2019m pleased to share that our search team has open sourced an embedding model called Harrier that is...",
+    "summary": "I\u2019m pleased to share that our search team has open sourced an embedding model called Harrier that is currently ranking #1 on the multilingual MTEB-v2 benchmark leaderboard. Harrier delivers SOTA performance on retrieval quality, semantic matching, and contextual analysis across",
+    "source": "X/Twitter",
+    "score": 5,
+    "category": "",
+    "url": "https://x.com/i/status/2041550352739164404#m"
+  },
+  {
+    "title": "Announcing the OpenAI Safety Fellowship",
+    "summary": "A pilot program to support independent safety and alignment research and develop the next generation of talent",
+    "source": "OpenAI News",
+    "score": 4,
+    "category": "",
+    "url": "https://openai.com/index/introducing-openai-safety-fellowship"
+  },
+  {
+    "title": "Gradient Labs gives every bank customer an AI account manager",
+    "summary": "Gradient Labs uses GPT-4.1 and GPT-5.4 mini and nano to power AI agents that automate banking support workflows with low latency and high reliability.",
+    "source": "OpenAI News",
+    "score": 4,
+    "category": "BUILD",
+    "url": "https://openai.com/index/gradient-labs"
+  },
+  {
+    "title": "Introducing gpt-realtime and Realtime API updates",
+    "summary": "We\u2019re releasing a more advanced speech-to-speech model and new API capabilities including MCP server support, image input, and SIP phone calling support.",
+    "source": "OpenAI News",
+    "score": 4,
+    "category": "BUILD",
+    "url": "https://openai.com/index/introducing-gpt-realtime"
+  },
+  {
+    "title": "Introducing our latest image generation model in the API",
+    "summary": "Our latest image generation model is now available in the API via \u2018gpt-image-1\u2019\u2014enabling developers and businesses to build professional-grade, customizable visuals directly into their own tools and platforms.",
+    "source": "OpenAI News",
+    "score": 4,
+    "category": "BUILD",
+    "url": "https://openai.com/index/image-generation-api"
+  },
+  {
+    "title": "langchain-ai/langchain: langchain-ollama==1.1.0",
+    "summary": "Release langchain-ollama==1.1.0 \u2014 Changes since langchain-ollama==1.0.1\n\nrelease(ollama): 1.1.0 (#36574)\nfeat(ollama): support response_format (#34612)\nfix(ollama): serialize reasoning_content back to ollama thinking (#36573)\nfix(olla",
+    "source": "GitHub Release",
+    "score": 4,
+    "category": "BUILD",
+    "url": "https://github.com/langchain-ai/langchain/releases/tag/langchain-ollama%3D%3D1.1.0"
+  },
+  {
+    "title": "@OpenAI: Introducing the OpenAI Safety Fellowship, a new program supporting independent research on AI safety and alignment\u2014and t...",
+    "summary": "Introducing the OpenAI Safety Fellowship, a new program supporting independent research on AI safety and alignment\u2014and the next generation of talent. openai.com/index/introducing\u2026",
+    "source": "X/Twitter",
+    "score": 4,
+    "category": "",
+    "url": "https://x.com/OpenAI/status/2041202511647019251#m"
+  },
+  {
+    "title": "@cursor_ai: We're doubling Composer 2 usage through the end of this weekend.\n\nWe recommend trying it out in our new interface, avail...",
+    "summary": "We're doubling Composer 2 usage through the end of this weekend. We recommend trying it out in our new interface, available in Cursor 3. Enjoy! Cursor (@cursor_ai) We\u2019re introducing Cursor 3. It is simpler, more powerful, and built for a world where all code is written by agents, while keeping the d",
+    "source": "X/Twitter",
+    "score": 4,
+    "category": "BUILD",
+    "url": "https://x.com/cursor_ai/status/2040143041692930293#m"
+  },
+  {
+    "title": "@cursor_ai: Pinned: We\u2019re introducing Cursor 3. It is simpler, more powerful, and built for a world where all code is written by age...",
+    "summary": "We\u2019re introducing Cursor 3. It is simpler, more powerful, and built for a world where all code is written by agents, while keeping the depth of a development environment. Video",
+    "source": "X/Twitter",
+    "score": 4,
+    "category": "BUILD",
+    "url": "https://x.com/cursor_ai/status/2039768512894505086#m"
+  },
+  {
+    "title": "@n8n_io: We asked Andrew Green to take a fresh look at AI agent development tools, one year after his last review. Unsurprisingly...",
+    "summary": "We asked Andrew Green to take a fresh look at AI agent development tools, one year after his last review. Unsurprisingly, a lot has changed. \ud83d\ude0f Hot takes (so far): \u2192 MCP rose fast and faded just as quickly \u2192 Semantic reranking in RAG is more niche than expected \u2192 Many prefer nudging agents repeatedly",
+    "source": "X/Twitter",
+    "score": 4,
+    "category": "BUILD",
+    "url": "https://x.com/n8n_io/status/2041474834832453933#m"
+  },
+  {
+    "title": "@n8n_io: Less noise, more signal.\nMost monitoring tools alert on every tiny hiccup. This workflow waits 5 minutes, which helps cu...",
+    "summary": "Less noise, more signal. Most monitoring tools alert on every tiny hiccup. This workflow waits 5 minutes, which helps cut down on unnecessary notifications. Full control, alerts via email or Telegram. n8n.io/workflows/11763-websi\u2026",
+    "source": "X/Twitter",
+    "score": 4,
+    "category": "BUILD",
+    "url": "https://x.com/n8n_io/status/2041078519623520666#m"
+  },
+  {
+    "title": "@n8n_io: AI agents aren't just chatbots anymore. \ud83e\udd16 They're detecting fraud, optimizing logistics, running customer support, monit...",
+    "summary": "AI agents aren't just chatbots anymore. \ud83e\udd16 They're detecting fraud, optimizing logistics, running customer support, monitoring cybersecurity threats, and more. We put together 15 real examples, and each one comes with an n8n workflow template so you can actually build it. blog.n8n.io/ai-agents-exampl",
+    "source": "X/Twitter",
+    "score": 4,
+    "category": "BUILD",
+    "url": "https://x.com/n8n_io/status/2039613854431248850#m"
+  },
+  {
+    "title": "Introducing GPT-5.4 mini and nano",
+    "summary": "GPT-5.4 mini and nano are smaller, faster versions of GPT-5.4 optimized for coding, tool use, multimodal reasoning, and high-volume API and sub-agent workloads.",
+    "source": "OpenAI News",
+    "score": 3,
+    "category": "BUILD",
+    "url": "https://openai.com/index/introducing-gpt-5-4-mini-and-nano"
+  },
+  {
+    "title": "Introducing the Stateful Runtime Environment for Agents in Amazon Bedrock",
+    "summary": "Stateful Runtime for Agents in Amazon Bedrock brings persistent orchestration, memory, and secure execution to multi-step AI workflows powered by OpenAI.",
+    "source": "OpenAI News",
+    "score": 3,
+    "category": "BUILD",
+    "url": "https://openai.com/index/introducing-the-stateful-runtime-environment-for-agents-in-amazon-bedrock"
+  },
+  {
+    "title": "Introducing OpenAI Frontier",
+    "summary": "OpenAI Frontier is an enterprise platform for building, deploying, and managing AI agents with shared context, onboarding, permissions, and governance.",
+    "source": "OpenAI News",
+    "score": 3,
+    "category": "BUILD",
+    "url": "https://openai.com/index/introducing-openai-frontier"
+  },
+  {
+    "title": "Introducing the Codex app",
+    "summary": "Introducing the Codex app for macOS\u2014a command center for AI coding and software development with multiple agents, parallel workflows, and long-running tasks.",
+    "source": "OpenAI News",
+    "score": 3,
+    "category": "BUILD",
+    "url": "https://openai.com/index/introducing-the-codex-app"
+  },
+  {
+    "title": "Introducing ChatGPT Go, now available worldwide",
+    "summary": "ChatGPT Go is now available worldwide, offering expanded access to GPT-5.2 Instant, higher usage limits, and longer memory\u2014making advanced AI more affordable globally.",
+    "source": "OpenAI News",
     "score": 3,
     "category": "MODELS",
-    "url": "https://i.redd.it/vcr5vsvgsstg1.jpeg"
+    "url": "https://openai.com/index/introducing-chatgpt-go"
   },
   {
-    "title": "Mythos can break out of sandbox environment and let you know during lunchbreak",
-    "summary": "r/ClaudeAI (270 pts): I\u2019m going thru Mythos system card and it\u2019s wild.\n\nApparently during testing, Claude Mythos Preview managed to break out of a sandbox environment, built \"a moderately sophisticated multi-step exploit\" ",
-    "source": "Reddit",
+    "title": "Building more with GPT-5.1-Codex-Max",
+    "summary": "Introducing GPT-5.1-Codex-Max, a faster, more intelligent agentic coding model for Codex. The model is designed for long-running, project-scale work with enhanced reasoning and token efficiency.",
+    "source": "OpenAI News",
     "score": 3,
-    "category": "CLAUDE",
-    "url": "https://i.redd.it/2key2rkxxttg1.jpeg"
+    "category": "BUILD",
+    "url": "https://openai.com/index/gpt-5-1-codex-max"
   },
   {
-    "title": "How Anthropic talks about Claude Mythos rn:",
-    "summary": "r/ClaudeAI (241 pts)",
-    "source": "Reddit",
+    "title": "Introducing GPT-5.1 for developers",
+    "summary": "GPT-5.1 is now available in the API, bringing faster adaptive reasoning, extended prompt caching, improved coding performance, and new apply_patch and shell tools.",
+    "source": "OpenAI News",
     "score": 3,
-    "category": "CLAUDE",
-    "url": "https://i.redd.it/q307a2hexttg1.png"
+    "category": "BUILD",
+    "url": "https://openai.com/index/gpt-5-1-for-developers"
   },
   {
-    "title": "Anthropic's new Mythos Preview model is a \"step change\" in model capability, but it won't be available to general public",
-    "summary": "r/ClaudeAI (295 pts): A dystopian future lies ahead\n\n[https://www.anthropic.com/glasswing](https://www.anthropic.com/glasswing)",
-    "source": "Reddit",
+    "title": "Introducing Aardvark: OpenAI\u2019s agentic security researcher",
+    "summary": "OpenAI introduces Aardvark, an AI-powered security researcher that autonomously finds, validates, and helps fix software vulnerabilities at scale. The system is in private beta\u2014sign up to join early testing.",
+    "source": "OpenAI News",
     "score": 3,
-    "category": "CLAUDE",
-    "url": "https://www.reddit.com/r/ClaudeAI/comments/1sf4xfr/anthropics_new_mythos_preview_model_is_a_step/"
+    "category": "BUILD",
+    "url": "https://openai.com/index/introducing-aardvark"
   },
   {
-    "title": "I genuinely think we're watching an entire generation forget how to think, and everyone's too distracted to notice.",
-    "summary": "r/ChatGPT (132 pts): My friend asked ChatGPT what 15% of 60 was.  \n  \nShe has a college degree.  \n  \nI'm not judging her, I've caught myself doing the same thing. Asking AI for stuff I absolutely know but just... don't fe",
-    "source": "Reddit",
+    "title": "Introducing apps in ChatGPT and the new Apps SDK",
+    "summary": "We\u2019re introducing a new generation of apps you can chat with, right inside ChatGPT. Developers can start building them today with the new Apps SDK, available in preview.",
+    "source": "OpenAI News",
     "score": 3,
     "category": "MODELS",
-    "url": "https://www.reddit.com/r/ChatGPT/comments/1sf3wzq/i_genuinely_think_were_watching_an_entire/"
+    "url": "https://openai.com/index/introducing-apps-in-chatgpt"
+  },
+  {
+    "title": "Introducing AgentKit, new Evals, and RFT for agents",
+    "summary": "Today, we\u2019re releasing  new tools to help developers go from prototype to production faster: AgentKit, expanded evals capabilities, and reinforcement fine-tuning for agents.",
+    "source": "OpenAI News",
+    "score": 3,
+    "category": "BUILD",
+    "url": "https://openai.com/index/introducing-agentkit"
+  },
+  {
+    "title": "Introducing ChatGPT Pulse",
+    "summary": "Today we're releasing a preview of ChatGPT Pulse to Pro users on mobile. Pulse is a new experience where ChatGPT proactively does research to deliver personalized updates based on your chats, feedback, and connected apps like your calendar.",
+    "source": "OpenAI News",
+    "score": 3,
+    "category": "MODELS",
+    "url": "https://openai.com/index/introducing-chatgpt-pulse"
+  },
+  {
+    "title": "Introducing study mode in ChatGPT",
+    "summary": "Introducing study mode in ChatGPT, a new learning experience that helps you work through problems step by step, guiding students with questions, scaffolding, and feedback for deeper learning.",
+    "source": "OpenAI News",
+    "score": 3,
+    "category": "MODELS",
+    "url": "https://openai.com/index/chatgpt-study-mode"
+  },
+  {
+    "title": "Introducing ChatGPT agent",
+    "summary": "Introducing ChatGPT agent: it thinks and acts, using tools to complete tasks like research, bookings, and slideshows\u2014all with your guidance.",
+    "source": "OpenAI News",
+    "score": 3,
+    "category": "BUILD",
+    "url": "https://openai.com/index/introducing-chatgpt-agent"
+  },
+  {
+    "title": "Customizable, no-code voice agent automation with GPT-4o",
+    "summary": "Retell AI is transforming the call center with AI voice automation powered by GPT-4o and GPT-4.1. Its no-code platform enables businesses to launch natural, real-time voice agents that cut call costs, boost CSAT, and automate customer conversations\u2014without scripts or hold times.",
+    "source": "OpenAI News",
+    "score": 3,
+    "category": "BUILD",
+    "url": "https://openai.com/index/retell-ai"
+  },
+  {
+    "title": "Introducing GPT-4.1 in the API",
+    "summary": "Introducing GPT-4.1 in the API\u2014a new family of models with across-the-board improvements, including major gains in coding, instruction following, and long-context understanding. We\u2019re also releasing our first nano model. Available to developers worldwide starting today.",
+    "source": "OpenAI News",
+    "score": 3,
+    "category": "BUILD",
+    "url": "https://openai.com/index/gpt-4-1"
+  },
+  {
+    "title": "New funding to build towards AGI",
+    "summary": "Today we\u2019re announcing new funding\u2014$40B at a $300B post-money valuation, which enables us to push the frontiers of AI research even further, scale our compute infrastructure, and deliver increasingly powerful tools for the 500 million people who use ChatGPT every week.",
+    "source": "OpenAI News",
+    "score": 3,
+    "category": "MODELS",
+    "url": "https://openai.com/index/march-funding-updates"
+  },
+  {
+    "title": "Introducing next-generation audio models in the API",
+    "summary": "For the first time, developers can also instruct the text-to-speech model to speak in a specific way\u2014for example, \u201ctalk like a sympathetic customer service agent\u201d\u2014unlocking a new level of customization for voice agents.",
+    "source": "OpenAI News",
+    "score": 3,
+    "category": "BUILD",
+    "url": "https://openai.com/index/introducing-our-next-generation-audio-models"
+  },
+  {
+    "title": "Introducing the Realtime API",
+    "summary": "Developers can now build fast speech-to-speech experiences into their applications",
+    "source": "OpenAI News",
+    "score": 3,
+    "category": "BUILD",
+    "url": "https://openai.com/index/introducing-the-realtime-api"
+  },
+  {
+    "title": "Introducing vision to the fine-tuning API",
+    "summary": "Developers can now fine-tune GPT-4o with images and text to improve vision capabilities",
+    "source": "OpenAI News",
+    "score": 3,
+    "category": "MODELS",
+    "url": "https://openai.com/index/introducing-vision-to-the-fine-tuning-api"
+  },
+  {
+    "title": "Upgrading the Moderation API with our new multimodal moderation model",
+    "summary": "We\u2019re introducing a new model built on GPT-4o that is more accurate at detecting harmful text and images, enabling developers to build more robust moderation systems.",
+    "source": "OpenAI News",
+    "score": 3,
+    "category": "BUILD",
+    "url": "https://openai.com/index/upgrading-the-moderation-api-with-our-new-multimodal-moderation-model"
+  },
+  {
+    "title": "Spring Update",
+    "summary": "Introducing GPT-4o and making more capabilities available for free in ChatGPT.",
+    "source": "OpenAI News",
+    "score": 3,
+    "category": "MODELS",
+    "url": "https://openai.com/index/spring-update"
+  },
+  {
+    "title": "Introducing ChatGPT and Whisper APIs",
+    "summary": "",
+    "source": "OpenAI News",
+    "score": 3,
+    "category": "BUILD",
+    "url": "https://openai.com/index/introducing-chatgpt-and-whisper-apis"
+  },
+  {
+    "title": "Introducing more enterprise-grade features for API customers",
+    "summary": "Increasing enterprise support with more security features and controls, updates to our Assistants API, and tools to better manage costs.",
+    "source": "OpenAI News",
+    "score": 3,
+    "category": "BUILD",
+    "url": "https://openai.com/index/more-enterprise-grade-features-for-api-customers"
+  },
+  {
+    "title": "Introducing OpenAI Japan",
+    "summary": "We are excited to announce our first office in Asia and we\u2019re releasing a GPT-4 custom model optimized for the Japanese language.",
+    "source": "OpenAI News",
+    "score": 3,
+    "category": "MODELS",
+    "url": "https://openai.com/index/introducing-openai-japan"
+  },
+  {
+    "title": "Introducing improvements to the fine-tuning API and expanding our custom models program",
+    "summary": "We\u2019re adding new features to help developers have more control over fine-tuning and announcing new ways to build custom models with OpenAI.",
+    "source": "OpenAI News",
+    "score": 3,
+    "category": "BUILD",
+    "url": "https://openai.com/index/introducing-improvements-to-the-fine-tuning-api-and-expanding-our-custom-models-program"
+  },
+  {
+    "title": "DALL\u00b7E 3 is now available in ChatGPT Plus and Enterprise",
+    "summary": "We developed a safety mitigation stack to ready DALL\u00b7E 3 for wider release and are sharing updates on our provenance research.",
+    "source": "OpenAI News",
+    "score": 3,
+    "category": "MODELS",
+    "url": "https://openai.com/index/dall-e-3-is-now-available-in-chatgpt-plus-and-enterprise"
+  },
+  {
+    "title": "Function calling and other API updates",
+    "summary": "We\u2019re announcing updates including more steerable API models, function calling capabilities, longer context, and lower prices.",
+    "source": "OpenAI News",
+    "score": 3,
+    "category": "BUILD",
+    "url": "https://openai.com/index/function-calling-and-other-api-updates"
+  },
+  {
+    "title": "DALL\u00b7E API now available in public beta",
+    "summary": "Starting today, developers can begin building apps with the DALL\u00b7E API.",
+    "source": "OpenAI News",
+    "score": 3,
+    "category": "BUILD",
+    "url": "https://openai.com/index/dall-e-api-now-available-in-public-beta"
+  },
+  {
+    "title": "OpenAI Codex",
+    "summary": "We\u2019ve created an improved version of OpenAI Codex, our AI system that translates natural language to code, and we are releasing it through our API in private beta starting today.",
+    "source": "OpenAI News",
+    "score": 3,
+    "category": "BUILD",
+    "url": "https://openai.com/index/openai-codex"
+  },
+  {
+    "title": "Introducing Triton: Open-source GPU programming for neural networks",
+    "summary": "We\u2019re releasing Triton 1.0, an open-source Python-like programming language which enables researchers with no CUDA experience to write highly efficient GPU code\u2014most of the time on par with what an expert would be able to produce.",
+    "source": "OpenAI News",
+    "score": 3,
+    "category": "",
+    "url": "https://openai.com/index/triton"
+  },
+  {
+    "title": "GPT-2: 1.5B release",
+    "summary": "As the final model release of\u00a0GPT-2\u2019s\u00a0staged release, we\u2019re releasing the largest version (1.5B parameters) of GPT-2 along with\u00a0code and model weights\u00a0to facilitate detection of outputs of GPT-2 models. While there have been larger language models released since August, we\u2019ve continued with our orig",
+    "source": "OpenAI News",
+    "score": 3,
+    "category": "MODELS",
+    "url": "https://openai.com/index/gpt-2-1-5b-release"
+  },
+  {
+    "title": "langchain-ai/langchain: langchain-core==1.2.27",
+    "summary": "Release langchain-core==1.2.27 \u2014 Changes since langchain-core==1.2.26\r\n\r\nrelease(core): 1.2.27 (#36586)\r\nfix(core): handle symlinks in deprecated prompt save path (#36585)\r\nchore: add comment explaining pygments>=2.20.0 (#36570)\r\n\r\nC",
+    "source": "GitHub Release",
+    "score": 3,
+    "category": "BUILD",
+    "url": "https://github.com/langchain-ai/langchain/releases/tag/langchain-core%3D%3D1.2.27"
+  },
+  {
+    "title": "crewAIInc/crewAI: 1.14.0",
+    "summary": "Release 1.14.0 \u2014 What's Changed\n\nFeatures\nAdd checkpoint list/info CLI commands\nAdd guardrail_type and name to distinguish traces\nAdd SqliteProvider for checkpoint storage\nAdd CheckpointConfig for automatic checkpoint",
+    "source": "GitHub Release",
+    "score": 3,
+    "category": "BUILD",
+    "url": "https://github.com/crewAIInc/crewAI/releases/tag/1.14.0"
+  },
+  {
+    "title": "n8n-io/n8n: beta",
+    "summary": "Release beta \u2014 [2.16.0](https://github.com/n8n-io/n8n/compare/n8n@2.15.0...n8n@2.16.0) (2026-04-07)\n\n\nBug Fixes\n\n**Anthropic Node:** Use models endpoint for credential test ([#27951](https://github.com/n8n-io/n8n/is",
+    "source": "GitHub Release",
+    "score": 3,
+    "category": "CLAUDE",
+    "url": "https://github.com/n8n-io/n8n/releases/tag/beta"
+  },
+  {
+    "title": "@OpenAI: ChatGPT is now available in CarPlay.\n\nThe voice mode you know, now available on-the-go.\n\nRolling out to iPhone users run...",
+    "summary": "ChatGPT is now available in CarPlay. The voice mode you know, now available on-the-go. Rolling out to iPhone users running iOS 26.4+ where CarPlay is supported. Gui Ferreira (@gsferreira) ChatGPT voice mode should be available on Apple CarPlay \u2014 https://nitter.net/gsferreira/status/19654427002049825",
+    "source": "X/Twitter",
+    "score": 3,
+    "category": "MODELS",
+    "url": "https://x.com/OpenAI/status/2039748699350532097#m"
+  },
+  {
+    "title": "@cursor_ai: R to @cursor_ai: We recently launched Composer 2, a frontier model with high limits.\n\nThen, with cloud, we gave agents t...",
+    "summary": "We recently launched Composer 2, a frontier model with high limits. Then, with cloud, we gave agents their own computers so they can work truly autonomously. And now with Cursor 3, we\u2019re releasing a new interface to collaborate with agents on software. cursor.com/blog/cursor-3",
+    "source": "X/Twitter",
+    "score": 3,
+    "category": "BUILD",
+    "url": "https://x.com/cursor_ai/status/2039768517604692013#m"
+  },
+  {
+    "title": "@n8n_io: Most AI workflow failures aren't model problems.\nNormalize inputs, validate outputs, route on confidence. Wrap your AI s...",
+    "summary": "Most AI workflow failures aren't model problems. Normalize inputs, validate outputs, route on confidence. Wrap your AI steps in deterministic logic and they'll actually hold up in production. New guide by Elvis Saravia ( @omarsar0 ) with five importable templates: bit.ly/41LeNDY",
+    "source": "X/Twitter",
+    "score": 3,
+    "category": "BUILD",
+    "url": "https://x.com/n8n_io/status/2039976276593700966#m"
+  },
+  {
+    "title": "@n8n_io: Jan on building n8n and the realities of AI \ud83c\udfa7\nOn this episode of the EU Startups Podcast, he breaks down why n8n was bui...",
+    "summary": "Jan on building n8n and the realities of AI \ud83c\udfa7 On this episode of the EU Startups Podcast, he breaks down why n8n was built, why data control and self-hosting matter more than ever, and what it takes to build AI systems people can rely on. Listen here \ud83d\udc47 piped.video/watch?v=8om33PDZ\u2026",
+    "source": "X/Twitter",
+    "score": 3,
+    "category": "",
+    "url": "https://x.com/n8n_io/status/2039726355747651982#m"
+  },
+  {
+    "title": "@n8n_io: AI is not the starting point. Process is. In the new n8n Podcast episode, Dave Ebbelaar explains why the smarter move is...",
+    "summary": "AI is not the starting point. Process is. In the new n8n Podcast episode, Dave Ebbelaar explains why the smarter move is to start with small internal workflows, prove value fast, and only use AI where it earns its place. \ud83c\udfa7 Listen now: piped.video/watch?v=r5mXsF-f\u2026 Video",
+    "source": "X/Twitter",
+    "score": 3,
+    "category": "BUILD",
+    "url": "https://x.com/n8n_io/status/2039598973627814124#m"
+  },
+  {
+    "title": "@n8n_io: This month's Community Challenge comes with everything you need. Free Cloud Starter license. 100K @firecrawl credits. On...",
+    "summary": "This month's Community Challenge comes with everything you need. Free Cloud Starter license. 100K @firecrawl credits. One-click connect straight from the canvas. All you bring is the build. \ud83d\udd25 \ud83d\udd17 Read more and enter the challenge here: n8n.notion.site/community-ch\u2026 #n8nChallenge",
+    "source": "X/Twitter",
+    "score": 3,
+    "category": "",
+    "url": "https://x.com/n8n_io/status/2039357355301757261#m"
+  },
+  {
+    "title": "@huggingface: RT by @huggingface: Today we're releasing WildDet3D\u2014an open model for monocular 3D object detection in the wild.\n\nIt wor...",
+    "summary": "Today we're releasing WildDet3D\u2014an open model for monocular 3D object detection in the wild. It works with text, clicks, or 2D boxes, and on zero-shot evals it nearly doubles the best prior scores. \ud83e\uddf5 Video",
+    "source": "X/Twitter",
+    "score": 3,
+    "category": "",
+    "url": "https://x.com/allen_ai/status/2041545111151022094#m"
+  },
+  {
+    "title": "@huggingface: RT by @huggingface: Releasing the Unfolding Robotics blog!\n\nTime to unfold robotics: we trained a robot to fold clothes ...",
+    "summary": "Releasing the Unfolding Robotics blog! Time to unfold robotics: we trained a robot to fold clothes using 8 bimanual setups, 100+ hours of demonstrations, and 5k+ GPU hours. Flashy robot demos are everywhere. But you rarely see the real story: the data, the failures, the Video",
+    "source": "X/Twitter",
+    "score": 3,
+    "category": "",
+    "url": "https://x.com/i/status/2041542790610297259#m"
+  },
+  {
+    "title": "@GoogleDeepMind: R to @GoogleDeepMind: Build autonomous agents that plan, navigate apps, and execute multi-step tasks \u2013\u00a0like searching da...",
+    "summary": "Build autonomous agents that plan, navigate apps, and execute multi-step tasks \u2013\u00a0like searching databases or triggering APIs \u2013\u00a0with native tool use. With up to 256K context, it can analyze full codebases and retain complex action histories without losing focus. Video",
+    "source": "X/Twitter",
+    "score": 3,
+    "category": "BUILD",
+    "url": "https://x.com/GoogleDeepMind/status/2039735455533453316#m"
+  },
+  {
+    "title": "@GoogleDeepMind: Pinned: Meet Gemma 4: our new family of open models you can run on your own hardware.\n\nBuilt for advanced reasoning and ...",
+    "summary": "Meet Gemma 4: our new family of open models you can run on your own hardware. Built for advanced reasoning and agentic workflows, we\u2019re releasing them under an Apache 2.0 license. Here\u2019s what\u2019s new \ud83e\uddf5",
+    "source": "X/Twitter",
+    "score": 3,
+    "category": "BUILD",
+    "url": "https://x.com/GoogleDeepMind/status/2039735446628925907#m"
   }
 ]
