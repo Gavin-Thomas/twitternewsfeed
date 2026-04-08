@@ -1,11 +1,83 @@
 [
   {
+    "title": "I missed Codex's UI so much I rebuilt it on top of Claude Code",
+    "summary": "Quick note before I get into it: I'm Jimmy, I build small Mac tools, and this one is the most embarrassingly simple thing I've shipped in a while. It is also the one I use the most. Fair warning. I have a confession that I think a lot of people who switched from Codex to Claude Code have been quietl",
+    "source": "Dev.to AI",
+    "score": 10,
+    "category": "CLAUDE",
+    "url": "https://dev.to/monkmodeapp/i-missed-codexs-ui-so-much-i-rebuilt-it-on-top-of-claude-code-20ip"
+  },
+  {
+    "title": "Claude Code v2.1.92 introduces Ultraplan \u2014 draft plans in the cloud, review in your browser, execute anywhere",
+    "summary": "r/ClaudeAI (574 pts): Claude Code just shipped /ultraplan (beta) \u2014 you run it in your terminal, review the plan in your browser with inline comments, then execute remotely or send it back to your CLI. It shipped alongside ",
+    "source": "Reddit",
+    "score": 10,
+    "category": "CLAUDE",
+    "url": "https://i.redd.it/23vt13mh5ltg1.png"
+  },
+  {
     "title": "@huggingface: RT by @huggingface: Very cool open-source traces from @TheZachMueller @LambdaAPI: https://huggingface.co/datasets/lambda...",
     "summary": "Very cool open-source traces from @TheZachMueller @LambdaAPI : huggingface.co/datasets/lamb\u2026 150M tokens for @NousResearch 's Hermes harness with Kimi-K2.5 & GLM 5.1 that was just released! clem \ud83e\udd17 (@ClementDelangue) We keep saying we want open-source frontier agents. Fine. Then let\u2019s build the datas",
     "source": "X/Twitter",
     "score": 10,
     "category": "BUILD",
     "url": "https://x.com/ClementDelangue/status/2041576063575212379#m"
+  },
+  {
+    "title": "Here's what that Claude Code source leak reveals about Anthropic's plans",
+    "summary": "A persistent agent, stealth \"Undercover\" mode, and... a virtual assistant named Buddy?",
+    "source": "Ars Technica AI",
+    "score": 9,
+    "category": "CLAUDE",
+    "url": "https://arstechnica.com/ai/2026/04/heres-what-that-claude-code-source-leak-reveals-about-anthropics-plans/"
+  },
+  {
+    "title": "Show HN: I just built a MCP Server that connects Claude to all your wearables",
+    "summary": "HN: 17 points",
+    "source": "HackerNews",
+    "score": 9,
+    "category": "CLAUDE",
+    "url": "https://pacetraining.co/"
+  },
+  {
+    "title": "In-the-Loop to On-the-Loop: How I Stopped Micromanaging My AI Agent",
+    "summary": "I Was the Bottleneck For the first two months of this project, I used Claude Code with auto-approve turned off. Every file edit, every terminal command, every change... I reviewed it before it executed. I read every line. I made inline corrections. I gave real-time direction: \"No, use the repository",
+    "source": "Dev.to AI",
+    "score": 9,
+    "category": "CLAUDE",
+    "url": "https://dev.to/tacoda/in-the-loop-to-on-the-loop-how-i-stopped-micromanaging-my-ai-agent-5gea"
+  },
+  {
+    "title": "How to Build an MCP Server with Gradio",
+    "summary": "",
+    "source": "Hugging Face",
+    "score": 8,
+    "category": "BUILD",
+    "url": "https://huggingface.co/blog/gradio-mcp"
+  },
+  {
+    "title": "Issue: Claude Code is unusable for complex engineering tasks with Feb updates",
+    "summary": "HN: 841 points",
+    "source": "HackerNews",
+    "score": 8,
+    "category": "CLAUDE",
+    "url": "https://github.com/anthropics/claude-code/issues/42796"
+  },
+  {
+    "title": "Codex pricing to align with API token usage, instead of per-message",
+    "summary": "HN: 204 points",
+    "source": "HackerNews",
+    "score": 8,
+    "category": "BUILD",
+    "url": "https://help.openai.com/en/articles/20001106-codex-rate-card"
+  },
+  {
+    "title": "Arcade.dev tools now in LangSmith Fleet",
+    "summary": "Arcade is the MCP runtime for production agents, delivering secure agent authorization, reliable tools, and governance. This integration gives your agents access to Arcade\u2019s collection of 7,500+ agent-optimized tools through a single secure gateway.",
+    "source": "LangChain Blog",
+    "score": 8,
+    "category": "BUILD",
+    "url": "https://blog.langchain.com/arcade-dev-tools-now-in-langsmith-fleet/"
   },
   {
     "title": "anthropics/claude-code: v2.1.94",
@@ -32,6 +104,222 @@
     "url": "https://x.com/n8n_io/status/2041538301543239801#m"
   },
   {
+    "title": "Cleanup Claude Code Paste",
+    "summary": "Tool: Cleanup Claude Code Paste Super-niche tool this. I sometimes copy prompts out of the Claude Code terminal app and they come out with a bunch of weird additional whitespace. This tool cleans that up. Tags: tools , claude-code",
+    "source": "Simon Willison",
+    "score": 7,
+    "category": "CLAUDE",
+    "url": "https://simonwillison.net/2026/Apr/6/cleanup-claude-code-paste/#atom-everything"
+  },
+  {
+    "title": "Architectural Choices in China's Open-Source AI Ecosystem: Building Beyond DeepSeek",
+    "summary": "",
+    "source": "Hugging Face",
+    "score": 7,
+    "category": "MODELS",
+    "url": "https://huggingface.co/blog/huggingface/one-year-since-the-deepseek-moment-blog-2"
+  },
+  {
+    "title": "MCP for Research: How to Connect AI to Research Tools",
+    "summary": "",
+    "source": "Hugging Face",
+    "score": 7,
+    "category": "BUILD",
+    "url": "https://huggingface.co/blog/mcp-for-research"
+  },
+  {
+    "title": "Building the Hugging Face MCP Server",
+    "summary": "",
+    "source": "Hugging Face",
+    "score": 7,
+    "category": "BUILD",
+    "url": "https://huggingface.co/blog/building-hf-mcp"
+  },
+  {
+    "title": "Tiny Agents in Python: a MCP-powered agent in ~70 lines of code",
+    "summary": "",
+    "source": "Hugging Face",
+    "score": 7,
+    "category": "BUILD",
+    "url": "https://huggingface.co/blog/python-tiny-agents"
+  },
+  {
+    "title": "Anthropic says its leak-focused DMCA effort unintentionally hit legit GitHub forks",
+    "summary": "But the effort to stop the spread of leaked Claude Code client code is an uphill battle.",
+    "source": "Ars Technica AI",
+    "score": 7,
+    "category": "CLAUDE",
+    "url": "https://arstechnica.com/ai/2026/04/anthropic-says-its-leak-focused-dmca-effort-unintentionally-hit-legit-github-forks/"
+  },
+  {
+    "title": "Running Gemma 4 locally with LM Studio's new headless CLI and Claude Code",
+    "summary": "HN: 393 points",
+    "source": "HackerNews",
+    "score": 7,
+    "category": "CLAUDE",
+    "url": "https://ai.georgeliu.com/p/running-google-gemma-4-locally-with"
+  },
+  {
+    "title": "Nanocode: The best Claude Code that $200 can buy in pure JAX on TPUs",
+    "summary": "HN: 206 points",
+    "source": "HackerNews",
+    "score": 7,
+    "category": "CLAUDE",
+    "url": "https://github.com/salmanmohammadi/nanocode/discussions/1"
+  },
+  {
+    "title": "aaif-goose / goose",
+    "summary": "an open source, extensible AI agent that goes beyond code suggestions - install, execute, edit, and test with any LLM (1,523 stars today)",
+    "source": "GitHub",
+    "score": 7,
+    "category": "BUILD",
+    "url": "https://github.com/aaif-goose/goose"
+  },
+  {
+    "title": "Build a Scalable WhatsApp API Platform with Whatssapi.cloud (FREE & Low-Cost Automation)",
+    "summary": "Modern applications demand real-time communication. Whether you're building SaaS, CRM tools, or automation workflows, integrating a reliable WhatsApp API is becoming essential. In this guide, we\u2019ll explore how developers can use Whatssapi.cloud \u2014 a WhatsApp Marketing Platform \u2014 to implement messagin",
+    "source": "Dev.to AI",
+    "score": 7,
+    "category": "BUILD",
+    "url": "https://dev.to/devinfo/build-a-scalable-whatsapp-api-platform-with-whatssapicloud-free-low-cost-automation-5fn"
+  },
+  {
+    "title": "We Built 17 MCP Servers to Let AI Run Our Internal Operations",
+    "summary": "Introduction In a previous article, I introduced \"DB Graph MCP\" \u2014 a system that enables safe, cross-schema search and query execution across our entire database estate of 17 DBs and 994 tables. https://zenn.dev/aircloset/articles/2731787582881a Thanks to the positive response, this time I'd like to ",
+    "source": "Dev.to AI",
+    "score": 7,
+    "category": "BUILD",
+    "url": "https://dev.to/ryosuke_tsuji_f08e20fdca1/we-built-17-mcp-servers-to-let-ai-run-our-internal-operations-3lk2"
+  },
+  {
+    "title": "TheCraigHewitt / seomachine",
+    "summary": "A specialized Claude Code workspace for creating long-form, SEO-optimized blog content for any business. This system helps you research, write, analyze, and optimize content that ranks well and serves your target audience. (213 stars today)",
+    "source": "GitHub",
+    "score": 7,
+    "category": "CLAUDE",
+    "url": "https://github.com/TheCraigHewitt/seomachine"
+  },
+  {
+    "title": "I made a USB-Claude who gets my attention when Claude Code finishes a response",
+    "summary": "r/ClaudeAI (1091 pts)",
+    "source": "Reddit",
+    "score": 7,
+    "category": "CLAUDE",
+    "url": "https://v.redd.it/m21ixq14zstg1"
+  },
+  {
+    "title": "Custom Kernels for All from Codex and Claude",
+    "summary": "",
+    "source": "Hugging Face",
+    "score": 6,
+    "category": "CLAUDE",
+    "url": "https://huggingface.co/blog/custom-cuda-kernels-agent-skills"
+  },
+  {
+    "title": "Codex is Open Sourcing AI models",
+    "summary": "",
+    "source": "Hugging Face",
+    "score": 6,
+    "category": "TOOLS",
+    "url": "https://huggingface.co/blog/hf-skills-training-codex"
+  },
+  {
+    "title": "Open-source DeepResearch \u2013 Freeing our search agents",
+    "summary": "",
+    "source": "Hugging Face",
+    "score": 6,
+    "category": "BUILD",
+    "url": "https://huggingface.co/blog/open-deep-research"
+  },
+  {
+    "title": "Open-source LLMs as LangChain Agents",
+    "summary": "",
+    "source": "Hugging Face",
+    "score": 6,
+    "category": "BUILD",
+    "url": "https://huggingface.co/blog/open-source-llms-as-agents"
+  },
+  {
+    "title": "Anthropic says Claude Code subscribers will need to pay extra for OpenClaw usage",
+    "summary": "It\u2019s about to become more expensive for Claude Code subscribers to use Anthropic\u2019s coding assistant with OpenClaw and other third-party tools.",
+    "source": "TechCrunch AI",
+    "score": 6,
+    "category": "CLAUDE",
+    "url": "https://techcrunch.com/2026/04/04/anthropic-says-claude-code-subscribers-will-need-to-pay-extra-for-openclaw-support/"
+  },
+  {
+    "title": "Entire Claude Code CLI source code leaks thanks to exposed map file",
+    "summary": "512,000 lines of code that competitors and hobbyists will be studying for weeks.",
+    "source": "Ars Technica AI",
+    "score": 6,
+    "category": "CLAUDE",
+    "url": "https://arstechnica.com/ai/2026/03/entire-claude-code-cli-source-code-leaks-thanks-to-exposed-map-file/"
+  },
+  {
+    "title": "With new plugins feature, OpenAI officially takes Codex beyond coding",
+    "summary": "Things are moving fast, and competitors have offered something similar for a while.",
+    "source": "Ars Technica AI",
+    "score": 6,
+    "category": "TOOLS",
+    "url": "https://arstechnica.com/ai/2026/03/openai-brings-plugins-to-codex-closing-some-of-the-gap-with-claude-code/"
+  },
+  {
+    "title": "Claude Code Down",
+    "summary": "HN: 80 points",
+    "source": "HackerNews",
+    "score": 6,
+    "category": "CLAUDE",
+    "url": "https://news.ycombinator.com/item?id=47662112"
+  },
+  {
+    "title": "abhigyanpatwari / GitNexus",
+    "summary": "GitNexus: The Zero-Server Code Intelligence Engine - GitNexus is a client-side knowledge graph creator that runs entirely in your browser. Drop in a GitHub repo or ZIP file, and get an interactive knowledge graph wit a built in Graph RAG Agent. Perfect for code exploration (857 stars today)",
+    "source": "GitHub",
+    "score": 6,
+    "category": "BUILD",
+    "url": "https://github.com/abhigyanpatwari/GitNexus"
+  },
+  {
+    "title": "Claude Code is locking people out for hours",
+    "summary": "HN: 153 points",
+    "source": "HackerNews",
+    "score": 6,
+    "category": "CLAUDE",
+    "url": "https://github.com/anthropics/claude-code/issues/44257"
+  },
+  {
+    "title": "Auto-creation of agent SKILLs from observing your screen via Gemma 4 for any agent to execute and self-improve",
+    "summary": "r/LocalLLaMA (121 pts): AgentHandover is an open-source Mac menu bar app that watches your screen through Gemma 4 (running locally via Ollama) and turns your repeated workflows into structured Skill files that any agent can ",
+    "source": "Reddit",
+    "score": 6,
+    "category": "BUILD",
+    "url": "https://v.redd.it/hgpvlzsf6stg1"
+  },
+  {
+    "title": "From Twitter/X: DeepSeek is rolling out a limited V4 gray release.",
+    "summary": "r/LocalLLaMA (72 pts): Source: https://x.com/i/status/2041458478569689589",
+    "source": "Reddit",
+    "score": 6,
+    "category": "MODELS",
+    "url": "https://i.redd.it/w417zygd9rtg1.png"
+  },
+  {
+    "title": "Ace Step 1.5 XL Models Available",
+    "summary": "r/LocalLLaMA (68 pts): [After releasing last week and forgetting to release the models](https://www.reddit.com/r/LocalLLaMA/comments/1sb6l3l/ace_step_15_xl_released/), the Ace Step team has released the Ace Step 1.5 XL Mode",
+    "source": "Reddit",
+    "score": 6,
+    "category": "MODELS",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1semfx5/ace_step_15_xl_models_available/"
+  },
+  {
+    "title": "Got roasted for not open sourcing my agent OS (dashboard),  so I did. Built the whole thing with Claude Code",
+    "summary": "r/ClaudeAI (63 pts): Got a lot of hate for not open sourcing my agent OS so decided to just do it.\n\nI've been building Octopoda with Claude Code over the past few months. Pretty much the entire thing was pair programmed w",
+    "source": "Reddit",
+    "score": 6,
+    "category": "CLAUDE",
+    "url": "https://v.redd.it/udtp1jguhrtg1"
+  },
+  {
     "title": "@AnthropicAI: Introducing Project Glasswing: an urgent initiative to help secure the world\u2019s most critical software.\n\nIt\u2019s powered by ...",
     "summary": "Introducing Project Glasswing: an urgent initiative to help secure the world\u2019s most critical software. It\u2019s powered by our newest frontier model, Claude Mythos Preview, which can find software vulnerabilities better than all but the most skilled humans. anthropic.com/glasswing",
     "source": "X/Twitter",
@@ -49,7 +337,7 @@
   },
   {
     "title": "@huggingface: RT by @huggingface: Another SOTA model drop! This time from the @Bing team: meet Harrier, a new open-source embedding mo...",
-    "summary": "Another SOTA model drop! This time from the @Bing team: meet Harrier, a new open-source embedding model with state-of-the-art performance and the #1 spot on the industry standard multilingual MTEB-v2 benchmark. (@) I\u2019m pleased to share that our search team has open sourced an embedding model called ",
+    "summary": "Another SOTA model drop! This time from the @Bing team: meet Harrier, a new open-source embedding model with state-of-the-art performance and the #1 spot on the industry standard multilingual MTEB-v2 benchmark. Jordi Ribas (@JordiRib1) I\u2019m pleased to share that our search team has open sourced an em",
     "source": "X/Twitter",
     "score": 6,
     "category": "",
@@ -64,68 +352,156 @@
     "url": "https://x.com/Zai_org/status/2041550153354519022#m"
   },
   {
+    "title": "March 2026 sponsors-only newsletter",
+    "summary": "I just sent the March edition of my sponsors-only monthly newsletter . If you are a sponsor (or if you start a sponsorship now) you can access it here . In this month's newsletter: More agentic engineering patterns Streaming experts with MoE models on a Mac Model releases in March Vibe porting Suppl",
+    "source": "Simon Willison",
+    "score": 5,
+    "category": "BUILD",
+    "url": "https://simonwillison.net/2026/Apr/2/march-newsletter/#atom-everything"
+  },
+  {
+    "title": "March 2026: LangChain Newsletter",
+    "summary": "It feels like spring has sprung here, and so has a new NVIDIA integration, ticket sales for Interrupt 2026, and announcing LangSmith Fleet (formerly Agent Builder).",
+    "source": "LangChain Blog",
+    "score": 5,
+    "category": "BUILD",
+    "url": "https://blog.langchain.com/march-2026-langchain-newsletter/"
+  },
+  {
+    "title": "The Future of the Global Open-Source AI Ecosystem: From DeepSeek to AI+",
+    "summary": "",
+    "source": "Hugging Face",
+    "score": 5,
+    "category": "MODELS",
+    "url": "https://huggingface.co/blog/huggingface/one-year-since-the-deepseek-moment-blog-3"
+  },
+  {
+    "title": "We Got Claude to Fine-Tune an Open Source LLM",
+    "summary": "",
+    "source": "Hugging Face",
+    "score": 5,
+    "category": "CLAUDE",
+    "url": "https://huggingface.co/blog/hf-skills-training"
+  },
+  {
+    "title": "Implementing MCP Servers in Python: An AI Shopping Assistant with Gradio",
+    "summary": "",
+    "source": "Hugging Face",
+    "score": 5,
+    "category": "BUILD",
+    "url": "https://huggingface.co/blog/gradio-vton-mcp"
+  },
+  {
+    "title": "Five Big Improvements to Gradio MCP Servers",
+    "summary": "",
+    "source": "Hugging Face",
+    "score": 5,
+    "category": "BUILD",
+    "url": "https://huggingface.co/blog/gradio-mcp-updates"
+  },
+  {
+    "title": "Reachy Mini - The Open-Source Robot for Today's and Tomorrow's AI Builders",
+    "summary": "",
+    "source": "Hugging Face",
+    "score": 5,
+    "category": "",
+    "url": "https://huggingface.co/blog/reachy-mini"
+  },
+  {
+    "title": "Upskill your LLMs With Gradio MCP Servers",
+    "summary": "",
+    "source": "Hugging Face",
+    "score": 5,
+    "category": "BUILD",
+    "url": "https://huggingface.co/blog/gradio-mcp-servers"
+  },
+  {
+    "title": "Holo1: New family of GUI automation VLMs powering GUI agent Surfer-H",
+    "summary": "",
+    "source": "Hugging Face",
+    "score": 5,
+    "category": "BUILD",
+    "url": "https://huggingface.co/blog/Hcompany/holo1"
+  },
+  {
+    "title": "Mini-R1: Reproduce Deepseek R1 \u201eaha moment\u201c a RL tutorial",
+    "summary": "",
+    "source": "Hugging Face",
+    "score": 5,
+    "category": "MODELS",
+    "url": "https://huggingface.co/blog/open-r1/mini-r1-contdown-game"
+  },
+  {
+    "title": "How to deploy and fine-tune DeepSeek models on AWS",
+    "summary": "",
+    "source": "Hugging Face",
+    "score": 5,
+    "category": "MODELS",
+    "url": "https://huggingface.co/blog/deepseek-r1-aws"
+  },
+  {
+    "title": "How to Install and Use the Hugging Face Unity API",
+    "summary": "",
+    "source": "Hugging Face",
+    "score": 5,
+    "category": "BUILD",
+    "url": "https://huggingface.co/blog/unity-api"
+  },
+  {
+    "title": "How to use the new ChatGPT app integrations, including DoorDash, Spotify, Uber, and others",
+    "summary": "Learn how to use Spotify, Canva, Figma, Expedia, and other apps directly in ChatGPT.",
+    "source": "TechCrunch AI",
+    "score": 5,
+    "category": "BUILD",
+    "url": "https://techcrunch.com/2026/04/06/how-to-use-chatgpt-apps-doordash-spotify-uber/"
+  },
+  {
+    "title": "Gemini is making it faster for distressed users to reach mental health resources",
+    "summary": "Google says it has updated Gemini to better direct users to get mental health resources during moments of crisis. The change comes as the tech giant faces a wrongful death lawsuit alleging its chatbot \"coached\" a man to die by suicide, the latest in a string of lawsuits alleging tangible harm from A",
+    "source": "The Verge AI",
+    "score": 5,
+    "category": "BUILD",
+    "url": "https://www.theverge.com/ai-artificial-intelligence/907842/google-gemini-mental-health-interface-update"
+  },
+  {
+    "title": "Build Collaborative AI Whiteboard Like Mural Using Velt Agent Skills and MiniMax\ud83d\udd25",
+    "summary": "Introduction Building a real-time collaborative canvas is harder than it looks. The interface seems simple enough, boxes, lines, and cursors moving around. But underneath it is a constant stream of concurrent edits, conflicting updates, and shared state that has to stay consistent for everyone at th",
+    "source": "Dev.to AI",
+    "score": 5,
+    "category": "BUILD",
+    "url": "https://dev.to/astrodevil/build-collaborative-ai-whiteboard-like-mural-using-velt-agent-skills-and-minimax-10ce"
+  },
+  {
     "title": "Deep Agents v0.5",
-    "summary": "\ud83d\udca1 TL;DR: We\u2019ve released new minor versions of deepagents & deepagentsjs , featuring async (non-blocking) subagents, expanded multi-modal filesystem support, and more. See the changelog for details. Async subagents Deep Agents can now delegate work to remote agents that run in the background. As oppo",
+    "summary": "TL;DR: We\u2019ve released new minor versions of deepagents & deepagentsjs , featuring async (non-blocking) subagents, expanded multi-modal filesystem support, and more. See the changelog for details. Async subagents Deep Agents can now delegate work to remote agents that run in the background. As oppose",
     "source": "LangChain Blog",
     "score": 5,
     "category": "BUILD",
     "url": "https://blog.langchain.com/deep-agents-v0-5/"
   },
   {
-    "title": "Arcade.dev tools now in LangSmith Fleet",
-    "summary": "Arcade is the MCP runtime for production agents, delivering secure agent authorization, reliable tools, and governance. This integration gives your agents access to Arcade\u2019s collection of 7,500+ agent-optimized tools through a single secure gateway.",
-    "source": "LangChain Blog",
+    "title": "my coding workflow outgrew my hardware knowledge and it fucked me for 4 years",
+    "summary": "r/ClaudeAI (168 pts): i gave claude code this prompt:\n\n\n\"analyze this computer for hardware bottlenecks, damage, and performance upgrades. run a full diagnostic \u2014 check ram speeds, pcie lanes, gpu utilization, monitor conn",
+    "source": "Reddit",
+    "score": 5,
+    "category": "CLAUDE",
+    "url": "https://www.reddit.com/r/ClaudeAI/comments/1sem8kv/my_coding_workflow_outgrew_my_hardware_knowledge/"
+  },
+  {
+    "title": "@n8n_io: We asked Andrew Green to take a fresh look at AI agent development tools, one year after his last review. Unsurprisingly...",
+    "summary": "We asked Andrew Green to take a fresh look at AI agent development tools, one year after his last review. Unsurprisingly, a lot has changed. \ud83d\ude0f Hot takes (so far): \u2192 MCP rose fast and faded just as quickly \u2192 Semantic reranking in RAG is more niche than expected \u2192 Many prefer nudging agents repeatedly",
+    "source": "X/Twitter",
     "score": 5,
     "category": "BUILD",
-    "url": "https://blog.langchain.com/arcade-dev-tools-now-in-langsmith-fleet/"
+    "url": "https://x.com/n8n_io/status/2041474834832453933#m"
   },
   {
     "title": "@huggingface: RT by @huggingface: I\u2019m pleased to share that our search team has open sourced an embedding model called Harrier that is...",
-    "summary": "I\u2019m pleased to share that our search team has open sourced an embedding model called Harrier that is currently ranking #1 on the multilingual MTEB-v2 benchmark leaderboard. Harrier delivers SOTA performance on retrieval quality, semantic matching, and contextual analysis across",
+    "summary": "I\u2019m pleased to share that our search team has open sourced an embedding model called Harrier that is currently ranking #1 on the multilingual MTEB-v2 benchmark leaderboard. Harrier delivers SOTA performance on retrieval quality, semantic matching, and contextual analysis across workloads, supporting",
     "source": "X/Twitter",
     "score": 5,
     "category": "",
-    "url": "https://x.com/i/status/2041550352739164404#m"
-  },
-  {
-    "title": "Announcing the OpenAI Safety Fellowship",
-    "summary": "A pilot program to support independent safety and alignment research and develop the next generation of talent",
-    "source": "OpenAI News",
-    "score": 4,
-    "category": "",
-    "url": "https://openai.com/index/introducing-openai-safety-fellowship"
-  },
-  {
-    "title": "Gradient Labs gives every bank customer an AI account manager",
-    "summary": "Gradient Labs uses GPT-4.1 and GPT-5.4 mini and nano to power AI agents that automate banking support workflows with low latency and high reliability.",
-    "source": "OpenAI News",
-    "score": 4,
-    "category": "BUILD",
-    "url": "https://openai.com/index/gradient-labs"
-  },
-  {
-    "title": "Introducing gpt-realtime and Realtime API updates",
-    "summary": "We\u2019re releasing a more advanced speech-to-speech model and new API capabilities including MCP server support, image input, and SIP phone calling support.",
-    "source": "OpenAI News",
-    "score": 4,
-    "category": "BUILD",
-    "url": "https://openai.com/index/introducing-gpt-realtime"
-  },
-  {
-    "title": "Introducing our latest image generation model in the API",
-    "summary": "Our latest image generation model is now available in the API via \u2018gpt-image-1\u2019\u2014enabling developers and businesses to build professional-grade, customizable visuals directly into their own tools and platforms.",
-    "source": "OpenAI News",
-    "score": 4,
-    "category": "BUILD",
-    "url": "https://openai.com/index/image-generation-api"
-  },
-  {
-    "title": "langchain-ai/langchain: langchain-ollama==1.1.0",
-    "summary": "Release langchain-ollama==1.1.0 \u2014 Changes since langchain-ollama==1.0.1\n\nrelease(ollama): 1.1.0 (#36574)\nfeat(ollama): support response_format (#34612)\nfix(ollama): serialize reasoning_content back to ollama thinking (#36573)\nfix(olla",
-    "source": "GitHub Release",
-    "score": 4,
-    "category": "BUILD",
-    "url": "https://github.com/langchain-ai/langchain/releases/tag/langchain-ollama%3D%3D1.1.0"
+    "url": "https://x.com/JordiRib1/status/2041550352739164404#m"
   },
   {
     "title": "@OpenAI: Introducing the OpenAI Safety Fellowship, a new program supporting independent research on AI safety and alignment\u2014and t...",
@@ -152,14 +528,6 @@
     "url": "https://x.com/cursor_ai/status/2039768512894505086#m"
   },
   {
-    "title": "@n8n_io: We asked Andrew Green to take a fresh look at AI agent development tools, one year after his last review. Unsurprisingly...",
-    "summary": "We asked Andrew Green to take a fresh look at AI agent development tools, one year after his last review. Unsurprisingly, a lot has changed. \ud83d\ude0f Hot takes (so far): \u2192 MCP rose fast and faded just as quickly \u2192 Semantic reranking in RAG is more niche than expected \u2192 Many prefer nudging agents repeatedly",
-    "source": "X/Twitter",
-    "score": 4,
-    "category": "BUILD",
-    "url": "https://x.com/n8n_io/status/2041474834832453933#m"
-  },
-  {
     "title": "@n8n_io: Less noise, more signal.\nMost monitoring tools alert on every tiny hiccup. This workflow waits 5 minutes, which helps cu...",
     "summary": "Less noise, more signal. Most monitoring tools alert on every tiny hiccup. This workflow waits 5 minutes, which helps cut down on unnecessary notifications. Full control, alerts via email or Telegram. n8n.io/workflows/11763-websi\u2026",
     "source": "X/Twitter",
@@ -176,276 +544,12 @@
     "url": "https://x.com/n8n_io/status/2039613854431248850#m"
   },
   {
-    "title": "Introducing GPT-5.4 mini and nano",
-    "summary": "GPT-5.4 mini and nano are smaller, faster versions of GPT-5.4 optimized for coding, tool use, multimodal reasoning, and high-volume API and sub-agent workloads.",
-    "source": "OpenAI News",
+    "title": "Found this cool new harness, gonna give it a spin with the new GLM 5.1. I\u2019ll report back later.",
+    "summary": "r/LocalLLaMA (51 pts): Found it on a USB drive in the parking lot. Should be interesting.\n\nSeriously tho, props to this guy and his cool Hermes Agent skins library here:\n\nhttps://github.com/joeynyc/hermes-skins",
+    "source": "Reddit",
     "score": 3,
     "category": "BUILD",
-    "url": "https://openai.com/index/introducing-gpt-5-4-mini-and-nano"
-  },
-  {
-    "title": "Introducing the Stateful Runtime Environment for Agents in Amazon Bedrock",
-    "summary": "Stateful Runtime for Agents in Amazon Bedrock brings persistent orchestration, memory, and secure execution to multi-step AI workflows powered by OpenAI.",
-    "source": "OpenAI News",
-    "score": 3,
-    "category": "BUILD",
-    "url": "https://openai.com/index/introducing-the-stateful-runtime-environment-for-agents-in-amazon-bedrock"
-  },
-  {
-    "title": "Introducing OpenAI Frontier",
-    "summary": "OpenAI Frontier is an enterprise platform for building, deploying, and managing AI agents with shared context, onboarding, permissions, and governance.",
-    "source": "OpenAI News",
-    "score": 3,
-    "category": "BUILD",
-    "url": "https://openai.com/index/introducing-openai-frontier"
-  },
-  {
-    "title": "Introducing the Codex app",
-    "summary": "Introducing the Codex app for macOS\u2014a command center for AI coding and software development with multiple agents, parallel workflows, and long-running tasks.",
-    "source": "OpenAI News",
-    "score": 3,
-    "category": "BUILD",
-    "url": "https://openai.com/index/introducing-the-codex-app"
-  },
-  {
-    "title": "Introducing ChatGPT Go, now available worldwide",
-    "summary": "ChatGPT Go is now available worldwide, offering expanded access to GPT-5.2 Instant, higher usage limits, and longer memory\u2014making advanced AI more affordable globally.",
-    "source": "OpenAI News",
-    "score": 3,
-    "category": "MODELS",
-    "url": "https://openai.com/index/introducing-chatgpt-go"
-  },
-  {
-    "title": "Building more with GPT-5.1-Codex-Max",
-    "summary": "Introducing GPT-5.1-Codex-Max, a faster, more intelligent agentic coding model for Codex. The model is designed for long-running, project-scale work with enhanced reasoning and token efficiency.",
-    "source": "OpenAI News",
-    "score": 3,
-    "category": "BUILD",
-    "url": "https://openai.com/index/gpt-5-1-codex-max"
-  },
-  {
-    "title": "Introducing GPT-5.1 for developers",
-    "summary": "GPT-5.1 is now available in the API, bringing faster adaptive reasoning, extended prompt caching, improved coding performance, and new apply_patch and shell tools.",
-    "source": "OpenAI News",
-    "score": 3,
-    "category": "BUILD",
-    "url": "https://openai.com/index/gpt-5-1-for-developers"
-  },
-  {
-    "title": "Introducing Aardvark: OpenAI\u2019s agentic security researcher",
-    "summary": "OpenAI introduces Aardvark, an AI-powered security researcher that autonomously finds, validates, and helps fix software vulnerabilities at scale. The system is in private beta\u2014sign up to join early testing.",
-    "source": "OpenAI News",
-    "score": 3,
-    "category": "BUILD",
-    "url": "https://openai.com/index/introducing-aardvark"
-  },
-  {
-    "title": "Introducing apps in ChatGPT and the new Apps SDK",
-    "summary": "We\u2019re introducing a new generation of apps you can chat with, right inside ChatGPT. Developers can start building them today with the new Apps SDK, available in preview.",
-    "source": "OpenAI News",
-    "score": 3,
-    "category": "MODELS",
-    "url": "https://openai.com/index/introducing-apps-in-chatgpt"
-  },
-  {
-    "title": "Introducing AgentKit, new Evals, and RFT for agents",
-    "summary": "Today, we\u2019re releasing  new tools to help developers go from prototype to production faster: AgentKit, expanded evals capabilities, and reinforcement fine-tuning for agents.",
-    "source": "OpenAI News",
-    "score": 3,
-    "category": "BUILD",
-    "url": "https://openai.com/index/introducing-agentkit"
-  },
-  {
-    "title": "Introducing ChatGPT Pulse",
-    "summary": "Today we're releasing a preview of ChatGPT Pulse to Pro users on mobile. Pulse is a new experience where ChatGPT proactively does research to deliver personalized updates based on your chats, feedback, and connected apps like your calendar.",
-    "source": "OpenAI News",
-    "score": 3,
-    "category": "MODELS",
-    "url": "https://openai.com/index/introducing-chatgpt-pulse"
-  },
-  {
-    "title": "Introducing study mode in ChatGPT",
-    "summary": "Introducing study mode in ChatGPT, a new learning experience that helps you work through problems step by step, guiding students with questions, scaffolding, and feedback for deeper learning.",
-    "source": "OpenAI News",
-    "score": 3,
-    "category": "MODELS",
-    "url": "https://openai.com/index/chatgpt-study-mode"
-  },
-  {
-    "title": "Introducing ChatGPT agent",
-    "summary": "Introducing ChatGPT agent: it thinks and acts, using tools to complete tasks like research, bookings, and slideshows\u2014all with your guidance.",
-    "source": "OpenAI News",
-    "score": 3,
-    "category": "BUILD",
-    "url": "https://openai.com/index/introducing-chatgpt-agent"
-  },
-  {
-    "title": "Customizable, no-code voice agent automation with GPT-4o",
-    "summary": "Retell AI is transforming the call center with AI voice automation powered by GPT-4o and GPT-4.1. Its no-code platform enables businesses to launch natural, real-time voice agents that cut call costs, boost CSAT, and automate customer conversations\u2014without scripts or hold times.",
-    "source": "OpenAI News",
-    "score": 3,
-    "category": "BUILD",
-    "url": "https://openai.com/index/retell-ai"
-  },
-  {
-    "title": "Introducing GPT-4.1 in the API",
-    "summary": "Introducing GPT-4.1 in the API\u2014a new family of models with across-the-board improvements, including major gains in coding, instruction following, and long-context understanding. We\u2019re also releasing our first nano model. Available to developers worldwide starting today.",
-    "source": "OpenAI News",
-    "score": 3,
-    "category": "BUILD",
-    "url": "https://openai.com/index/gpt-4-1"
-  },
-  {
-    "title": "New funding to build towards AGI",
-    "summary": "Today we\u2019re announcing new funding\u2014$40B at a $300B post-money valuation, which enables us to push the frontiers of AI research even further, scale our compute infrastructure, and deliver increasingly powerful tools for the 500 million people who use ChatGPT every week.",
-    "source": "OpenAI News",
-    "score": 3,
-    "category": "MODELS",
-    "url": "https://openai.com/index/march-funding-updates"
-  },
-  {
-    "title": "Introducing next-generation audio models in the API",
-    "summary": "For the first time, developers can also instruct the text-to-speech model to speak in a specific way\u2014for example, \u201ctalk like a sympathetic customer service agent\u201d\u2014unlocking a new level of customization for voice agents.",
-    "source": "OpenAI News",
-    "score": 3,
-    "category": "BUILD",
-    "url": "https://openai.com/index/introducing-our-next-generation-audio-models"
-  },
-  {
-    "title": "Introducing the Realtime API",
-    "summary": "Developers can now build fast speech-to-speech experiences into their applications",
-    "source": "OpenAI News",
-    "score": 3,
-    "category": "BUILD",
-    "url": "https://openai.com/index/introducing-the-realtime-api"
-  },
-  {
-    "title": "Introducing vision to the fine-tuning API",
-    "summary": "Developers can now fine-tune GPT-4o with images and text to improve vision capabilities",
-    "source": "OpenAI News",
-    "score": 3,
-    "category": "MODELS",
-    "url": "https://openai.com/index/introducing-vision-to-the-fine-tuning-api"
-  },
-  {
-    "title": "Upgrading the Moderation API with our new multimodal moderation model",
-    "summary": "We\u2019re introducing a new model built on GPT-4o that is more accurate at detecting harmful text and images, enabling developers to build more robust moderation systems.",
-    "source": "OpenAI News",
-    "score": 3,
-    "category": "BUILD",
-    "url": "https://openai.com/index/upgrading-the-moderation-api-with-our-new-multimodal-moderation-model"
-  },
-  {
-    "title": "Spring Update",
-    "summary": "Introducing GPT-4o and making more capabilities available for free in ChatGPT.",
-    "source": "OpenAI News",
-    "score": 3,
-    "category": "MODELS",
-    "url": "https://openai.com/index/spring-update"
-  },
-  {
-    "title": "Introducing ChatGPT and Whisper APIs",
-    "summary": "",
-    "source": "OpenAI News",
-    "score": 3,
-    "category": "BUILD",
-    "url": "https://openai.com/index/introducing-chatgpt-and-whisper-apis"
-  },
-  {
-    "title": "Introducing more enterprise-grade features for API customers",
-    "summary": "Increasing enterprise support with more security features and controls, updates to our Assistants API, and tools to better manage costs.",
-    "source": "OpenAI News",
-    "score": 3,
-    "category": "BUILD",
-    "url": "https://openai.com/index/more-enterprise-grade-features-for-api-customers"
-  },
-  {
-    "title": "Introducing OpenAI Japan",
-    "summary": "We are excited to announce our first office in Asia and we\u2019re releasing a GPT-4 custom model optimized for the Japanese language.",
-    "source": "OpenAI News",
-    "score": 3,
-    "category": "MODELS",
-    "url": "https://openai.com/index/introducing-openai-japan"
-  },
-  {
-    "title": "Introducing improvements to the fine-tuning API and expanding our custom models program",
-    "summary": "We\u2019re adding new features to help developers have more control over fine-tuning and announcing new ways to build custom models with OpenAI.",
-    "source": "OpenAI News",
-    "score": 3,
-    "category": "BUILD",
-    "url": "https://openai.com/index/introducing-improvements-to-the-fine-tuning-api-and-expanding-our-custom-models-program"
-  },
-  {
-    "title": "DALL\u00b7E 3 is now available in ChatGPT Plus and Enterprise",
-    "summary": "We developed a safety mitigation stack to ready DALL\u00b7E 3 for wider release and are sharing updates on our provenance research.",
-    "source": "OpenAI News",
-    "score": 3,
-    "category": "MODELS",
-    "url": "https://openai.com/index/dall-e-3-is-now-available-in-chatgpt-plus-and-enterprise"
-  },
-  {
-    "title": "Function calling and other API updates",
-    "summary": "We\u2019re announcing updates including more steerable API models, function calling capabilities, longer context, and lower prices.",
-    "source": "OpenAI News",
-    "score": 3,
-    "category": "BUILD",
-    "url": "https://openai.com/index/function-calling-and-other-api-updates"
-  },
-  {
-    "title": "DALL\u00b7E API now available in public beta",
-    "summary": "Starting today, developers can begin building apps with the DALL\u00b7E API.",
-    "source": "OpenAI News",
-    "score": 3,
-    "category": "BUILD",
-    "url": "https://openai.com/index/dall-e-api-now-available-in-public-beta"
-  },
-  {
-    "title": "OpenAI Codex",
-    "summary": "We\u2019ve created an improved version of OpenAI Codex, our AI system that translates natural language to code, and we are releasing it through our API in private beta starting today.",
-    "source": "OpenAI News",
-    "score": 3,
-    "category": "BUILD",
-    "url": "https://openai.com/index/openai-codex"
-  },
-  {
-    "title": "Introducing Triton: Open-source GPU programming for neural networks",
-    "summary": "We\u2019re releasing Triton 1.0, an open-source Python-like programming language which enables researchers with no CUDA experience to write highly efficient GPU code\u2014most of the time on par with what an expert would be able to produce.",
-    "source": "OpenAI News",
-    "score": 3,
-    "category": "",
-    "url": "https://openai.com/index/triton"
-  },
-  {
-    "title": "GPT-2: 1.5B release",
-    "summary": "As the final model release of\u00a0GPT-2\u2019s\u00a0staged release, we\u2019re releasing the largest version (1.5B parameters) of GPT-2 along with\u00a0code and model weights\u00a0to facilitate detection of outputs of GPT-2 models. While there have been larger language models released since August, we\u2019ve continued with our orig",
-    "source": "OpenAI News",
-    "score": 3,
-    "category": "MODELS",
-    "url": "https://openai.com/index/gpt-2-1-5b-release"
-  },
-  {
-    "title": "langchain-ai/langchain: langchain-core==1.2.27",
-    "summary": "Release langchain-core==1.2.27 \u2014 Changes since langchain-core==1.2.26\r\n\r\nrelease(core): 1.2.27 (#36586)\r\nfix(core): handle symlinks in deprecated prompt save path (#36585)\r\nchore: add comment explaining pygments>=2.20.0 (#36570)\r\n\r\nC",
-    "source": "GitHub Release",
-    "score": 3,
-    "category": "BUILD",
-    "url": "https://github.com/langchain-ai/langchain/releases/tag/langchain-core%3D%3D1.2.27"
-  },
-  {
-    "title": "crewAIInc/crewAI: 1.14.0",
-    "summary": "Release 1.14.0 \u2014 What's Changed\n\nFeatures\nAdd checkpoint list/info CLI commands\nAdd guardrail_type and name to distinguish traces\nAdd SqliteProvider for checkpoint storage\nAdd CheckpointConfig for automatic checkpoint",
-    "source": "GitHub Release",
-    "score": 3,
-    "category": "BUILD",
-    "url": "https://github.com/crewAIInc/crewAI/releases/tag/1.14.0"
-  },
-  {
-    "title": "n8n-io/n8n: beta",
-    "summary": "Release beta \u2014 [2.16.0](https://github.com/n8n-io/n8n/compare/n8n@2.15.0...n8n@2.16.0) (2026-04-07)\n\n\nBug Fixes\n\n**Anthropic Node:** Use models endpoint for credential test ([#27951](https://github.com/n8n-io/n8n/is",
-    "source": "GitHub Release",
-    "score": 3,
-    "category": "CLAUDE",
-    "url": "https://github.com/n8n-io/n8n/releases/tag/beta"
+    "url": "https://i.redd.it/ys1hbt7nmttg1.jpeg"
   },
   {
     "title": "@OpenAI: ChatGPT is now available in CarPlay.\n\nThe voice mode you know, now available on-the-go.\n\nRolling out to iPhone users run...",
@@ -505,11 +609,11 @@
   },
   {
     "title": "@huggingface: RT by @huggingface: Releasing the Unfolding Robotics blog!\n\nTime to unfold robotics: we trained a robot to fold clothes ...",
-    "summary": "Releasing the Unfolding Robotics blog! Time to unfold robotics: we trained a robot to fold clothes using 8 bimanual setups, 100+ hours of demonstrations, and 5k+ GPU hours. Flashy robot demos are everywhere. But you rarely see the real story: the data, the failures, the Video",
+    "summary": "Releasing the Unfolding Robotics blog! Time to unfold robotics: we trained a robot to fold clothes using 8 bimanual setups, 100+ hours of demonstrations, and 5k+ GPU hours. Flashy robot demos are everywhere. But you rarely see the real story: the data, the failures, the engineering. We\u2019re sharing ev",
     "source": "X/Twitter",
     "score": 3,
     "category": "",
-    "url": "https://x.com/i/status/2041542790610297259#m"
+    "url": "https://x.com/LeRobotHF/status/2041542790610297259#m"
   },
   {
     "title": "@GoogleDeepMind: R to @GoogleDeepMind: Build autonomous agents that plan, navigate apps, and execute multi-step tasks \u2013\u00a0like searching da...",

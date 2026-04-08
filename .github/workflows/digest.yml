@@ -2,8 +2,8 @@ name: Daily AI Digest
 
 on:
   schedule:
-    # 6:00 AM Mountain Time (MDT) = 12:00 PM UTC
-    - cron: '0 12 * * *'
+    # 7:15 AM Mountain Time (MDT) = 1:15 PM UTC (temporary test)
+    - cron: '15 13 * * *'
     # 6:00 PM Mountain Time (MDT) = 00:00 UTC next day
     - cron: '0 0 * * *'
   workflow_dispatch: # Manual trigger from GitHub UI
