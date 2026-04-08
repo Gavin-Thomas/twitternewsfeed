@@ -56,6 +56,7 @@ def send_ntfy(message: str, topic: str, title: str = "AI Digest") -> bool:
                 "Priority": "default",
                 "Tags": "robot",
                 "Content-Type": "text/plain; charset=utf-8",
+                "Markdown": "yes",
             },
             timeout=15,
         )
