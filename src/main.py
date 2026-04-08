@@ -470,11 +470,12 @@ def _generate_video_breakdown(article: Article, trend: dict = None) -> str:
 def _send_video_ideas(articles: list[Article], logger: logging.Logger) -> None:
     """Generate and email video ideas with adversarial review.
 
-    Only STRONG and GOOD ideas are sent. SKIP/MAYBE are excluded.
+    Only articles scoring 8+ get video ideas. These are the highest-signal
+    items — real launches, trending tools, and validated new releases.
     """
-    candidates = [a for a in articles if a.score >= 4]
+    candidates = [a for a in articles if a.score >= 8]
     if not candidates:
-        logger.info("No articles scored 4+ for video ideas")
+        logger.info("No articles scored 8+ for video ideas")
         return
 
     email_to = FALLBACK_EMAIL
@@ -498,8 +499,8 @@ def _send_video_ideas(articles: list[Article], logger: logging.Logger) -> None:
     # Run Google Trends check on top ideas only (rate-limited to ~15 queries)
     import time as _time
     trends_data: dict[str, dict] = {}
-    # Only check top 15 ideas (score 5+) to stay under Google's rate limit
-    trends_candidates = [(a, r) for a, r in reviewed if a.score >= 5][:15]
+    # Check all reviewed ideas (only 8+ now, so count is small)
+    trends_candidates = reviewed[:15]
     if trends_candidates:
         logger.info("Checking Google Trends for %d top ideas...", len(trends_candidates))
         seen_terms: set[str] = set()

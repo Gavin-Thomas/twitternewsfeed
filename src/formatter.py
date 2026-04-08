@@ -69,7 +69,7 @@ def _format_article_line(article: Article) -> str:
     lines = [f"[{article.score}/10]{tag_str} {article.title}{fresh_str}"]
     if article.summary:
         lines.append(f"  {_truncate(article.summary)}")
-    lines.append(f"  {article.url}")
+    lines.append(article.url)
     return "\n".join(lines)
 
 
