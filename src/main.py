@@ -509,7 +509,7 @@ def _generate_quick_outline(article: Article, text: str, video_format: str) -> s
 
 
 def _generate_video_breakdown(article: Article, trend: dict = None) -> str:
-    """Generate a thorough, article-specific video breakdown with adversarial review."""
+    """Generate a clean, readable video brief for one article."""
     hook = generate_video_hook(article.title, article.summary, article.score)
     text = f"{article.title} {article.summary}".lower()
     review = _review_article(article)
@@ -517,127 +517,162 @@ def _generate_video_breakdown(article: Article, trend: dict = None) -> str:
 
     # Determine video format
     if any(kw in text for kw in ["tutorial", "how to", "build", "walkthrough", "step by step"]):
-        video_format = "Tutorial / Walkthrough"
-        structure = (
-            "1. Hook: show the finished result first (15s)\n"
-            "2. Why this matters for your audience (30s)\n"
-            "3. Setup & prerequisites on screen (1-2 min)\n"
-            "4. Full build — every step recorded (5-8 min)\n"
-            "5. Test it live with real data (1-2 min)\n"
-            "6. How to extend this / monetize it (1 min)\n"
-            "7. CTA: link in description, ask to subscribe (15s)"
-        )
+        video_format = "Tutorial"
     elif any(kw in text for kw in ["launch", "release", "introducing", "announcing", "just shipped", "now available"]):
-        video_format = "First Look / Review"
-        structure = (
-            "1. Hook: '[Tool] just dropped — here's what changed' (15s)\n"
-            "2. Show the announcement/release notes on screen (30s)\n"
-            "3. Live demo: walk through the new features one by one (3-5 min)\n"
-            "4. Before vs. after: what's actually different? (1-2 min)\n"
-            "5. Who should use this and who should wait (1 min)\n"
-            "6. Your honest take — hype or legit? (30s)\n"
-            "7. CTA: 'Try it yourself, link below' (15s)"
-        )
+        video_format = "First Look"
     elif any(kw in text for kw in ["open-source", "open source", "free", "github"]):
         video_format = "Tool Showcase"
-        structure = (
-            "1. Hook: show the tool running, state what it replaces (15s)\n"
-            "2. What it does and why it exists (30s)\n"
-            "3. Install on screen — git clone, setup, first run (2-3 min)\n"
-            "4. Build something real with it, not a toy example (4-6 min)\n"
-            "5. Honest pros and cons (1 min)\n"
-            "6. Who this is for and what to build next (30s)\n"
-            "7. CTA: repo link in description (15s)"
-        )
     elif any(kw in text for kw in ["agent", "automation", "workflow", "voice agent"]):
-        video_format = "Build & Ship"
-        structure = (
-            "1. Hook: show the finished automation running (15s)\n"
-            "2. The business problem this solves + who pays (30s)\n"
-            "3. Architecture overview — what connects to what (1 min)\n"
-            "4. Full build on screen, explain each step (5-8 min)\n"
-            "5. Test with real data, show real output (1-2 min)\n"
-            "6. How to package and sell this to clients (1 min)\n"
-            "7. CTA: subscribe for more automation builds (15s)"
-        )
+        video_format = "Build Video"
     else:
         video_format = "News Breakdown"
-        structure = (
-            "1. Hook: one-sentence summary of why this matters (15s)\n"
-            "2. Show the source on screen, walk through key details (1-2 min)\n"
-            "3. Live demo or walkthrough of the product/tool (3-5 min)\n"
-            "4. What this means for AI builders specifically (1 min)\n"
-            "5. What you can build or change in your workflow now (1 min)\n"
-            "6. Your take — is this the real deal? (30s)\n"
-            "7. CTA: what video should I make next? (15s)"
-        )
 
-    # Build the breakdown
+    # Clean the title
+    title = article.title
+    if ": " in title and "/" in title.split(": ")[0]:
+        title = title.split(": ", 1)[1]
+
+    # Clean summary
+    summary = article.summary or ""
+    if summary.startswith("r/") and ": " in summary[:40]:
+        summary = summary.split(": ", 1)[1]
+    if summary.startswith("HN: "):
+        summary = ""
+    if summary.startswith("Release ") and " — " in summary:
+        summary = summary.split(" — ", 1)[1]
+
+    # Build the brief
     lines = []
 
-    # Header with quality tier
-    lines.append(f"VERDICT: {review['tier']}")
+    # Verdict line — the decision
+    tier = review["tier"]
+    if "STRONG" in tier:
+        lines.append("MAKE THIS VIDEO")
+    elif "GOOD" in tier:
+        lines.append("WORTH COVERING")
+    else:
+        lines.append("CONSIDER")
     lines.append("")
 
-    # Title options
-    lines.append(f"YOUTUBE TITLE: {hook}" if hook else f"YOUTUBE TITLE: \"{article.title}\"")
-    lines.append(f"FORMAT: {video_format}")
+    # What it is — one clear paragraph
+    lines.append(title)
+    if summary:
+        lines.append(summary[:200])
+    lines.append("")
+    lines.append(f"Score: {article.score}/10 · {article.source} · {video_format}")
+    lines.append(article.url)
     lines.append("")
 
-    # Source with full link
-    lines.append(f"SOURCE: {article.title}")
-    lines.append(f"  {article.source} | Score: {article.score}/10 | {article.category or 'General'}")
-    lines.append(f"  {article.url}")
-    lines.append("")
-
-    # Google Trends — search demand validation
+    # Search demand
     lines.append(format_trend_line(trend))
     lines.append("")
 
-    # What it is — full summary
-    lines.append("WHAT IT IS:")
-    summary = article.summary[:500] if article.summary else "(no summary available)"
-    lines.append(f"  {summary}")
+    # Why now — strengths as a readable sentence
+    if review["strengths"]:
+        why_parts = []
+        for s in review["strengths"]:
+            # Strip the ALL CAPS prefix, keep the useful part
+            if " — " in s:
+                why_parts.append(s.split(" — ", 1)[1])
+            else:
+                why_parts.append(s.lower())
+        lines.append(f"Why now: {'; '.join(why_parts[:3])}")
+        lines.append("")
+
+    # Risks — only if there are any real ones
+    real_risks = [r for r in review["risks"] if "None" not in r]
+    if real_risks:
+        risk_parts = []
+        for r in real_risks:
+            if " — " in r:
+                risk_parts.append(r.split(" — ", 1)[1])
+            else:
+                risk_parts.append(r.lower())
+        lines.append(f"Watch out: {'; '.join(risk_parts[:2])}")
+        lines.append("")
+
+    # Title options
+    lines.append("Title options:")
+    outline = _generate_quick_outline(article, text, video_format)
+    # Extract just the title lines from the outline
+    in_titles = False
+    title_count = 0
+    for oline in outline.split("\n"):
+        stripped = oline.strip()
+        if "Title Options:" in oline:
+            in_titles = True
+            continue
+        if in_titles and stripped and stripped[0].isdigit():
+            lines.append(f"  {stripped}")
+            title_count += 1
+            if title_count >= 3:
+                in_titles = False
+        elif in_titles and not stripped:
+            in_titles = False
     lines.append("")
 
-    # Why cover this NOW
-    lines.append("WHY COVER THIS:")
-    for s in review["strengths"]:
-        lines.append(f"  + {s}")
+    # Thumbnail
+    in_thumbs = False
+    thumb_count = 0
+    for oline in outline.split("\n"):
+        stripped = oline.strip()
+        if "Thumbnail Text" in oline:
+            in_thumbs = True
+            continue
+        if in_thumbs and stripped and stripped[0].isdigit():
+            if thumb_count == 0:
+                lines.append(f"Thumbnail: {stripped[3:]}")  # Take first option, skip "1. "
+            thumb_count += 1
+            if thumb_count >= 1:
+                in_thumbs = False
     lines.append("")
 
-    # Risks / reasons to skip
-    lines.append("WATCH OUT FOR:")
-    for r in review["risks"]:
-        lines.append(f"  ! {r}")
+    # How to film it — concise structure
+    lines.append(f"How to film ({video_format}):")
+    if video_format == "First Look":
+        lines.append("  0:00 Hook — show the new feature working")
+        lines.append("  0:15 What launched and why it matters")
+        lines.append("  1:00 Live demo of each new feature")
+        lines.append("  7:00 Honest take — hype or legit?")
+        lines.append("  8:00 Subscribe + link in description")
+    elif video_format == "Tutorial":
+        lines.append("  0:00 Hook — show the finished result")
+        lines.append("  0:15 What we're building and why")
+        lines.append("  1:00 Step-by-step build from scratch")
+        lines.append("  7:00 Test it live with real data")
+        lines.append("  8:00 How to extend it + subscribe")
+    elif video_format == "Tool Showcase":
+        lines.append("  0:00 Hook — show the tool running")
+        lines.append("  0:15 What it does and what it replaces")
+        lines.append("  1:00 Install + build something real")
+        lines.append("  7:00 Pros, cons, who it's for")
+        lines.append("  8:00 Link in description + subscribe")
+    elif video_format == "Build Video":
+        lines.append("  0:00 Hook — show the automation running")
+        lines.append("  0:15 Business problem this solves")
+        lines.append("  1:00 Full build on screen")
+        lines.append("  7:00 Test with real data")
+        lines.append("  8:00 How to sell this + subscribe")
+    else:
+        lines.append("  0:00 Hook — why this matters")
+        lines.append("  0:15 Show the announcement")
+        lines.append("  1:00 Demo the product/tool")
+        lines.append("  7:00 What this means for builders")
+        lines.append("  8:00 Your take + subscribe")
     lines.append("")
 
-    # Video structure
-    lines.append("VIDEO STRUCTURE:")
-    lines.append(structure)
-    lines.append("")
-
-    # Article-specific talking points and demo ideas
+    # Key things to mention — article-specific
     if details:
-        lines.append("SPECIFIC TO THIS ARTICLE:")
-        for d in details:
+        lines.append("Key things to mention:")
+        for d in details[:4]:
             lines.append(f"  - {d}")
         lines.append("")
 
-    # Quick video outline — titles, thumbnails, description template
-    lines.append(_generate_quick_outline(article, text, video_format))
-    lines.append("")
-
-    # Pre-production checklist
-    lines.append("BEFORE YOU RECORD:")
-    lines.append("  [ ] Search YouTube: has a bigger creator already covered this?")
-    lines.append("  [ ] Can you actually demo this on screen in under 10 minutes?")
-    lines.append("  [ ] Open the source link and verify the info is still current")
-    if article.source == "Reddit":
-        lines.append("  [ ] Read the top Reddit comments — best hooks are often there")
-    if any(kw in text for kw in ["launch", "release", "introducing"]):
-        lines.append("  [ ] Check the official docs/changelog for details the article missed")
-    lines.append("  [ ] Draft thumbnail text (3-5 words max) before recording")
+    # Pre-record checklist — short
+    lines.append("Before recording:")
+    lines.append("  - Search YouTube — has someone covered this already?")
+    lines.append("  - Open the link — is the info still current?")
+    lines.append("  - Can you demo this on screen in under 10 min?")
 
     return "\n".join(lines)
 
@@ -698,26 +733,38 @@ def _send_video_ideas(articles: list[Article], logger: logging.Logger) -> None:
                      len(seen_terms), len(trends_data))
 
     now_str = datetime.now().strftime("%a %b %-d")
-    lines = [f"AI VIDEO IDEAS — {now_str}", ""]
-    lines.append(f"{len(reviewed)} ideas passed review (out of {len(candidates)} candidates).")
-    if skipped:
-        lines.append(f"{len(skipped)} filtered out:")
-        for a, r in skipped:
-            lines.append(f"  SKIP: {a.title[:60]} — {r['risks'][0] if r['risks'] else 'low quality'}")
-    lines.append("")
-    lines.append("=" * 60)
+    lines = []
 
+    # Header — reads like a briefing memo
+    lines.append(f"Video Ideas — {now_str}")
+    lines.append("")
+    if len(reviewed) == 1:
+        lines.append("1 idea scored 8+ and passed review.")
+    else:
+        lines.append(f"{len(reviewed)} ideas scored 8+ and passed review.")
+    if skipped:
+        skip_titles = [a.title[:50] for a, _ in skipped]
+        lines.append(f"Filtered out: {', '.join(skip_titles)}")
+    lines.append("")
+
+    # Each idea as a clean brief
     for i, (a, _review) in enumerate(reviewed, 1):
         trend = trends_data.get(a.url)
+        if i > 1:
+            lines.append("")
+            lines.append("---")
+            lines.append("")
+        lines.append(f"IDEA {i}")
         lines.append("")
-        lines.append(f"IDEA #{i}")
-        lines.append("-" * 40)
         lines.append(_generate_video_breakdown(a, trend=trend))
-        lines.append("")
-        lines.append("=" * 60)
 
     message = "\n".join(lines)
-    if send_email(message, email_to, subject=f"AI Video Ideas — {now_str}"):
+    subject = f"Video Ideas — {now_str}"
+    if len(reviewed) == 1:
+        # Put the top idea in the subject for quick scanning
+        top_title = reviewed[0][0].title[:40]
+        subject = f"Video Idea: {top_title}"
+    if send_email(message, email_to, subject=subject):
         logger.info("Video ideas email sent (%d ideas, %d skipped)", len(reviewed), len(skipped))
     else:
         logger.warning("Video ideas email failed")

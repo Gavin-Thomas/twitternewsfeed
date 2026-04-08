@@ -83,7 +83,7 @@ class TestRunDigest(unittest.TestCase):
             self.assertTrue(result)
             mock_ntfy.assert_called_once()
             sent_msg = mock_ntfy.call_args[0][0]
-            self.assertIn("AI DIGEST", sent_msg)
+            self.assertIn("AI Digest", sent_msg)
         finally:
             os.unlink(db_path)
 
@@ -132,7 +132,7 @@ class TestRunDigest(unittest.TestCase):
             self.assertNotIn("VIDEO SCRIPTS", sent_msg)
             self.assertNotIn("HOOK", sent_msg)
             # But should still have the digest header
-            self.assertIn("AI DIGEST", sent_msg)
+            self.assertIn("AI Digest", sent_msg)
         finally:
             os.unlink(db_path)
 

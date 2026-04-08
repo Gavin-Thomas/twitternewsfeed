@@ -1,4 +1,4 @@
-"""Format scored articles into a digest with clickable links."""
+"""Format scored articles into a readable news briefing."""
 from datetime import datetime, timezone
 from typing import Optional
 
@@ -9,25 +9,20 @@ from src.config import (
 )
 
 
-def _truncate(text: str, max_len: int = 80) -> str:
-    """Truncate text to max_len, adding ellipsis if needed."""
+def _truncate(text: str, max_len: int = 120) -> str:
     if len(text) <= max_len:
         return text
-    return text[: max_len - 3] + "..."
+    return text[: max_len - 1] + "..."
 
 
 def _freshness_label(published: Optional[datetime]) -> str:
-    """Return a human-readable freshness label like '2h ago' or 'yesterday'."""
     if published is None:
         return ""
-
     now = datetime.now(timezone.utc)
     if published.tzinfo is None:
         published = published.replace(tzinfo=timezone.utc)
-
     delta = now - published
     hours = delta.total_seconds() / 3600
-
     if hours < 0:
         return ""
     elif hours < 1:
@@ -43,34 +38,74 @@ def _freshness_label(published: Optional[datetime]) -> str:
 
 
 def _is_launch(title: str, summary: str) -> bool:
-    """Check if article has strong launch signals."""
     text = f"{title} {summary}".lower()
     return any(kw in text for kw in LAUNCH_KEYWORDS)
 
 
-def _format_article_line(article: Article) -> str:
-    """Format a single article into digest lines with link."""
-    tags = []
+def _clean_title(title: str) -> str:
+    """Clean up titles — remove repo-style formatting for readability."""
+    # "anthropics/claude-code: v2.1.94" → "Claude Code v2.1.94"
+    if ": " in title and "/" in title.split(": ")[0]:
+        return title.split(": ", 1)[1]
+    # "@AnthropicAI: R to @AnthropicAI: ..." → clean up retweet noise
+    if title.startswith("@") and "R to @" in title:
+        parts = title.split("R to @", 1)
+        if len(parts) > 1:
+            after = parts[1]
+            # Skip past the username
+            if ": " in after:
+                return after.split(": ", 1)[1].strip()
+    # "@handle: text" → keep the text, note the handle
+    if title.startswith("@") and ": " in title:
+        return title
+    return title
 
-    # NEW tag for launches
-    if _is_launch(article.title, article.summary):
-        tags.append("NEW")
 
-    # Category tag
-    if article.category:
-        tags.append(article.category)
-
-    # Freshness
+def _format_article(article: Article, num: int) -> str:
+    """Format one article as a readable numbered item."""
+    title = _clean_title(article.title)
     freshness = _freshness_label(article.published)
+    is_new = _is_launch(article.title, article.summary)
 
-    tag_str = f" [{', '.join(tags)}]" if tags else ""
-    fresh_str = f" ({freshness})" if freshness else ""
+    # Line 1: number + title + NEW badge
+    new_badge = " [NEW]" if is_new else ""
+    line1 = f"{num}. {title}{new_badge}"
 
-    lines = [f"[{article.score}/10]{tag_str} {article.title}{fresh_str}"]
-    if article.summary:
-        lines.append(f"  {_truncate(article.summary)}")
-    lines.append(article.url)
-    return "\n".join(lines)
+    # Line 2: summary (cleaned up)
+    summary = article.summary or ""
+    # Strip Reddit prefix like "r/ClaudeAI (574 pts): "
+    if summary.startswith("r/") and ": " in summary[:40]:
+        summary = summary.split(": ", 1)[1] if ": " in summary else summary
+    # Strip "HN: 500 points"
+    if summary.startswith("HN: "):
+        summary = ""
+    # Strip "Release v1.2.3 — "
+    if summary.startswith("Release "):
+        summary = summary.split(" — ", 1)[1] if " — " in summary else summary
+    summary = _truncate(summary.strip(), 120)
+
+    line2 = f"   {summary}" if summary else ""
+
+    # Line 3: metadata
+    meta_parts = []
+    if article.score >= 8:
+        meta_parts.append(f"Score: {article.score}/10")
+    if freshness:
+        meta_parts.append(freshness)
+    meta_parts.append(article.source)
+    if article.category:
+        meta_parts.append(article.category)
+    line3 = f"   {' · '.join(meta_parts)}"
+
+    # Line 4: link
+    line4 = f"   {article.url}"
+
+    parts = [line1]
+    if line2:
+        parts.append(line2)
+    parts.append(line3)
+    parts.append(line4)
+    return "\n".join(parts)
 
 
 def format_digest(
@@ -79,41 +114,47 @@ def format_digest(
     min_top: int = MIN_SCORE_TOP,
     min_notable: int = MIN_SCORE_NOTABLE,
 ) -> str:
-    """Format a list of articles into the full digest message.
-
-    Articles should already be sorted by score descending.
-    """
+    """Format articles into a readable news briefing for ntfy + email."""
     if now is None:
         now = datetime.now()
 
-    header = f"AI DIGEST — {now.strftime('%a %b %-d, %-I:%M %p')}"
+    date_str = now.strftime("%a %b %-d, %-I:%M %p")
 
     top_stories = [a for a in articles if a.score >= min_top][:MAX_TOP_STORIES]
     notable_stories = [a for a in articles if min_notable <= a.score < min_top][:MAX_NOTABLE_STORIES]
 
     if not top_stories and not notable_stories:
-        return f"{header}\n\nNo notable stories this cycle."
+        return f"AI Digest — {date_str}\n\nNo notable stories this cycle. Check back later."
 
-    parts = [header, ""]
+    parts = []
+    parts.append(f"AI Digest — {date_str}")
+    parts.append("")
+
+    # Video pick — the #1 story you should film today
+    if top_stories and top_stories[0].score >= 7:
+        best = top_stories[0]
+        best_title = _clean_title(best.title)
+        parts.append(f"Today's video pick: {best_title} ({best.score}/10)")
+        parts.append("")
 
     if top_stories:
-        parts.append("--- TOP STORIES ---")
+        parts.append(f"TOP STORIES ({len(top_stories)})")
         parts.append("")
-        for a in top_stories:
-            parts.append(_format_article_line(a))
+        for i, a in enumerate(top_stories, 1):
+            parts.append(_format_article(a, i))
             parts.append("")
 
     if notable_stories:
-        parts.append("--- ALSO NOTABLE ---")
+        start_num = len(top_stories) + 1
+        parts.append(f"ALSO NOTABLE ({len(notable_stories)})")
         parts.append("")
-        for a in notable_stories:
-            parts.append(_format_article_line(a))
+        for i, a in enumerate(notable_stories, start_num):
+            parts.append(_format_article(a, i))
             parts.append("")
 
+    # Footer
     all_articles = top_stories + notable_stories
     sources = sorted(set(a.source for a in all_articles if a.source))
-    if sources:
-        parts.append("---")
-        parts.append(f"Sources: {', '.join(sources)}")
+    parts.append(f"Sources: {', '.join(sources)}")
 
     return "\n".join(parts)

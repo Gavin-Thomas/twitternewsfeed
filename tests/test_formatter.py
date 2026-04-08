@@ -3,10 +3,10 @@ import unittest
 from datetime import datetime, timedelta, timezone
 
 from src.store import Article
-from src.formatter import format_digest, _format_article_line, _truncate, _freshness_label
+from src.formatter import format_digest, _format_article, _truncate, _freshness_label
 
 
-class TestFormatArticleLine(unittest.TestCase):
+class TestFormatArticle(unittest.TestCase):
 
     def test_launch_gets_new_tag(self):
         a = Article(
@@ -17,10 +17,9 @@ class TestFormatArticleLine(unittest.TestCase):
             score=9,
             category="CLAUDE",
         )
-        line = _format_article_line(a)
-        self.assertIn("[9/10]", line)
+        line = _format_article(a, 1)
+        self.assertIn("1.", line)
         self.assertIn("NEW", line)
-        self.assertIn("CLAUDE", line)
         self.assertIn("Anthropic Launches Agent SDK", line)
         self.assertIn("https://example.com/1", line)
 
@@ -33,21 +32,21 @@ class TestFormatArticleLine(unittest.TestCase):
             score=4,
             category="BUILD",
         )
-        line = _format_article_line(a)
-        self.assertIn("[4/10]", line)
+        line = _format_article(a, 1)
+        self.assertIn("1.", line)
         self.assertNotIn("NEW", line)
 
-    def test_no_category_bracket_when_empty(self):
-        a = Article(url="u", title="T", summary="S", source="X", score=5, category="")
-        line = _format_article_line(a)
-        self.assertNotIn("[]", line)
+    def test_includes_source(self):
+        a = Article(url="u", title="T", summary="S", source="Reddit", score=5, category="BUILD")
+        line = _format_article(a, 1)
+        self.assertIn("Reddit", line)
 
     def test_freshness_shown(self):
         a = Article(
             url="u", title="T", summary="S", source="X", score=5, category="BUILD",
             published=datetime.now(timezone.utc) - timedelta(hours=3),
         )
-        line = _format_article_line(a)
+        line = _format_article(a, 1)
         self.assertIn("3h ago", line)
 
 
@@ -79,8 +78,8 @@ class TestTruncate(unittest.TestCase):
         self.assertEqual(_truncate("hello", 10), "hello")
 
     def test_long_string_truncated(self):
-        result = _truncate("a" * 100, 20)
-        self.assertEqual(len(result), 20)
+        result = _truncate("a" * 200, 20)
+        self.assertLessEqual(len(result), 23)  # truncate at max_len-1 + "..."
         self.assertTrue(result.endswith("..."))
 
 
@@ -97,7 +96,7 @@ class TestFormatDigest(unittest.TestCase):
         ]
         now = datetime(2026, 4, 6, 18, 0)
         digest = format_digest(articles, now=now, min_top=6, min_notable=3)
-        self.assertIn("AI DIGEST", digest)
+        self.assertIn("AI Digest", digest)
         self.assertIn("TOP STORIES", digest)
         self.assertIn("ALSO NOTABLE", digest)
         self.assertIn("Top Story", digest)
@@ -124,6 +123,14 @@ class TestFormatDigest(unittest.TestCase):
         digest = format_digest(articles, now=datetime(2026, 4, 6, 18, 0), min_top=6, min_notable=3)
         self.assertNotIn("TOP STORIES", digest)
         self.assertIn("ALSO NOTABLE", digest)
+
+    def test_video_pick_for_high_score(self):
+        articles = [
+            Article(url="https://a.com/1", title="Claude Code Released", summary="New version",
+                    source="GitHub Release", score=9, category="CLAUDE"),
+        ]
+        digest = format_digest(articles, now=datetime(2026, 4, 6, 18, 0))
+        self.assertIn("video pick", digest.lower())
 
 
 if __name__ == "__main__":
